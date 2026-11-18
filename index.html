@@ -1,0 +1,2646 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Pembayaran Yuran Bulanan - Akademi Gayong Nur Insani</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .font-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+
+        /* Print Styling for Official Receipt */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #receipt-modal, #receipt-modal * {
+                visibility: visible;
+            }
+            #receipt-modal {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                padding: 0 !important;
+            }
+            #receipt-printable-area {
+                box-shadow: none !important;
+                border: 2px solid #0f172a !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-40 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row justify-between items-center py-3.5 gap-3">
+                <!-- Brand / Logo -->
+                <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-900 font-extrabold text-xl shadow-md">
+                            <i class="fa-solid fa-khanda"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-amber-400 leading-tight uppercase">
+                                AKADEMI GAYONG NUR INSANI
+                            </h1>
+                            <p class="text-xs text-slate-300">Sistem Pengurusan & Semakan Yuran Gelanggang • Johor Bahru</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mode Switcher -->
+                <div class="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700 w-full sm:w-auto justify-center">
+                    <button id="btn-mode-ahli" onclick="switchMode('ahli')" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-slate-900 shadow">
+                        <i class="fa-solid fa-user-check mr-1.5"></i>Portal Ahli / Ibu Bapa
+                    </button>
+                    <button id="btn-mode-admin" onclick="switchMode('admin')" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all">
+                        <i class="fa-solid fa-user-tie mr-1.5"></i>Dashboard Gurulatih
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ===================================================================== -->
+        <!-- VIEW 1: PORTAL AHLI / IBU BAPA (PUBLIC VIEW)                          -->
+        <!-- ===================================================================== -->
+        <div id="view-ahli" class="space-y-6 animate-fade-in">
+
+            <!-- Banner Hero Biru Gelap -->
+            <div class="bg-gradient-to-r from-blue-900 via-slate-900 to-blue-950 rounded-2xl p-6 text-white shadow-md border border-blue-800/60 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="space-y-1.5 text-center md:text-left">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
+                        <i class="fa-solid fa-shield-halved mr-1.5"></i> Akademi Gayong Nur Insani • Johor Bahru
+                    </span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight">Semakan & Pembayaran Yuran Bulanan</h2>
+                    <p class="text-xs sm:text-sm text-slate-300 max-w-2xl">
+                        Semak status bayaran bulanan anak anda menggunakan No. Kad Pengenalan / ID Ahli, muat naik bukti resit bayaran QR/Bank, dan cetak resit rasmi yang disahkan oleh <strong>Cikgu Bujal</strong>.
+                    </p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-2 shrink-0">
+                    <button onclick="switchAhliTab('semak')" id="tab-ahli-semak" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-blue-950 shadow transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i>Semak Yuran
+                    </button>
+                    <button onclick="switchAhliTab('gelanggang')" id="tab-ahli-gelanggang" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-blue-800/70 hover:bg-blue-800 text-white border border-blue-700 transition">
+                        <i class="fa-solid fa-map-location-dot mr-1.5"></i>Info Gelanggang & QR
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 1: SEMAK STATUS YURAN & BAYAR -->
+            <div id="ahli-content-semak" class="space-y-6">
+                <!-- Kotak Carian Ahli -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                    <label for="search-ic-input" class="block text-sm font-bold text-slate-700 mb-2">
+                        Masukkan Nama Penuh / Sebahagian Nama Pelajar (Huruf Besar atau Kecil) atau No. Kad Pengenalan:
+                    </label>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-grow">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                            <input type="text" id="search-ic-input" placeholder="Contoh: ahmad zaki, NUR AISYAH, 120514035521 atau AHLI001"
+                                class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm font-medium transition outline-none"
+                                oninput="handleLiveSearchSuggestions()"
+                                onkeyup="if(event.key === 'Enter') searchMember()">
+                        </div>
+                        <button onclick="searchMember()" class="px-6 py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm shadow transition flex items-center justify-center">
+                            <i class="fa-solid fa-search mr-2"></i> Semak Rekod
+                        </button>
+                    </div>
+
+                    <!-- Senarai Padanan Nama -->
+                    <div id="search-matches-box" class="hidden mt-3 p-3 rounded-xl bg-blue-50/70 border border-blue-200 space-y-2">
+                        <p class="text-xs font-bold text-blue-900"><i class="fa-solid fa-users mr-1"></i> Ditemui beberapa rekod sepadan. Sila pilih pelajar:</p>
+                        <div id="search-matches-list" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Pantas Pilih Contoh Ahli -->
+                    <div class="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                        <span class="font-semibold text-slate-600">Contoh pantas (<span id="quick-total-count">20</span> Ahli):</span>
+                        <button onclick="quickSearch('Ahmad Zaki')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 hover:text-amber-800 font-medium transition">Ahmad Zaki (AHLI001)</button>
+                        <button onclick="quickSearch('nur aisyah')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 hover:text-amber-800 font-medium transition">Nur Aisyah (AHLI002)</button>
+                        <button onclick="quickSearch('130219038890')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 hover:text-amber-800 font-medium transition">Muhammad Danish (AHLI003)</button>
+                        <button onclick="quickSearch('siti sarah')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 hover:text-amber-800 font-medium transition">Siti Sarah (AHLI004)</button>
+                    </div>
+                </div>
+
+                <!-- Paparan Profil Ahli & Grid Status 12 Bulan -->
+                <div id="member-result-card" class="hidden space-y-6 animate-fade-in">
+                    <!-- Kad Profil Ahli -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                        <div class="flex items-center space-x-4">
+                            <div id="member-avatar" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-800 to-slate-900 text-amber-400 flex items-center justify-center font-extrabold text-2xl shadow">
+                                AZ
+                            </div>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h3 id="member-name" class="text-lg sm:text-xl font-extrabold text-slate-900">Ahmad Zaki bin Yusof</h3>
+                                    <span id="member-id-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">AHLI001</span>
+                                </div>
+                                <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
+                                    <i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> <span id="member-gelanggang">Akademi Gayong Nur Insani (Johor Bahru)</span>
+                                    <span class="mx-2 text-slate-300">|</span>
+                                    <i class="fa-solid fa-award text-amber-500 mr-1"></i> <span id="member-belt">Bengkung Hijau</span>
+                                </p>
+                                <p class="text-xs text-slate-500 mt-1">
+                                    No. KP: <span id="member-ic" class="font-semibold text-slate-700">120514035521</span> • Yuran Bulanan: <span id="member-fee" class="font-bold text-emerald-700">RM 30.00</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
+                            <div class="bg-rose-50 border border-rose-200 px-4 py-2 rounded-xl text-right">
+                                <p class="text-[11px] font-semibold text-rose-600 uppercase">Jumlah Tunggakan</p>
+                                <p id="member-arrears" class="text-lg font-extrabold text-rose-700">RM 60.00</p>
+                            </div>
+                            <button onclick="openPaymentModal()" class="px-5 py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm shadow transition flex items-center">
+                                <i class="fa-solid fa-qrcode mr-2"></i> Bayar Yuran / Muat Naik Resit
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Grid Status Bayaran Bulanan -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+                            <div>
+                                <h4 class="text-base sm:text-lg font-extrabold text-slate-900">
+                                    <i class="fa-regular fa-calendar-check text-blue-600 mr-2"></i>Status Bayaran Bulanan (Tahun 2026)
+                                </h4>
+                                <p class="text-xs text-slate-500">Klik kotak bulan <strong>Disahkan (Hijau)</strong> untuk mencetak/simpan <strong>Resit Rasmi PDF</strong>.</p>
+                            </div>
+                            <div class="flex flex-wrap gap-3 text-xs font-medium">
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-emerald-500 mr-1.5"></span>Disahkan (Resit)</span>
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-400 mr-1.5"></span>Menunggu Semakan</span>
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-rose-500 mr-1.5"></span>Belum Bayar</span>
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-slate-300 mr-1.5"></span>Belum Mula</span>
+                            </div>
+                        </div>
+
+                        <!-- 12 Bulan Grid -->
+                        <div id="months-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: MAKLUMAT GELANGGANG & KOD QR RASMI -->
+            <div id="ahli-content-gelanggang" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
+                <div class="bg-slate-900 rounded-2xl p-6 text-white shadow-lg border border-slate-800 flex flex-col justify-between space-y-5">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Gelanggang Rasmi</span>
+                                <h3 class="text-xl font-extrabold mt-0.5">AKADEMI GAYONG NUR INSANI</h3>
+                                <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-location-dot mr-1.5 text-rose-400"></i>Johor Bahru, Johor</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Aktif</span>
+                        </div>
+                        <div class="space-y-3 bg-slate-800/80 p-4 rounded-xl border border-slate-700/70 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Gurulatih Utama:</span>
+                                <span class="font-bold text-amber-300">Cikgu Bujal</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Hari Latihan:</span>
+                                <span class="font-semibold text-white">Jumaat & Sabtu</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Masa Latihan:</span>
+                                <span class="font-semibold text-amber-300">8:30 PM – 10:30 PM</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Yuran Pendaftaran:</span>
+                                <span id="info-tab-reg-fee" class="font-semibold text-amber-300">RM 20.00 (Sekali Sahaja)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Kadar Yuran Bulanan:</span>
+                                <span id="info-tab-monthly-fee" class="font-semibold text-emerald-400">RM 30 (Sekolah) / RM 50 (Dewasa)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <a href="https://wa.me/60163879047" target="_blank" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center transition shadow">
+                            <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Hubungi Cikgu Bujal (WhatsApp)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-5">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-pink-600">Saluran Pembayaran</span>
+                                <h3 class="text-xl font-extrabold text-slate-900">DuitNow QR & Akaun Gelanggang</h3>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-pink-50 text-pink-700 border border-pink-200">DuitNow</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">Imbas Kod QR di bawah atau pindahkan yuran ke akaun rasmi akademi, kemudian muat naik gambar/PDF resit di halaman Semak Yuran.</p>
+                        
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
+                            <div id="info-tab-qr-container" class="w-36 h-36 bg-white rounded-xl border-2 border-pink-500 flex items-center justify-center p-2 shrink-0 shadow-sm overflow-hidden">
+                                <!-- Populated by JS -->
+                            </div>
+                            <div class="space-y-2.5 w-full text-center sm:text-left">
+                                <div>
+                                    <p class="text-[11px] font-bold text-slate-400 uppercase">Nama Bank</p>
+                                    <p id="info-tab-bank-name" class="text-sm font-extrabold text-slate-800">Maybank Islamic</p>
+                                </div>
+                                <div>
+                                    <p class="text-[11px] font-bold text-slate-400 uppercase">Nama Pemegang Akaun</p>
+                                    <p id="info-tab-acc-holder" class="text-sm font-bold text-slate-700">Akademi Gayong Nur Insani</p>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-sm">
+                                    <span id="info-tab-acc-number" class="font-mono font-extrabold text-slate-900 text-sm">562106548892</span>
+                                    <button type="button" onclick="copyAccNumber()" class="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center bg-blue-50 px-2.5 py-1 rounded-lg">
+                                        <i class="fa-regular fa-copy mr-1"></i> Salin
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="switchAhliTab('semak')" class="w-full py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm transition shadow">
+                        <i class="fa-solid fa-upload mr-2"></i> Pergi Ke Muat Naik Bukti Resit
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================================================================== -->
+        <!-- VIEW 2: DASHBOARD GURULATIH (ADMIN VIEW)                              -->
+        <!-- ===================================================================== -->
+        <div id="view-admin" class="hidden space-y-6 animate-fade-in">
+
+            <!-- Ringkasan Info Gurulatih & Gelanggang -->
+            <div class="bg-slate-900 text-white rounded-2xl p-5 shadow-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border border-slate-800">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-extrabold text-lg shadow">
+                        <i class="fa-solid fa-user-ninja"></i>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h2 class="text-base sm:text-lg font-extrabold text-white">Gurulatih: Cikgu Bujal</h2>
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Aktif</span>
+                            <span id="gsheet-status-pill" class="hidden px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                                <i class="fa-solid fa-table mr-1"></i>Google Sheets Aktif
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-300 mt-0.5">
+                            <i class="fa-solid fa-location-dot text-amber-400 mr-1"></i> Akademi Gayong Nur Insani • Johor Bahru
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="syncMembersFromGoogleSheets()" id="btn-header-sync-gs" class="hidden px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow transition">
+                        <i class="fa-solid fa-rotate mr-1.5"></i> Tarik Data Google Sheets
+                    </button>
+                    <button onclick="resetToSampleData()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition">
+                        <i class="fa-solid fa-rotate-left mr-1.5 text-amber-400"></i> Reset Sampel 20 Ahli
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistik Ringkas (KPI Cards) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Jumlah Ahli Aktif</p>
+                        <p id="stat-total-members" class="text-2xl font-extrabold text-slate-900 mt-1">20</p>
+                        <p class="text-xs text-emerald-600 font-medium mt-1"><i class="fa-solid fa-building-shield mr-1"></i>1 Gelanggang</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Kutipan Disahkan (2026)</p>
+                        <p id="stat-total-collected" class="text-2xl font-extrabold text-emerald-600 mt-1">RM 0.00</p>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Tunai & Online Transfer</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Resit Perlu Disahkan</p>
+                        <p id="stat-pending-receipts" class="text-2xl font-extrabold text-amber-500 mt-1">0</p>
+                        <p class="text-xs text-amber-600 font-medium mt-1">Menunggu semakan anda</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Jumlah Tunggakan</p>
+                        <p id="stat-total-arrears" class="text-2xl font-extrabold text-rose-600 mt-1">RM 0.00</p>
+                        <p class="text-xs text-rose-500 font-medium mt-1">Yuran belum dijelaskan</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Navigasi Dashboard Gurulatih -->
+            <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap gap-2">
+                <button onclick="switchAdminTab('resit')" id="tab-admin-resit" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-blue-700 text-white shadow-sm transition relative">
+                    <i class="fa-solid fa-receipt mr-2"></i>Semak & Sahkan Resit
+                    <span id="badge-pending-count" class="ml-1.5 px-2 py-0.5 text-xs rounded-full bg-amber-400 text-slate-900 font-extrabold">0</span>
+                </button>
+                <button onclick="switchAdminTab('rekod')" id="tab-admin-rekod" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-table-list mr-2"></i>Rekod Yuran Bulanan (<span id="tab-member-count">20</span> Ahli)
+                </button>
+                <button onclick="switchAdminTab('ahli')" id="tab-admin-ahli" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-user-plus mr-2"></i>Urus Ahli & Import Excel
+                </button>
+                <button onclick="switchAdminTab('kewangan')" id="tab-admin-kewangan" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-file-chart-column mr-2"></i>Penyata Kewangan
+                </button>
+                <button onclick="switchAdminTab('tetapan')" id="tab-admin-tetapan" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-sliders mr-2 text-blue-600"></i>Tetapan Yuran, QR, Telegram & Google Sheets
+                </button>
+            </div>
+
+            <!-- ADMIN TAB 1: SEMAK & SAHKAN RESIT -->
+            <div id="admin-content-resit" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="mb-5">
+                    <h3 class="text-lg font-extrabold text-slate-900">Senarai Resit Menunggu Pengesahan</h3>
+                    <p class="text-xs text-slate-500">Klik pada pautan bukti resit untuk memaparkan gambar atau PDF penuh sebelum menekan butang <strong>Sahkan Resit</strong>.</p>
+                </div>
+
+                <div id="pending-receipts-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- ADMIN TAB 2: REKOD YURAN BULANAN (MATRIX TABLE) -->
+            <div id="admin-content-rekod" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="text-lg font-extrabold text-slate-900">Jadual Rekod Yuran Bulanan (2026)</h3>
+                        <p class="text-xs text-slate-500">Klik mana-mana petak bulan untuk mengemas kini bayaran Tunai atau melihat bukti resit.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                        <input type="text" id="admin-search-member" onkeyup="renderAdminMatrix()" placeholder="Cari nama / No. KP..."
+                            class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-medium outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase">
+                                <th class="py-3.5 px-4 sticky left-0 bg-slate-50 z-10 min-w-[200px]">Nama Ahli / WhatsApp</th>
+                                <th class="py-3.5 px-2 text-center">JAN</th>
+                                <th class="py-3.5 px-2 text-center">FEB</th>
+                                <th class="py-3.5 px-2 text-center">MAC</th>
+                                <th class="py-3.5 px-2 text-center">APR</th>
+                                <th class="py-3.5 px-2 text-center">MEI</th>
+                                <th class="py-3.5 px-2 text-center">JUN</th>
+                                <th class="py-3.5 px-2 text-center">JUL</th>
+                                <th class="py-3.5 px-2 text-center">OGO</th>
+                                <th class="py-3.5 px-2 text-center">SEP</th>
+                                <th class="py-3.5 px-2 text-center">OKT</th>
+                                <th class="py-3.5 px-2 text-center">NOV</th>
+                                <th class="py-3.5 px-2 text-center">DIS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-matrix-body" class="divide-y divide-slate-100 text-xs">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ADMIN TAB 3: URUS AHLI & IMPORT EXCEL -->
+            <div id="admin-content-ahli" class="hidden space-y-6">
+                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-200 text-blue-900 uppercase">Pendaftaran Pukal</span>
+                        <h4 class="text-base font-extrabold text-slate-900">Import Senarai Pelajar Dari Fail Excel / CSV</h4>
+                        <p class="text-xs text-slate-600 max-w-xl">Muat naik fail CSV mengandungi lajur: <strong>Nama, NoKP, NoTelefon, Yuran</strong> untuk memasukkan ramai pelajar serentak.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 shrink-0">
+                        <button onclick="downloadSampleCSV()" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs transition">
+                            <i class="fa-solid fa-download mr-1.5"></i> Muat Turun Templat CSV
+                        </button>
+                        <label class="px-4 py-2.5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs shadow cursor-pointer transition flex items-center">
+                            <i class="fa-solid fa-file-excel mr-1.5"></i> Muat Naik Fail CSV
+                            <input type="file" accept=".csv" onchange="handleCSVImport(event)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 h-fit">
+                        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 uppercase">Khusus Gurulatih</span>
+                        <h3 class="text-lg font-extrabold text-slate-900 mt-1 mb-4">Daftar Ahli Baharu</h3>
+                        <form onsubmit="addNewMember(event)" class="space-y-3.5">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Penuh Ahli *</label>
+                                <input type="text" id="new-member-name" required placeholder="Contoh: Muhammad Amirul"
+                                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-blue-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">No. Kad Pengenalan (Tanpa '-') *</label>
+                                <input type="text" id="new-member-ic" required placeholder="Contoh: 110405031234"
+                                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-blue-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">No. Telefon Ibu Bapa (WhatsApp) *</label>
+                                <input type="text" id="new-member-phone" required placeholder="Contoh: 012-3456789"
+                                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-blue-600">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Tahap Bengkung</label>
+                                    <select id="new-member-belt" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm outline-none bg-white">
+                                        <option value="Bengkung Putih">Bengkung Putih</option>
+                                        <option value="Bengkung Hijau">Bengkung Hijau</option>
+                                        <option value="Bengkung Merah">Bengkung Merah</option>
+                                        <option value="Bengkung Kuning">Bengkung Kuning</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Yuran Bulanan</label>
+                                    <select id="new-member-fee" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm outline-none bg-white">
+                                        <option value="school">RM 30.00 (Sekolah)</option>
+                                        <option value="adult">RM 50.00 (Dewasa)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="bg-amber-50 border border-amber-200 rounded-xl px-3.5 py-2.5 flex justify-between items-center text-xs">
+                                <span class="font-bold text-amber-900">Yuran Pendaftaran Semasa:</span>
+                                <span id="form-reg-fee-display" class="font-extrabold text-amber-700">RM 20.00</span>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Bulan Mula Latihan (2026)</label>
+                                <select id="new-member-start-month" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none bg-white">
+                                    <option value="0">Januari 2026</option>
+                                    <option value="2">Mac 2026</option>
+                                    <option value="5">Jun 2026</option>
+                                    <option value="8">September 2026</option>
+                                    <option value="10" selected>November 2026 (Semasa)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm shadow transition">
+                                <i class="fa-solid fa-plus mr-1.5"></i> Simpan & Masukkan Ke Senarai
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h3 class="text-lg font-extrabold text-slate-900">Senarai Ahli Berdaftar (<span id="member-list-count">20</span>)</h3>
+                                <p class="text-xs text-slate-500">Akademi Gayong Nur Insani (Johor Bahru)</p>
+                            </div>
+                        </div>
+                        <div id="admin-members-list" class="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN TAB 4: PENYATA KEWANGAN & LAPORAN -->
+            <div id="admin-content-kewangan" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <div>
+                            <h3 class="text-lg font-extrabold text-slate-900">Penyata Kewangan & Kutipan Yuran (2026)</h3>
+                            <p class="text-xs text-slate-500">Ringkasan pendapatan bulanan berdasarkan resit yang telah disahkan oleh Cikgu Bujal.</p>
+                        </div>
+                        <button onclick="exportFinanceCSV()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition flex items-center">
+                            <i class="fa-solid fa-file-csv text-base mr-2"></i> Muat Turun Laporan (CSV / Excel)
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                            <p class="text-xs font-bold text-emerald-700 uppercase">Jumlah Pendapatan Disahkan</p>
+                            <p id="fin-income" class="text-2xl font-extrabold text-emerald-800 mt-1">RM 0.00</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-blue-50 border border-blue-200">
+                            <p class="text-xs font-bold text-blue-700 uppercase">Bayaran Online / DuitNow QR</p>
+                            <p id="fin-online" class="text-2xl font-extrabold text-blue-800 mt-1">RM 0.00</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                            <p class="text-xs font-bold text-amber-700 uppercase">Bayaran Tunai Di Gelanggang</p>
+                            <p id="fin-cash" class="text-2xl font-extrabold text-amber-800 mt-1">RM 0.00</p>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-bold">
+                                    <th class="py-3 px-4">No. Resit</th>
+                                    <th class="py-3 px-4">Tarikh</th>
+                                    <th class="py-3 px-4">Nama Ahli</th>
+                                    <th class="py-3 px-4">Bulan</th>
+                                    <th class="py-3 px-4">Kaedah</th>
+                                    <th class="py-3 px-4 text-right">Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody id="finance-transactions-body" class="divide-y divide-slate-100">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN TAB 5: TETAPAN YURAN, QR, TELEGRAM & GOOGLE SHEETS -->
+            <div id="admin-content-tetapan" class="hidden">
+                <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6">
+                    <!-- Bahagian 0: Tetapan Kadar Yuran -->
+                    <div class="space-y-4 pb-6 border-b border-slate-200">
+                        <div>
+                            <span class="text-xs font-bold text-emerald-600 uppercase">Kadar Yuran Akademi</span>
+                            <h3 class="font-extrabold text-lg text-slate-900">Tetapan Yuran Pendaftaran & Yuran Bulanan</h3>
+                            <p class="text-xs text-slate-500">Perubahan harga di sini akan terus dikemas kini secara automatik ke seluruh sistem.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Yuran Pendaftaran (RM)</label>
+                                <input type="number" min="0" step="1" id="setting-reg-fee" placeholder="20" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-extrabold text-slate-900 outline-none focus:ring-2 focus:ring-emerald-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Bulanan Sekolah (RM)</label>
+                                <input type="number" min="0" step="1" id="setting-fee-school" placeholder="30" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-extrabold text-emerald-700 outline-none focus:ring-2 focus:ring-emerald-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Bulanan Dewasa (RM)</label>
+                                <input type="number" min="0" step="1" id="setting-fee-adult" placeholder="50" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-extrabold text-blue-700 outline-none focus:ring-2 focus:ring-emerald-600">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-2 bg-emerald-50 border border-emerald-200 p-3 rounded-xl">
+                            <input type="checkbox" id="setting-apply-all-members" checked class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                            <label for="setting-apply-all-members" class="text-xs font-semibold text-emerald-900 cursor-pointer">
+                                Kemas kini kadar yuran bulanan baharu ini terus kepada semua <strong>ahli sedia ada</strong> dalam senarai.
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Bahagian 1: Akaun Bank & QR -->
+                    <div class="space-y-4 pb-6 border-b border-slate-200">
+                        <div class="border-b border-slate-100 pb-3">
+                            <span class="text-xs font-bold text-amber-600 uppercase">Maklumat Pembayaran Gelanggang</span>
+                            <h3 class="font-extrabold text-lg text-slate-900">Tetapan Kod QR DuitNow & Nombor Akaun</h3>
+                            <p class="text-xs text-slate-500">Maklumat ini akan dipaparkan kepada ibu bapa semasa mereka membayar yuran.</p>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Bank</label>
+                                <input type="text" id="setting-bank-name" placeholder="Contoh: Maybank Islamic" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Pemegang Akaun</label>
+                                <input type="text" id="setting-acc-holder" placeholder="Contoh: Akademi Gayong Nur Insani" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombor Akaun Bank</label>
+                                <input type="text" id="setting-acc-number" placeholder="Contoh: 562106548892" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-mono font-bold outline-none focus:ring-2 focus:ring-blue-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Muat Naik Gambar Kod QR DuitNow Sebenar (Opsional)</label>
+                                <input type="file" id="setting-qr-file" accept="image/*" onchange="previewSettingQR(event)" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-700 file:text-white hover:file:bg-blue-800 border border-slate-200 rounded-xl p-1.5 cursor-pointer">
+                            </div>
+
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center gap-4">
+                                <div id="setting-qr-preview-box" class="w-24 h-24 bg-white rounded-xl border-2 border-pink-500 flex items-center justify-center p-1.5 shrink-0 overflow-hidden">
+                                    <!-- Populated by JS -->
+                                </div>
+                                <div class="text-xs space-y-1">
+                                    <p class="font-bold text-slate-800">Paparan Kod QR Semasa</p>
+                                    <p class="text-slate-500">Muat naik gambar Kod QR DuitNow / Bank anda supaya ibu bapa boleh terus mengimbasnya.</p>
+                                    <button type="button" onclick="clearCustomQR()" class="text-rose-600 font-bold hover:underline pt-1">Guna QR Lalai</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bahagian 2: Sambungan Pangkalan Data Google Sheets -->
+                    <div class="space-y-4 pb-6 border-b border-slate-200">
+                        <div>
+                            <span class="text-xs font-bold text-emerald-600 uppercase flex items-center"><i class="fa-solid fa-table mr-1.5 text-sm"></i>Pangkalan Data Berpusat Google Sheets</span>
+                            <h3 class="font-extrabold text-lg text-slate-900">Sambungan Senarai Ahli & Rekod Pembayaran (Google Sheets)</h3>
+                            <p class="text-xs text-slate-500">Tampal <strong>Web App URL</strong> daripada Google Apps Script anda untuk menarik senarai ahli dari tab <code class="bg-slate-100 px-1 rounded">Senarai_Ahli</code> dan menyimpan semua rekod bayaran ke tab <code class="bg-slate-100 px-1 rounded">Rekod_Pembayaran</code> secara automatik.</p>
+                        </div>
+
+                        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 text-xs text-emerald-950 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <p class="font-bold"><i class="fa-solid fa-code mr-1"></i> Kod Google Apps Script (Extensions → Apps Script):</p>
+                                <button type="button" onclick="copyAppsScriptCode()" class="px-2.5 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] transition">
+                                    <i class="fa-regular fa-copy mr-1"></i> Salin Kod Script
+                                </button>
+                            </div>
+                            <p class="text-emerald-800">Tampal kod ini di dalam <strong>Apps Script</strong> Google Sheets anda, kemudian klik <strong>Deploy → New deployment → Web app → Who has access: Anyone</strong> dan tampal pautan URL di bawah:</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Google Sheets Web App URL</label>
+                            <input type="url" id="setting-gsheet-url" placeholder="https://script.google.com/macros/s/AKfycbx.../exec" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono outline-none focus:ring-2 focus:ring-emerald-600">
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <button type="button" onclick="syncMembersFromGoogleSheets()" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition flex items-center justify-center">
+                                <i class="fa-solid fa-cloud-arrow-down mr-1.5"></i> Uji & Tarik Senarai Ahli Dari Google Sheets
+                            </button>
+                            <button type="button" onclick="pushAllMembersToGoogleSheets()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow transition flex items-center justify-center">
+                                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Hantar Ahli Semasa Ke Google Sheets
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bahagian 3: Sambungan Notifikasi & Resit ke Telegram -->
+                    <div class="space-y-4">
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <span class="text-xs font-bold text-sky-600 uppercase flex items-center"><i class="fa-brands fa-telegram mr-1.5 text-sm"></i>Penghantaran Automatik Telegram</span>
+                                <h3 class="font-extrabold text-lg text-slate-900">Hantar Gambar/PDF Resit Terus Ke Telegram</h3>
+                                <p class="text-xs text-slate-500">Setiap kali ibu bapa memuat naik bukti bayaran, gambar/PDF resit beserta maklumat pembayar akan terus masuk ke Telegram Cikgu Bujal.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Telegram Bot Token</label>
+                                <input type="text" id="setting-tg-token" placeholder="Contoh: 9044186434:AAHQTkpV3mt6vOsg681WzgyJYfI7Kxbv1Ag" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono outline-none focus:ring-2 focus:ring-sky-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Telegram Chat ID (Cikgu Bujal / Grup)</label>
+                                <div class="flex gap-1.5">
+                                    <input type="text" id="setting-tg-chatid" placeholder="34633133" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs font-mono outline-none focus:ring-2 focus:ring-sky-500">
+                                    <button type="button" onclick="autoDetectTelegramChatId()" id="btn-detect-tg-id" class="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs shrink-0 shadow-sm transition flex items-center" title="Kesan Chat ID secara automatik dari mesej terakhir bot">
+                                        <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Kesan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tg-detected-list-box" class="hidden p-3 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2">
+                            <p class="text-xs font-bold text-emerald-900"><i class="fa-solid fa-check-circle mr-1"></i> Akaun / Grup Telegram Dikesan (Klik untuk pilih):</p>
+                            <div id="tg-detected-list" class="flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-2.5 pt-2">
+                            <button type="button" onclick="testTelegramConnection()" class="sm:w-1/3 py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs shadow transition flex items-center justify-center">
+                                <i class="fa-brands fa-telegram text-base mr-1.5"></i> Uji Hantar Telegram
+                            </button>
+                            <button type="button" onclick="saveGelanggangSettings()" class="sm:w-2/3 py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm shadow transition flex items-center justify-center">
+                                <i class="fa-solid fa-floppy-disk mr-2"></i> Simpan Semua Tetapan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 1: BAYAR YURAN & MUAT NAIK BUKTI RESIT (GAMBAR / PDF)           -->
+    <!-- ===================================================================== -->
+    <div id="payment-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in my-auto">
+            <div class="bg-slate-900 px-6 py-4 flex justify-between items-center text-white">
+                <h3 class="font-extrabold text-base"><i class="fa-solid fa-qrcode text-amber-400 mr-2"></i>Bayar Yuran & Muat Naik Resit</h3>
+                <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form onsubmit="submitPaymentReceipt(event)" class="p-6 space-y-4">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
+                    <div id="payment-modal-qr-box" class="w-28 h-28 bg-white rounded-xl border-2 border-pink-500 flex flex-col items-center justify-center p-1.5 shrink-0 shadow-sm overflow-hidden">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="text-xs space-y-2 w-full text-center sm:text-left">
+                        <div>
+                            <p class="font-extrabold text-slate-800 uppercase text-[11px]">Akaun Rasmi Akademi:</p>
+                            <p id="payment-modal-bank-name" class="text-slate-700 font-bold">Maybank Islamic</p>
+                            <p id="payment-modal-acc-holder" class="text-slate-600 font-medium">Akademi Gayong Nur Insani</p>
+                        </div>
+                        <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-sm">
+                            <span id="acc-number-text" class="font-mono font-extrabold text-slate-900 text-sm">562106548892</span>
+                            <button type="button" onclick="copyAccNumber()" class="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center bg-blue-50 px-2.5 py-1 rounded-lg">
+                                <i class="fa-regular fa-copy mr-1"></i> Salin
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="block text-xs font-bold text-slate-700 uppercase">Pilih Bulan Yuran (Boleh Pilih Lebih Dari 1):</label>
+                        <span id="selected-total-badge" class="text-xs font-extrabold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">Jumlah: RM 30.00</span>
+                    </div>
+                    <div id="payment-months-checkboxes" class="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-36 overflow-y-auto p-2 bg-slate-50 rounded-xl border border-slate-200">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">No. Rujukan Transaksi Bank</label>
+                    <input type="text" id="payment-ref-input" required placeholder="Contoh: M2U987654321"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Muat Naik Bukti Resit (Gambar JPG/PNG atau PDF)</label>
+                    <input type="file" id="payment-file-input" accept="image/*,application/pdf" required onchange="previewReceiptUpload(event)"
+                        class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-700 file:text-white hover:file:bg-blue-800 border border-slate-200 rounded-xl p-1.5 cursor-pointer">
+                    
+                    <div id="upload-preview-wrapper" class="hidden mt-3 p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-center">
+                        <p class="text-[11px] font-bold text-slate-500 mb-1.5">Pratonton Fail Resit Dipilih:</p>
+                        <img id="upload-preview-img" src="" alt="Pratonton Resit" class="max-h-40 max-w-full mx-auto rounded-lg shadow-sm border border-slate-200 object-contain">
+                        <div id="upload-preview-pdf" class="hidden py-3 text-rose-600 font-bold text-xs">
+                            <i class="fa-solid fa-file-pdf text-2xl mb-1 block"></i>
+                            <span id="upload-preview-pdf-name" class="break-all">dokumen.pdf</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closePaymentModal()" class="flex-1 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold text-sm hover:bg-slate-50">Batal</button>
+                    <button type="submit" id="btn-submit-receipt" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow flex items-center justify-center">
+                        <i class="fa-solid fa-paper-plane mr-1.5"></i> Hantar Bukti Resit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 2: RESIT RASMI BOLEH CETAK / SIMPAN PDF (UNTUK IBU BAPA)        -->
+    <!-- ===================================================================== -->
+    <div id="receipt-modal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="max-w-lg w-full space-y-4 my-auto animate-fade-in">
+            <div id="receipt-printable-area" class="bg-white rounded-2xl shadow-2xl border-2 border-slate-900 p-6 sm:p-8 relative overflow-hidden">
+                <div class="absolute right-6 bottom-24 border-4 border-emerald-500/30 text-emerald-600/30 font-extrabold text-2xl uppercase px-4 py-1 rounded-xl -rotate-12 pointer-events-none select-none">
+                    TELAH DISAHKAN
+                </div>
+
+                <div class="flex justify-between items-start border-b-2 border-slate-900 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-11 h-11 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center text-xl font-extrabold">
+                            <i class="fa-solid fa-khanda"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-sm sm:text-base text-slate-900 uppercase">AKADEMI GAYONG NUR INSANI</h3>
+                            <p class="text-xs text-slate-500">Johor Bahru • Gurulatih: Cikgu Bujal</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 text-white text-xs font-extrabold tracking-wider uppercase">RESIT RASMI</span>
+                        <p id="rec-serial" class="text-xs font-mono font-bold text-slate-700 mt-1">RESIT-2026-0001</p>
+                    </div>
+                </div>
+
+                <div class="py-4 border-b border-slate-200 grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                        <p class="text-slate-400 font-semibold uppercase">Diterima Daripada:</p>
+                        <p id="rec-member-name" class="font-extrabold text-slate-900 text-sm mt-0.5">Ahmad Zaki bin Yusof</p>
+                        <p id="rec-member-ic" class="text-slate-600 mt-0.5">No. KP: 120514035521</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-slate-400 font-semibold uppercase">Tarikh Disahkan:</p>
+                        <p id="rec-date" class="font-bold text-slate-800 mt-0.5">15/11/2026</p>
+                        <p class="text-slate-400 font-semibold uppercase mt-2">Yuran Pendaftaran:</p>
+                        <p id="rec-reg-fee" class="font-bold text-emerald-700">RM 20.00 (Lunas)</p>
+                    </div>
+                </div>
+
+                <div class="py-4">
+                    <table class="w-full text-xs">
+                        <thead>
+                            <tr class="border-b border-slate-300 text-slate-500 uppercase">
+                                <th class="py-2 text-left">Keterangan Bayaran</th>
+                                <th class="py-2 text-left">Kaedah / Rujukan</th>
+                                <th class="py-2 text-right">Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-slate-100">
+                                <td class="py-3 font-bold text-slate-900">
+                                    Yuran Bulanan Silat (<span id="rec-month">JANUARI 2026</span>)
+                                </td>
+                                <td class="py-3 text-slate-600">
+                                    <span id="rec-method">Online Transfer</span><br>
+                                    <span id="rec-ref" class="font-mono text-[11px]">Ref: M2U88412</span>
+                                </td>
+                                <td id="rec-amount" class="py-3 text-right font-extrabold text-slate-900 text-sm">RM 30.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex justify-between items-center">
+                    <span class="text-xs font-extrabold text-slate-700 uppercase">Jumlah Dibayar</span>
+                    <span id="rec-total" class="text-lg font-extrabold text-emerald-700">RM 30.00</span>
+                </div>
+
+                <div class="mt-5 pt-3 border-t border-dashed border-slate-300 flex justify-between items-center text-[11px] text-slate-500">
+                    <span>Resit janaan komputer. Disahkan oleh Cikgu Bujal.</span>
+                    <button id="rec-view-proof-btn" type="button" class="no-print text-blue-600 font-bold hover:underline">
+                        <i class="fa-solid fa-image mr-1"></i> Lihat Bukti Resit Asal
+                    </button>
+                </div>
+            </div>
+
+            <div class="no-print flex gap-3">
+                <button onclick="closeReceiptModal()" class="flex-1 py-3 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-bold text-sm shadow">
+                    Tutup
+                </button>
+                <button onclick="window.print()" class="flex-1 py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm shadow flex items-center justify-center">
+                    <i class="fa-solid fa-print mr-2"></i> Cetak / Simpan PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 3: KEMAS KINI STATUS OLEH GURULATIH (MATRIX CLICK)              -->
+    <!-- ===================================================================== -->
+    <div id="admin-edit-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in">
+            <div class="bg-slate-900 px-5 py-4 flex justify-between items-center text-white">
+                <h3 class="font-extrabold text-sm">Kemas Kini Status Yuran</h3>
+                <button onclick="closeAdminEditModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-5 space-y-4">
+                <div>
+                    <p id="edit-modal-member-name" class="font-extrabold text-slate-900 text-base">Nama Ahli</p>
+                    <p id="edit-modal-month" class="text-xs font-bold text-blue-600 uppercase mt-0.5">BULAN: JANUARI 2026</p>
+                </div>
+
+                <div class="space-y-2">
+                    <button onclick="setPaymentStatus('paid', 'Tunai')" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-between transition">
+                        <span><i class="fa-solid fa-money-bill-wave mr-2"></i>Sahkan Bayaran (Tunai)</span>
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+                    <button onclick="setPaymentStatus('paid', 'Online Transfer')" class="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-between transition">
+                        <span><i class="fa-solid fa-building-columns mr-2"></i>Sahkan Bayaran (Online)</span>
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+                    <button onclick="setPaymentStatus('unpaid', '')" class="w-full py-2.5 px-4 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-800 font-bold text-xs flex items-center justify-between transition">
+                        <span><i class="fa-solid fa-xmark mr-2"></i>Tandakan Belum Bayar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 4: PAPARAN BUKTI RESIT (VIEW IMAGE / PDF BY GURULATIH)          -->
+    <!-- ===================================================================== -->
+    <div id="proof-viewer-modal" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in">
+            <div class="bg-slate-900 px-5 py-4 flex justify-between items-center text-white">
+                <div>
+                    <h3 class="font-extrabold text-sm"><i class="fa-solid fa-file-invoice text-amber-400 mr-2"></i>Bukti Pembayaran Ahli</h3>
+                    <p id="proof-modal-subtitle" class="text-[11px] text-slate-300 mt-0.5">Ahmad Zaki • Bulan Okt 2026</p>
+                </div>
+                <button onclick="closeProofModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-5 space-y-4">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs flex justify-between items-center">
+                    <div>
+                        <span class="text-slate-400 block">No. Rujukan:</span>
+                        <span id="proof-modal-ref" class="font-mono font-bold text-slate-900">DNQR7700</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-slate-400 block">Tarikh Muat Naik:</span>
+                        <span id="proof-modal-date" class="font-bold text-slate-800">15/11/2026</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-100 rounded-xl border border-slate-200 p-2 flex flex-col items-center justify-center min-h-[260px] max-h-[380px] overflow-auto">
+                    <img id="proof-modal-img" src="" alt="Bukti Resit" class="max-w-full max-h-[340px] rounded-lg shadow object-contain">
+                    <div id="proof-modal-pdf-box" class="hidden text-center p-6 space-y-3">
+                        <i class="fa-solid fa-file-pdf text-5xl text-rose-600"></i>
+                        <p id="proof-modal-pdf-title" class="text-sm font-bold text-slate-800">dokumen_resit.pdf</p>
+                        <a id="proof-modal-pdf-link" href="#" download="resit_bayaran.pdf" class="inline-flex items-center px-4 py-2 rounded-xl bg-rose-600 text-white text-xs font-bold shadow hover:bg-rose-700">
+                            <i class="fa-solid fa-download mr-1.5"></i> Muat Turun Fail PDF
+                        </a>
+                    </div>
+                </div>
+
+                <div id="proof-modal-actions" class="flex gap-3 pt-1">
+                    <button id="proof-modal-reject-btn" class="flex-1 py-2.5 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 font-bold text-xs">
+                        Tolak Resit
+                    </button>
+                    <button id="proof-modal-approve-btn" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow flex items-center justify-center">
+                        <i class="fa-solid fa-check mr-1.5"></i> Sahkan Resit Ini
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-box" class="hidden fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-xl border border-slate-700 flex items-center space-x-3 animate-fade-in">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <p id="toast-msg" class="text-xs sm:text-sm font-semibold">Berjaya dikemas kini!</p>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT LOGIC & APPLICATION STATE                                  -->
+    <!-- ===================================================================== -->
+    <script>
+        const MONTHS = ['JAN', 'FEB', 'MAC', 'APR', 'MEI', 'JUN', 'JUL', 'OGO', 'SEP', 'OKT', 'NOV', 'DIS'];
+        const FULL_MONTHS = ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'];
+        const STORAGE_KEY = 'akademi_gayong_nur_insani_v1';
+        const SETTINGS_KEY = 'akademi_gayong_nur_insani_settings_v1';
+        const GELANGGANG_RASMI = 'Akademi Gayong Nur Insani (Johor Bahru)';
+
+        // Kod Google Apps Script untuk disalin terus oleh Cikgu Bujal
+        const GOOGLE_APPS_SCRIPT_TEMPLATE = `function doGet(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var action = e.parameter.action;
+
+  if (action == "getMembers") {
+    var sheet = ss.getSheetByName("Senarai_Ahli");
+    if (!sheet) return ContentService.createTextOutput(JSON.stringify([])).setMimeType(ContentService.MimeType.JSON);
+    var data = sheet.getDataRange().getValues();
+    if (data.length <= 1) return ContentService.createTextOutput(JSON.stringify([])).setMimeType(ContentService.MimeType.JSON);
+    var headers = data[0];
+    var result = [];
+    for (var i = 1; i < data.length; i++) {
+      var obj = {};
+      for (var j = 0; j < headers.length; j++) {
+        obj[String(headers[j]).trim()] = data[i][j];
+      }
+      if (obj.Nama_Penuh || obj.ID_Ahli) result.push(obj);
+    }
+    return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var payload = JSON.parse(e.postData.contents);
+
+  if (payload.type == "payment") {
+    var paySheet = ss.getSheetByName("Rekod_Pembayaran");
+    if (paySheet) {
+      paySheet.appendRow([
+        new Date().toLocaleString("ms-MY"),
+        payload.id,
+        payload.name,
+        payload.months,
+        payload.amount,
+        payload.ref,
+        payload.method,
+        payload.status
+      ]);
+    }
+    return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  if (payload.type == "new_member") {
+    var memSheet = ss.getSheetByName("Senarai_Ahli");
+    if (memSheet) {
+      memSheet.appendRow([
+        payload.id,
+        payload.name,
+        "'" + payload.ic,
+        "'" + payload.phone,
+        payload.belt,
+        payload.category,
+        payload.fee
+      ]);
+    }
+    return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  if (payload.type == "sync_all_members") {
+    var memSheet = ss.getSheetByName("Senarai_Ahli");
+    if (memSheet && Array.isArray(payload.members)) {
+      var existing = memSheet.getDataRange().getValues();
+      var existingIds = {};
+      for (var i = 1; i < existing.length; i++) {
+        existingIds[String(existing[i][0]).trim()] = true;
+      }
+      payload.members.forEach(function(m) {
+        if (!existingIds[String(m.id).trim()]) {
+          memSheet.appendRow([
+            m.id,
+            m.name,
+            "'" + m.ic,
+            "'" + m.phone,
+            m.belt,
+            m.category,
+            m.fee
+          ]);
+        }
+      });
+    }
+    return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
+  }
+}`;
+
+        function copyAppsScriptCode() {
+            navigator.clipboard.writeText(GOOGLE_APPS_SCRIPT_TEMPLATE).then(() => {
+                showToast('Kod Google Apps Script berjaya disalin! Tampal di dalam Extensions → Apps Script.', 'success');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = GOOGLE_APPS_SCRIPT_TEMPLATE;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('Kod Google Apps Script berjaya disalin!', 'success');
+            });
+        }
+
+        function createSampleReceiptSVG(name, monthName, amount, ref) {
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="420" height="520" viewBox="0 0 420 520">
+                <rect width="420" height="520" fill="#ffffff"/>
+                <rect x="0" y="0" width="420" height="75" fill="#fbbf24"/>
+                <text x="210" y="36" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0f172a" text-anchor="middle">DUITNOW QR / MAYBANK2U</text>
+                <text x="210" y="58" font-family="Arial, sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">Resit Transaksi Perbankan Dalam Talian</text>
+                <circle cx="210" cy="120" r="24" fill="#10b981"/>
+                <text x="210" y="128" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle">✓</text>
+                <text x="210" y="165" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#059669" text-anchor="middle">TRANSAKSI BERJAYA</text>
+                <text x="210" y="198" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#0f172a" text-anchor="middle">RM ${amount}.00</text>
+                <line x1="30" y1="220" x2="390" y2="220" stroke="#e2e8f0" stroke-width="2"/>
+                <text x="35" y="255" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Penerima:</text>
+                <text x="385" y="255" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="end">AKADEMI GAYONG NUR INSANI</text>
+                <text x="35" y="290" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Nama Ahli:</text>
+                <text x="385" y="290" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="end">${name}</text>
+                <text x="35" y="325" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Keterangan:</text>
+                <text x="385" y="325" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="end">Yuran Silat ${monthName} 2026</text>
+                <text x="35" y="360" font-family="Arial, sans-serif" font-size="12" fill="#64748b">No. Rujukan:</text>
+                <text x="385" y="360" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2563eb" text-anchor="end">${ref}</text>
+                <text x="35" y="395" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Tarikh &amp; Masa:</text>
+                <text x="385" y="395" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="end">15/11/2026 09:42 PM</text>
+                <rect x="30" y="430" width="360" height="55" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+                <text x="210" y="462" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">Bukti resit digital untuk semakan Cikgu Bujal</text>
+            </svg>`;
+            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        const DEFAULT_QR_SVG = `
+            <svg viewBox="0 0 100 100" class="w-full h-full text-slate-900 fill-current">
+                <rect x="10" y="10" width="25" height="25" fill="none" stroke="currentColor" stroke-width="5"/>
+                <rect x="17" y="17" width="11" height="11"/>
+                <rect x="65" y="10" width="25" height="25" fill="none" stroke="currentColor" stroke-width="5"/>
+                <rect x="72" y="17" width="11" height="11"/>
+                <rect x="10" y="65" width="25" height="25" fill="none" stroke="currentColor" stroke-width="5"/>
+                <rect x="17" y="72" width="11" height="11"/>
+                <rect x="45" y="12" width="10" height="10"/>
+                <rect x="45" y="30" width="10" height="10"/>
+                <rect x="12" y="45" width="10" height="10"/>
+                <rect x="30" y="45" width="10" height="10"/>
+                <rect x="65" y="45" width="10" height="10"/>
+                <rect x="80" y="45" width="10" height="10"/>
+                <rect x="45" y="65" width="10" height="10"/>
+                <rect x="65" y="65" width="25" height="10"/>
+                <rect x="45" y="80" width="15" height="10"/>
+                <rect x="70" y="80" width="20" height="10"/>
+                <circle cx="50" cy="50" r="9" fill="#ec4899"/>
+            </svg>
+        `;
+
+        function generate20SampleMembers() {
+            const rawList = [
+                { id: 'AHLI001', name: 'Ahmad Zaki bin Yusof', ic: '120514035521', phone: '013-9123456', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'pending_oct' },
+                { id: 'AHLI002', name: 'Nur Aisyah binti Kamal', ic: '110822036614', phone: '019-9876543', belt: 'Bengkung Merah', category: 'school', fee: 30, pattern: 'pending_nov' },
+                { id: 'AHLI003', name: 'Muhammad Danish bin Razak', ic: '130219038890', phone: '012-9001122', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'arrears_2' },
+                { id: 'AHLI004', name: 'Siti Sarah binti Abdullah', ic: '101105031122', phone: '017-9334455', belt: 'Bengkung Kuning', category: 'school', fee: 30, pattern: 'pending_oct' },
+                { id: 'AHLI005', name: 'Muhammad Hafiz bin Ismail', ic: '090412034411', phone: '014-8112233', belt: 'Bengkung Merah', category: 'school', fee: 30, pattern: 'full_paid' },
+                { id: 'AHLI006', name: 'Nurul Izzah binti Che Hassan', ic: '140728037788', phone: '011-12345678', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'pending_sep' },
+                { id: 'AHLI007', name: 'Wan Muhammad Irfan bin Wan Azmi', ic: '120903032299', phone: '013-9556677', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'full_paid' },
+                { id: 'AHLI008', name: 'Aina Sofea binti Baharudin', ic: '131215039900', phone: '016-9443322', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'pending_nov' },
+                { id: 'AHLI009', name: 'Muhammad Luqman Hakim bin Zulkifli', ic: '110327035544', phone: '018-9778899', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'arrears_1' },
+                { id: 'AHLI010', name: 'Puteri Balqis binti Mohd Noor', ic: '150110036677', phone: '019-9221100', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'mid_join_paid' },
+                { id: 'AHLI011', name: 'Ahmad Syafiq bin Roslan', ic: '050618031199', phone: '012-9887766', belt: 'Bengkung Kuning', category: 'adult', fee: 50, pattern: 'full_paid' },
+                { id: 'AHLI012', name: 'Nur Damia Qistina binti Zamri', ic: '120814033311', phone: '017-9665544', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'arrears_2' },
+                { id: 'AHLI013', name: 'Muhammad Faris bin Kamarudin', ic: '100921038822', phone: '013-9012345', belt: 'Bengkung Merah', category: 'school', fee: 30, pattern: 'full_paid' },
+                { id: 'AHLI014', name: 'Siti Khadijah binti Omar', ic: '130502034499', phone: '014-9321654', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'mid_join_paid' },
+                { id: 'AHLI015', name: 'Nik Muhammad Harith bin Nik Mat', ic: '111130037711', phone: '019-9654321', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'full_paid' },
+                { id: 'AHLI016', name: 'Nur Batrisyia binti Hamzah', ic: '140419032244', phone: '016-9119988', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'arrears_1' },
+                { id: 'AHLI017', name: 'Muhammad Amirul Mukminin bin Saiful', ic: '040825035588', phone: '011-23456789', belt: 'Bengkung Kuning', category: 'adult', fee: 50, pattern: 'full_paid' },
+                { id: 'AHLI018', name: 'Anis Suraya binti Alias', ic: '120211036633', phone: '018-9445566', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'full_paid' },
+                { id: 'AHLI019', name: 'Muhammad Alif Imran bin Fauzi', ic: '150607039955', phone: '013-9770011', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'mid_join_paid' },
+                { id: 'AHLI020', name: 'Nurul Ain Mardhiah binti Sulaiman', ic: '100129031166', phone: '017-9228844', belt: 'Bengkung Merah', category: 'school', fee: 30, pattern: 'full_paid' }
+            ];
+
+            let serialCounter = 101;
+            return rawList.map((item, idx) => {
+                const payments = {};
+                MONTHS.forEach((m, mIdx) => {
+                    if (mIdx === 11) {
+                        payments[m] = { status: 'not_started' };
+                        return;
+                    }
+                    if (item.pattern === 'mid_join_paid' && mIdx < 5) {
+                        payments[m] = { status: 'not_started' };
+                        return;
+                    }
+
+                    let status = 'paid';
+                    let method = (idx + mIdx) % 3 === 0 ? 'Tunai' : 'Online Transfer';
+                    let ref = method === 'Tunai' ? 'TUNAI' : `M2U${8100 + serialCounter}`;
+                    let date = `05/${String(mIdx + 1).padStart(2, '0')}/2026`;
+                    let receiptNo = `RESIT-2026-${String(serialCounter++).padStart(4, '0')}`;
+                    let receiptFile = null;
+                    let receiptDataUrl = null;
+                    let receiptType = null;
+
+                    if (item.pattern === 'pending_oct' && mIdx === 9) {
+                        status = 'pending';
+                        method = 'Online Transfer';
+                        ref = `DNQR${7700 + idx}`;
+                        date = '15/11/2026';
+                        receiptNo = '';
+                        receiptFile = `resit_okt_${item.id.toLowerCase()}.jpg`;
+                        receiptType = 'image/svg+xml';
+                        receiptDataUrl = createSampleReceiptSVG(item.name, 'Oktober', item.fee, ref);
+                    } else if (item.pattern === 'pending_nov' && mIdx === 10) {
+                        status = 'pending';
+                        method = 'Online Transfer';
+                        ref = `DNQR${7700 + idx}`;
+                        date = '15/11/2026';
+                        receiptNo = '';
+                        receiptFile = `resit_nov_${item.id.toLowerCase()}.jpg`;
+                        receiptType = 'image/svg+xml';
+                        receiptDataUrl = createSampleReceiptSVG(item.name, 'November', item.fee, ref);
+                    } else if (item.pattern === 'pending_sep' && mIdx === 8) {
+                        status = 'pending';
+                        method = 'Online Transfer';
+                        ref = `DNQR${7700 + idx}`;
+                        date = '15/11/2026';
+                        receiptNo = '';
+                        receiptFile = `resit_sep_${item.id.toLowerCase()}.jpg`;
+                        receiptType = 'image/svg+xml';
+                        receiptDataUrl = createSampleReceiptSVG(item.name, 'September', item.fee, ref);
+                    } else if (item.pattern === 'pending_sep' && mIdx > 8) {
+                        status = 'unpaid';
+                        method = ''; ref = ''; date = ''; receiptNo = '';
+                    } else if (item.pattern === 'arrears_2' && (mIdx === 9 || mIdx === 10)) {
+                        status = 'unpaid';
+                        method = ''; ref = ''; date = ''; receiptNo = '';
+                    } else if (item.pattern === 'arrears_1' && mIdx === 10) {
+                        status = 'unpaid';
+                        method = ''; ref = ''; date = ''; receiptNo = '';
+                    }
+
+                    payments[m] = { status, method, ref, date, receiptNo, receiptFile, receiptDataUrl, receiptType };
+                });
+
+                return {
+                    id: item.id,
+                    name: item.name,
+                    ic: item.ic,
+                    phone: item.phone,
+                    gelanggang: GELANGGANG_RASMI,
+                    belt: item.belt,
+                    category: item.category || (item.fee >= 50 ? 'adult' : 'school'),
+                    fee: item.fee,
+                    payments
+                };
+            });
+        }
+
+        // Load Settings & Members
+        let gelanggangSettings = {
+            regFee: 20,
+            monthlyFeeSchool: 30,
+            monthlyFeeAdult: 50,
+            bankName: 'Maybank Islamic',
+            accHolder: 'Akademi Gayong Nur Insani',
+            accNumber: '562106548892',
+            qrImageData: null,
+            tgBotToken: '9044186434:AAHQTkpV3mt6vOsg681WzgyJYfI7Kxbv1Ag',
+            tgChatId: '34633133',
+            googleSheetUrl: ''
+        };
+
+        try {
+            const savedSettings = localStorage.getItem(SETTINGS_KEY);
+            if (savedSettings) gelanggangSettings = { ...gelanggangSettings, ...JSON.parse(savedSettings) };
+        } catch (e) {}
+
+        let members = [];
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            members = saved ? JSON.parse(saved) : generate20SampleMembers();
+        } catch (e) {
+            members = generate20SampleMembers();
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+            } catch (e) {}
+        }
+
+        function saveSettingsToStorage() {
+            try {
+                localStorage.setItem(SETTINGS_KEY, JSON.stringify(gelanggangSettings));
+            } catch (e) {}
+        }
+
+        function applySettingsToUI() {
+            const regFee = Number(gelanggangSettings.regFee ?? 20);
+            const feeSchool = Number(gelanggangSettings.monthlyFeeSchool ?? 30);
+            const feeAdult = Number(gelanggangSettings.monthlyFeeAdult ?? 50);
+
+            document.getElementById('info-tab-reg-fee').textContent = `RM ${regFee.toFixed(2)} (Sekali Sahaja)`;
+            document.getElementById('info-tab-monthly-fee').textContent = `RM ${feeSchool} (Sekolah) / RM ${feeAdult} (Dewasa)`;
+            document.getElementById('form-reg-fee-display').textContent = `RM ${regFee.toFixed(2)}`;
+
+            const newFeeSelect = document.getElementById('new-member-fee');
+            if (newFeeSelect) {
+                newFeeSelect.innerHTML = `
+                    <option value="school">RM ${feeSchool.toFixed(2)} (Sekolah)</option>
+                    <option value="adult">RM ${feeAdult.toFixed(2)} (Dewasa)</option>
+                `;
+            }
+
+            document.getElementById('setting-reg-fee').value = regFee;
+            document.getElementById('setting-fee-school').value = feeSchool;
+            document.getElementById('setting-fee-adult').value = feeAdult;
+
+            document.getElementById('info-tab-bank-name').textContent = gelanggangSettings.bankName;
+            document.getElementById('info-tab-acc-holder').textContent = gelanggangSettings.accHolder;
+            document.getElementById('info-tab-acc-number').textContent = gelanggangSettings.accNumber;
+
+            document.getElementById('payment-modal-bank-name').textContent = gelanggangSettings.bankName;
+            document.getElementById('payment-modal-acc-holder').textContent = gelanggangSettings.accHolder;
+            document.getElementById('acc-number-text').textContent = gelanggangSettings.accNumber;
+
+            document.getElementById('setting-bank-name').value = gelanggangSettings.bankName;
+            document.getElementById('setting-acc-holder').value = gelanggangSettings.accHolder;
+            document.getElementById('setting-acc-number').value = gelanggangSettings.accNumber;
+            document.getElementById('setting-tg-token').value = gelanggangSettings.tgBotToken || '';
+            document.getElementById('setting-tg-chatid').value = gelanggangSettings.tgChatId || '';
+            document.getElementById('setting-gsheet-url').value = gelanggangSettings.googleSheetUrl || '';
+
+            const hasGSheet = Boolean((gelanggangSettings.googleSheetUrl || '').trim());
+            const gsPill = document.getElementById('gsheet-status-pill');
+            const gsHeaderBtn = document.getElementById('btn-header-sync-gs');
+            if (hasGSheet) {
+                gsPill.classList.remove('hidden');
+                gsHeaderBtn.classList.remove('hidden');
+            } else {
+                gsPill.classList.add('hidden');
+                gsHeaderBtn.classList.add('hidden');
+            }
+
+            const qrHtml = gelanggangSettings.qrImageData
+                ? `<img src="${gelanggangSettings.qrImageData}" alt="Kod QR DuitNow" class="w-full h-full object-contain">`
+                : DEFAULT_QR_SVG;
+
+            document.getElementById('info-tab-qr-container').innerHTML = qrHtml;
+            document.getElementById('payment-modal-qr-box').innerHTML = qrHtml;
+            document.getElementById('setting-qr-preview-box').innerHTML = qrHtml;
+        }
+
+        // --- GOOGLE SHEETS INTEGRATION FUNCTIONS ---
+        async function postToGoogleSheets(payload) {
+            const url = (gelanggangSettings.googleSheetUrl || '').trim();
+            if (!url) return false;
+
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        async function syncMembersFromGoogleSheets() {
+            const inputUrl = document.getElementById('setting-gsheet-url') ? document.getElementById('setting-gsheet-url').value.trim() : '';
+            const url = inputUrl || (gelanggangSettings.googleSheetUrl || '').trim();
+
+            if (!url) {
+                showToast('Sila tampal Google Sheets Web App URL terlebih dahulu.', 'error');
+                return;
+            }
+
+            showToast('Sedang menarik senarai ahli dari Google Sheets...', 'info');
+            try {
+                const separator = url.includes('?') ? '&' : '?';
+                const res = await fetch(`${url}${separator}action=getMembers`);
+                const rows = await res.json();
+
+                if (!Array.isArray(rows)) {
+                    showToast('Format data Google Sheets tidak sah. Sila pastikan skrip Apps Script telah diterbitkan (Deploy).', 'error');
+                    return;
+                }
+
+                if (rows.length === 0) {
+                    showToast('Tab "Senarai_Ahli" di Google Sheets masih kosong. Anda boleh tekan "Hantar Ahli Semasa Ke Google Sheets".', 'info');
+                    return;
+                }
+
+                let importedCount = 0;
+                const defaultSchoolFee = Number(gelanggangSettings.monthlyFeeSchool ?? 30);
+
+                rows.forEach((row, idx) => {
+                    const id = String(row.ID_Ahli || `AHLI${String(members.length + idx + 1).padStart(3, '0')}`).trim();
+                    const name = String(row.Nama_Penuh || '').trim();
+                    const ic = String(row.No_KP || '').replace(/[^0-9]/g, '').trim();
+                    const phone = String(row.No_Telefon || '-').trim();
+                    const belt = String(row.Bengkung || 'Bengkung Putih').trim();
+                    const category = String(row.Kategori || 'school').trim();
+                    const fee = Number(row.Yuran_Bulanan) || defaultSchoolFee;
+
+                    if (!name) return;
+
+                    const existing = members.find(m => m.id === id || (ic && m.ic === ic));
+                    if (existing) {
+                        existing.name = name;
+                        if (ic) existing.ic = ic;
+                        existing.phone = phone;
+                        existing.belt = belt;
+                        existing.category = category;
+                        existing.fee = fee;
+                    } else {
+                        const payments = {};
+                        MONTHS.forEach((m, mIdx) => {
+                            payments[m] = mIdx === 10 ? { status: 'unpaid' } : { status: 'not_started' };
+                        });
+                        members.push({
+                            id,
+                            name,
+                            ic: ic || `00000000${String(idx + 1).padStart(4, '0')}`,
+                            phone,
+                            gelanggang: GELANGGANG_RASMI,
+                            belt,
+                            category,
+                            fee,
+                            payments
+                        });
+                        importedCount++;
+                    }
+                });
+
+                saveToStorage();
+                updateAllAdminViews();
+                showToast(`Berjaya segerakkan ${rows.length} rekod ahli (${importedCount} ahli baharu) daripada Google Sheets!`, 'success');
+            } catch (err) {
+                showToast('Gagal membaca Google Sheets. Pastikan akses Web App ditetapkan kepada "Anyone".', 'error');
+            }
+        }
+
+        async function pushAllMembersToGoogleSheets() {
+            const inputUrl = document.getElementById('setting-gsheet-url') ? document.getElementById('setting-gsheet-url').value.trim() : '';
+            const url = inputUrl || (gelanggangSettings.googleSheetUrl || '').trim();
+
+            if (!url) {
+                showToast('Sila tampal Google Sheets Web App URL terlebih dahulu.', 'error');
+                return;
+            }
+
+            gelanggangSettings.googleSheetUrl = url;
+            saveSettingsToStorage();
+            applySettingsToUI();
+
+            showToast('Sedang menghantar senarai ahli ke tab "Senarai_Ahli"...', 'info');
+            const sent = await postToGoogleSheets({
+                type: 'sync_all_members',
+                members: members.map(m => ({
+                    id: m.id,
+                    name: m.name,
+                    ic: m.ic,
+                    phone: m.phone,
+                    belt: m.belt,
+                    category: m.category,
+                    fee: m.fee
+                }))
+            });
+
+            if (sent) {
+                showToast(`Senarai ${members.length} ahli telah dihantar ke Google Sheets! Sila semak tab Senarai_Ahli.`, 'success');
+            } else {
+                showToast('Ralat rangkaian semasa menghantar ke Google Sheets.', 'error');
+            }
+        }
+
+        function resetToSampleData() {
+            members = generate20SampleMembers();
+            saveToStorage();
+            updateAllAdminViews();
+            if (currentSearchedMemberId) renderMemberResult(currentSearchedMemberId);
+            showToast('Data sampel 20 ahli & 1 gelanggang berjaya ditetapkan semula!', 'success');
+        }
+
+        let currentSearchedMemberId = null;
+        let currentEditTarget = { memberId: null, month: null };
+
+        // --- NAVIGATION SWITCHING ---
+        function switchMode(mode) {
+            const viewAhli = document.getElementById('view-ahli');
+            const viewAdmin = document.getElementById('view-admin');
+            const btnAhli = document.getElementById('btn-mode-ahli');
+            const btnAdmin = document.getElementById('btn-mode-admin');
+
+            if (mode === 'ahli') {
+                viewAhli.classList.remove('hidden');
+                viewAdmin.classList.add('hidden');
+                btnAhli.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-slate-900 shadow";
+                btnAdmin.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all";
+                if (currentSearchedMemberId) renderMemberResult(currentSearchedMemberId);
+            } else {
+                viewAhli.classList.add('hidden');
+                viewAdmin.classList.remove('hidden');
+                btnAdmin.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-slate-900 shadow";
+                btnAhli.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all";
+                updateAllAdminViews();
+            }
+        }
+
+        function switchAhliTab(tab) {
+            ['semak', 'gelanggang'].forEach(t => {
+                document.getElementById(`ahli-content-${t}`).classList.add('hidden');
+                document.getElementById(`tab-ahli-${t}`).className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-blue-800/70 hover:bg-blue-800 text-white border border-blue-700 transition";
+            });
+            document.getElementById(`ahli-content-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-ahli-${tab}`).className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-blue-950 shadow transition";
+        }
+
+        function switchAdminTab(tab) {
+            ['resit', 'rekod', 'ahli', 'kewangan', 'tetapan'].forEach(t => {
+                document.getElementById(`admin-content-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-admin-${t}`);
+                btn.className = "px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition relative";
+            });
+            document.getElementById(`admin-content-${tab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-admin-${tab}`);
+            activeBtn.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-blue-700 text-white shadow-sm transition relative";
+        }
+
+        // --- PORTAL AHLI: CARIAN FLEKSIBEL ---
+        function quickSearch(queryVal) {
+            document.getElementById('search-ic-input').value = queryVal;
+            document.getElementById('search-matches-box').classList.add('hidden');
+            searchMember();
+        }
+
+        function handleLiveSearchSuggestions() {
+            const rawQuery = document.getElementById('search-ic-input').value.trim();
+            const matchesBox = document.getElementById('search-matches-box');
+            const matchesList = document.getElementById('search-matches-list');
+
+            if (rawQuery.length < 2) {
+                matchesBox.classList.add('hidden');
+                return;
+            }
+
+            const qLower = rawQuery.toLowerCase();
+            const qClean = qLower.replace(/[-\s]/g, '');
+
+            const matched = members.filter(m =>
+                m.name.toLowerCase().includes(qLower) ||
+                m.ic.toLowerCase().replace(/[-\s]/g, '').includes(qClean) ||
+                m.id.toLowerCase().includes(qClean)
+            );
+
+            if (matched.length > 1 && matched.length <= 8) {
+                matchesList.innerHTML = matched.map(m => `
+                    <button type="button" onclick="selectMatchedMember('${m.id}')" class="px-3 py-1.5 rounded-lg bg-white hover:bg-blue-700 hover:text-white text-slate-800 border border-blue-200 text-xs font-bold transition shadow-sm">
+                        ${m.name} <span class="opacity-75 font-normal">(${m.id})</span>
+                    </button>
+                `).join('');
+                matchesBox.classList.remove('hidden');
+            } else {
+                matchesBox.classList.add('hidden');
+            }
+        }
+
+        function selectMatchedMember(memberId) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            document.getElementById('search-ic-input').value = member.name;
+            document.getElementById('search-matches-box').classList.add('hidden');
+            currentSearchedMemberId = member.id;
+            renderMemberResult(member.id);
+        }
+
+        function searchMember() {
+            const rawQuery = document.getElementById('search-ic-input').value.trim();
+            if (!rawQuery) {
+                showToast('Sila masukkan Nama Pelajar atau No. Kad Pengenalan terlebih dahulu.', 'error');
+                return;
+            }
+
+            const qLower = rawQuery.toLowerCase();
+            const qClean = qLower.replace(/[-\s]/g, '');
+
+            let exactMatch = members.find(m =>
+                m.ic.toLowerCase().replace(/[-\s]/g, '') === qClean ||
+                m.id.toLowerCase() === qClean ||
+                m.name.toLowerCase() === qLower
+            );
+
+            if (exactMatch) {
+                document.getElementById('search-matches-box').classList.add('hidden');
+                currentSearchedMemberId = exactMatch.id;
+                renderMemberResult(exactMatch.id);
+                return;
+            }
+
+            const partialMatches = members.filter(m =>
+                m.name.toLowerCase().includes(qLower) ||
+                m.ic.toLowerCase().replace(/[-\s]/g, '').includes(qClean) ||
+                m.id.toLowerCase().includes(qClean)
+            );
+
+            if (partialMatches.length === 0) {
+                document.getElementById('search-matches-box').classList.add('hidden');
+                showToast('Rekod pelajar tidak dijumpai. Sila semak ejaan nama atau No. Kad Pengenalan.', 'error');
+                document.getElementById('member-result-card').classList.add('hidden');
+                return;
+            }
+
+            if (partialMatches.length === 1) {
+                document.getElementById('search-matches-box').classList.add('hidden');
+                currentSearchedMemberId = partialMatches[0].id;
+                renderMemberResult(partialMatches[0].id);
+            } else {
+                const matchesBox = document.getElementById('search-matches-box');
+                const matchesList = document.getElementById('search-matches-list');
+                matchesList.innerHTML = partialMatches.map(m => `
+                    <button type="button" onclick="selectMatchedMember('${m.id}')" class="px-3 py-1.5 rounded-lg bg-white hover:bg-blue-700 hover:text-white text-slate-800 border border-blue-200 text-xs font-bold transition shadow-sm">
+                        ${m.name} <span class="opacity-75 font-normal">(${m.ic})</span>
+                    </button>
+                `).join('');
+                matchesBox.classList.remove('hidden');
+                currentSearchedMemberId = partialMatches[0].id;
+                renderMemberResult(partialMatches[0].id);
+                showToast(`Ditemui ${partialMatches.length} pelajar bernama serupa. Sila pilih nama yang tepat di atas.`, 'info');
+            }
+        }
+
+        function renderMemberResult(memberId) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+
+            document.getElementById('member-result-card').classList.remove('hidden');
+            document.getElementById('member-avatar').textContent = member.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+            document.getElementById('member-name').textContent = member.name;
+            document.getElementById('member-id-badge').textContent = member.id;
+            document.getElementById('member-gelanggang').textContent = member.gelanggang;
+            document.getElementById('member-belt').textContent = member.belt;
+            document.getElementById('member-ic').textContent = member.ic;
+            document.getElementById('member-fee').textContent = `RM ${member.fee.toFixed(2)}`;
+
+            let unpaidCount = 0;
+            const grid = document.getElementById('months-grid');
+            grid.innerHTML = '';
+
+            MONTHS.forEach((m, index) => {
+                const p = member.payments[m] || { status: 'not_started' };
+                if (p.status === 'unpaid') unpaidCount++;
+
+                let cardStyle = '';
+                let iconHtml = '';
+                let statusText = '';
+                let subText = '';
+                let clickAttr = '';
+
+                if (p.status === 'paid') {
+                    cardStyle = 'bg-emerald-50 border-emerald-200 text-emerald-900 hover:shadow-md cursor-pointer ring-1 ring-emerald-500/20';
+                    iconHtml = '<div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto mb-2 shadow-sm"><i class="fa-solid fa-check"></i></div>';
+                    statusText = 'Disahkan';
+                    subText = '<span class="inline-flex items-center text-[10px] font-bold text-emerald-700 underline mt-1"><i class="fa-solid fa-print mr-1"></i>Lihat Resit</span>';
+                    clickAttr = `onclick="openReceiptModal('${member.id}', '${m}')"`;
+                } else if (p.status === 'pending') {
+                    cardStyle = 'bg-amber-50 border-amber-200 text-amber-900 cursor-pointer hover:shadow-sm';
+                    iconHtml = '<div class="w-8 h-8 rounded-full bg-amber-400 text-slate-900 flex items-center justify-center mx-auto mb-2 shadow-sm"><i class="fa-solid fa-hourglass-half"></i></div>';
+                    statusText = 'Menunggu Semakan';
+                    subText = `<span class="text-[10px] text-amber-700 font-semibold underline mt-1 block">Lihat Resit Dihantar</span>`;
+                    clickAttr = `onclick="openProofModal('${member.id}', '${m}', false)"`;
+                } else if (p.status === 'unpaid') {
+                    cardStyle = 'bg-rose-50 border-rose-200 text-rose-900 cursor-pointer hover:bg-rose-100/70 transition';
+                    iconHtml = '<div class="w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center mx-auto mb-2 shadow-sm"><i class="fa-solid fa-exclamation"></i></div>';
+                    statusText = 'Belum Bayar';
+                    subText = `<span class="text-[10px] text-rose-600 font-bold mt-1 block">Klik untuk Bayar</span>`;
+                    clickAttr = `onclick="openPaymentModal('${m}')"`;
+                } else {
+                    cardStyle = 'bg-slate-50 border-slate-200 text-slate-400 opacity-75';
+                    iconHtml = '<div class="w-8 h-8 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-minus"></i></div>';
+                    statusText = 'Belum Mula';
+                    subText = '<span class="text-[10px] mt-1 block">-</span>';
+                }
+
+                grid.innerHTML += `
+                    <div ${clickAttr} class="p-3.5 rounded-xl border ${cardStyle} text-center transition flex flex-col justify-between">
+                        <span class="text-xs font-extrabold tracking-wider uppercase mb-2 block">${m}</span>
+                        ${iconHtml}
+                        <div>
+                            <p class="text-xs font-bold leading-tight">${statusText}</p>
+                            ${subText}
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('member-arrears').textContent = `RM ${(unpaidCount * member.fee).toFixed(2)}`;
+        }
+
+        // --- MODAL BAYAR YURAN & MUAT NAIK BUKTI RESIT ---
+        let uploadedReceiptDataUrl = null;
+        let uploadedReceiptType = null;
+        let uploadedRawFile = null;
+
+        function openPaymentModal(preselectMonth = null) {
+            if (!currentSearchedMemberId) return;
+            const member = members.find(m => m.id === currentSearchedMemberId);
+            if (!member) return;
+
+            uploadedReceiptDataUrl = null;
+            uploadedReceiptType = null;
+            uploadedRawFile = null;
+            document.getElementById('payment-ref-input').value = '';
+            document.getElementById('payment-file-input').value = '';
+            document.getElementById('upload-preview-wrapper').classList.add('hidden');
+
+            const container = document.getElementById('payment-months-checkboxes');
+            container.innerHTML = '';
+
+            MONTHS.forEach((m, idx) => {
+                const p = member.payments[m];
+                if (p && p.status === 'unpaid') {
+                    const isChecked = preselectMonth ? m === preselectMonth : true;
+                    container.innerHTML += `
+                        <label class="flex items-center space-x-2 bg-white px-2.5 py-2 rounded-lg border border-slate-200 cursor-pointer hover:border-blue-500 text-xs font-bold text-slate-700">
+                            <input type="checkbox" name="pay-month-cb" value="${m}" ${isChecked ? 'checked' : ''} onchange="updateSelectedPaymentTotal()" class="rounded text-blue-600 focus:ring-blue-500">
+                            <span>${m}</span>
+                        </label>
+                    `;
+                }
+            });
+
+            if (container.innerHTML === '') {
+                container.innerHTML = `<p class="col-span-full text-xs text-emerald-700 font-bold text-center py-2">Semua bulan telah dibayar / dihantar!</p>`;
+            }
+
+            updateSelectedPaymentTotal();
+            document.getElementById('payment-modal').classList.remove('hidden');
+        }
+
+        function updateSelectedPaymentTotal() {
+            if (!currentSearchedMemberId) return;
+            const member = members.find(m => m.id === currentSearchedMemberId);
+            const checkedCount = document.querySelectorAll('input[name="pay-month-cb"]:checked').length;
+            const total = checkedCount * member.fee;
+            document.getElementById('selected-total-badge').textContent = `Jumlah (${checkedCount} Bln): RM ${total.toFixed(2)}`;
+        }
+
+        function closePaymentModal() {
+            document.getElementById('payment-modal').classList.add('hidden');
+        }
+
+        function copyAccNumber() {
+            const acc = document.getElementById('acc-number-text').textContent;
+            const temp = document.createElement('input');
+            temp.value = acc;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(`Nombor akaun (${acc}) berjaya disalin!`, 'success');
+        }
+
+        function previewReceiptUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            uploadedRawFile = file;
+            const wrapper = document.getElementById('upload-preview-wrapper');
+            const imgEl = document.getElementById('upload-preview-img');
+            const pdfBox = document.getElementById('upload-preview-pdf');
+            const pdfName = document.getElementById('upload-preview-pdf-name');
+
+            uploadedReceiptType = file.type;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedReceiptDataUrl = e.target.result;
+                wrapper.classList.remove('hidden');
+                if (file.type === 'application/pdf') {
+                    imgEl.classList.add('hidden');
+                    pdfBox.classList.remove('hidden');
+                    pdfName.textContent = file.name;
+                } else {
+                    pdfBox.classList.add('hidden');
+                    imgEl.classList.remove('hidden');
+                    imgEl.src = uploadedReceiptDataUrl;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function sendReceiptToTelegram(member, selectedMonths, ref, fileObj) {
+            const token = (gelanggangSettings.tgBotToken || '').trim();
+            const chatId = (gelanggangSettings.tgChatId || '').trim();
+            if (!token || !chatId) return { sent: false };
+
+            const totalAmount = (selectedMonths.length * member.fee).toFixed(2);
+            const caption = [
+                `🔔 *RESIT BAYARAN YURAN BAHARU*`,
+                `━━━━━━━━━━━━━━━━━━━━`,
+                `👤 *Nama Pelajar:* ${member.name}`,
+                `🆔 *ID / No. KP:* ${member.id} (${member.ic})`,
+                `📞 *No. Tel Ibu Bapa:* ${member.phone}`,
+                `📅 *Bulan Yuran:* ${selectedMonths.join(', ')} 2026`,
+                `💰 *Jumlah Bayaran:* RM ${totalAmount}`,
+                `🧾 *No. Rujukan:* ${ref}`,
+                `━━━━━━━━━━━━━━━━━━━━`,
+                `Sila semak & sahkan di *Dashboard Gurulatih*.`
+            ].join('\n');
+
+            try {
+                if (fileObj) {
+                    const formData = new FormData();
+                    formData.append('chat_id', chatId);
+                    formData.append('caption', caption);
+                    formData.append('parse_mode', 'Markdown');
+
+                    const isImage = fileObj.type && fileObj.type.startsWith('image/');
+                    const endpoint = isImage ? 'sendPhoto' : 'sendDocument';
+                    formData.append(isImage ? 'photo' : 'document', fileObj, fileObj.name);
+
+                    const res = await fetch(`https://api.telegram.org/bot${token}/${endpoint}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await res.json();
+                    return { sent: Boolean(data.ok) };
+                } else {
+                    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: caption,
+                            parse_mode: 'Markdown'
+                        })
+                    });
+                    const data = await res.json();
+                    return { sent: Boolean(data.ok) };
+                }
+            } catch (err) {
+                return { sent: false };
+            }
+        }
+
+        async function autoDetectTelegramChatId() {
+            const token = document.getElementById('setting-tg-token').value.trim();
+            if (!token) {
+                showToast('Sila tampal Telegram Bot Token anda terlebih dahulu!', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('btn-detect-tg-id');
+            const origHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Kesan...`;
+
+            try {
+                const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates`);
+                const data = await res.json();
+
+                if (!data.ok) {
+                    showToast(`Token tidak sah: ${data.description}`, 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                    return;
+                }
+
+                const chatsMap = new Map();
+                (data.result || []).forEach(upd => {
+                    const msg = upd.message || upd.my_chat_member || upd.channel_post || upd.edited_message;
+                    if (msg && msg.chat) {
+                        const c = msg.chat;
+                        const label = c.title || [c.first_name, c.last_name].filter(Boolean).join(' ') || c.username || 'Akaun Telegram';
+                        chatsMap.set(String(c.id), { id: String(c.id), label, type: c.type });
+                    }
+                });
+
+                const detected = Array.from(chatsMap.values());
+                if (detected.length === 0) {
+                    showToast('Tiada mesej dijumpai. Sila buka bot di Telegram dan hantar perkataan "Hello" sekali lagi, kemudian tekan Kesan.', 'error');
+                } else {
+                    const latest = detected[detected.length - 1];
+                    document.getElementById('setting-tg-chatid').value = latest.id;
+
+                    const listBox = document.getElementById('tg-detected-list-box');
+                    const listContainer = document.getElementById('tg-detected-list');
+                    listContainer.innerHTML = detected.map(item => `
+                        <button type="button" onclick="selectDetectedChatId('${item.id}')" class="px-3 py-1.5 rounded-lg bg-white hover:bg-emerald-600 hover:text-white text-emerald-950 border border-emerald-300 text-xs font-bold transition shadow-sm">
+                            ${item.label} <span class="font-mono opacity-80">(${item.id})</span>
+                        </button>
+                    `).join('');
+                    listBox.classList.remove('hidden');
+
+                    showToast(`Berjaya kesan Chat ID (${latest.label}: ${latest.id})! Sila tekan "Uji Hantar Telegram".`, 'success');
+                }
+            } catch (err) {
+                showToast('Ralat rangkaian semasa mengesan Chat ID Telegram.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = origHtml;
+            }
+        }
+
+        function selectDetectedChatId(chatId) {
+            document.getElementById('setting-tg-chatid').value = chatId;
+            showToast(`Chat ID (${chatId}) dipilih!`, 'info');
+        }
+
+        async function testTelegramConnection() {
+            const token = document.getElementById('setting-tg-token').value.trim();
+            const chatId = document.getElementById('setting-tg-chatid').value.trim();
+
+            if (!token || !chatId) {
+                showToast('Sila masukkan Bot Token dan Chat ID terlebih dahulu.', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: `✅ *Ujian Sambungan Berjaya!*\nSistem Yuran *Akademi Gayong Nur Insani (Johor Bahru)* telah berjaya disambungkan ke Telegram Cikgu Bujal.`,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    showToast('Mesej ujian berjaya dihantar ke Telegram anda!', 'success');
+                } else {
+                    showToast(`Gagal hantar ke Telegram: ${data.description}`, 'error');
+                }
+            } catch (e) {
+                showToast('Ralat rangkaian semasa menghubungi pelayan Telegram.', 'error');
+            }
+        }
+
+        async function submitPaymentReceipt(e) {
+            e.preventDefault();
+            if (!currentSearchedMemberId) return;
+
+            const checkedBoxes = Array.from(document.querySelectorAll('input[name="pay-month-cb"]:checked'));
+            if (checkedBoxes.length === 0) {
+                showToast('Sila tanda sekurang-kurangnya satu bulan yuran!', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('btn-submit-receipt');
+            const originalBtnHtml = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Menghantar...`;
+
+            const ref = document.getElementById('payment-ref-input').value.trim();
+            const fileInput = document.getElementById('payment-file-input');
+            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : 'resit_bayaran.jpg';
+            const todayStr = new Date().toLocaleDateString('ms-MY');
+            const selectedMonths = checkedBoxes.map(cb => cb.value);
+
+            const member = members.find(m => m.id === currentSearchedMemberId);
+            selectedMonths.forEach(month => {
+                member.payments[month] = {
+                    status: 'pending',
+                    method: 'Online Transfer / DuitNow',
+                    ref: ref,
+                    date: todayStr,
+                    receiptNo: '',
+                    receiptFile: fileName,
+                    receiptDataUrl: uploadedReceiptDataUrl,
+                    receiptType: uploadedReceiptType || 'image/jpeg'
+                };
+            });
+
+            // 1. Hantar ke Telegram Cikgu Bujal
+            const tgResult = await sendReceiptToTelegram(member, selectedMonths, ref, uploadedRawFile);
+
+            // 2. Hantar rekod pembayaran ke Google Sheets (tab Rekod_Pembayaran)
+            await postToGoogleSheets({
+                type: 'payment',
+                id: member.id,
+                name: member.name,
+                months: selectedMonths.join(', '),
+                amount: selectedMonths.length * member.fee,
+                ref: ref,
+                method: 'Online Transfer / DuitNow',
+                status: 'Menunggu Semakan'
+            });
+
+            saveToStorage();
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHtml;
+            closePaymentModal();
+            renderMemberResult(member.id);
+
+            if (tgResult.sent) {
+                showToast(`Bukti resit berjaya direkodkan & terus dihantar ke Telegram Cikgu Bujal!`, 'success');
+            } else {
+                showToast(`Bukti resit bagi ${selectedMonths.length} bulan berjaya direkodkan untuk semakan Cikgu Bujal!`, 'success');
+            }
+        }
+
+        // --- MODAL PAPARAN BUKTI RESIT ---
+        function openProofModal(memberId, month, isAdminView = true) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            const p = member.payments[month];
+            if (!p) return;
+
+            const mIndex = MONTHS.indexOf(month);
+            document.getElementById('proof-modal-subtitle').textContent = `${member.name} • Bulan ${FULL_MONTHS[mIndex]} 2026 (RM ${member.fee.toFixed(2)})`;
+            document.getElementById('proof-modal-ref').textContent = p.ref || '-';
+            document.getElementById('proof-modal-date').textContent = p.date || '15/11/2026';
+
+            const imgEl = document.getElementById('proof-modal-img');
+            const pdfBox = document.getElementById('proof-modal-pdf-box');
+            const pdfTitle = document.getElementById('proof-modal-pdf-title');
+            const pdfLink = document.getElementById('proof-modal-pdf-link');
+
+            const dataUrl = p.receiptDataUrl || createSampleReceiptSVG(member.name, FULL_MONTHS[mIndex], member.fee, p.ref || 'REF-YURAN');
+
+            if (p.receiptType === 'application/pdf' || (p.receiptFile && p.receiptFile.toLowerCase().endsWith('.pdf'))) {
+                imgEl.classList.add('hidden');
+                pdfBox.classList.remove('hidden');
+                pdfTitle.textContent = p.receiptFile || 'bukti_resit.pdf';
+                pdfLink.href = dataUrl;
+                pdfLink.download = p.receiptFile || 'bukti_resit.pdf';
+            } else {
+                pdfBox.classList.add('hidden');
+                imgEl.classList.remove('hidden');
+                imgEl.src = dataUrl;
+            }
+
+            const actionsBox = document.getElementById('proof-modal-actions');
+            if (isAdminView && p.status === 'pending') {
+                actionsBox.classList.remove('hidden');
+                document.getElementById('proof-modal-approve-btn').onclick = function() {
+                    closeProofModal();
+                    verifyReceipt(memberId, month, true);
+                };
+                document.getElementById('proof-modal-reject-btn').onclick = function() {
+                    closeProofModal();
+                    verifyReceipt(memberId, month, false);
+                };
+            } else {
+                actionsBox.classList.add('hidden');
+            }
+
+            document.getElementById('proof-viewer-modal').classList.remove('hidden');
+        }
+
+        function closeProofModal() {
+            document.getElementById('proof-viewer-modal').classList.add('hidden');
+        }
+
+        // --- MODAL RESIT RASMI BOLEH CETAK / PDF ---
+        function openReceiptModal(memberId, month) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            const p = member.payments[month];
+            if (!p || p.status !== 'paid') return;
+
+            const mIndex = MONTHS.indexOf(month);
+            const serial = p.receiptNo || `RESIT-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+
+            document.getElementById('rec-serial').textContent = serial;
+            document.getElementById('rec-member-name').textContent = member.name;
+            document.getElementById('rec-member-ic').textContent = `No. KP: ${member.ic} (${member.id})`;
+            document.getElementById('rec-date').textContent = p.date || new Date().toLocaleDateString('ms-MY');
+            document.getElementById('rec-reg-fee').textContent = `RM ${Number(gelanggangSettings.regFee ?? 20).toFixed(2)} (Lunas)`;
+            document.getElementById('rec-month').textContent = `${FULL_MONTHS[mIndex].toUpperCase()} 2026`;
+            document.getElementById('rec-method').textContent = p.method || 'Online Transfer';
+            document.getElementById('rec-ref').textContent = p.ref ? `Ref: ${p.ref}` : 'Bayaran Rasmi';
+            document.getElementById('rec-amount').textContent = `RM ${member.fee.toFixed(2)}`;
+            document.getElementById('rec-total').textContent = `RM ${member.fee.toFixed(2)}`;
+
+            const viewProofBtn = document.getElementById('rec-view-proof-btn');
+            if (p.receiptDataUrl) {
+                viewProofBtn.classList.remove('hidden');
+                viewProofBtn.onclick = function() {
+                    closeReceiptModal();
+                    openProofModal(memberId, month, false);
+                };
+            } else {
+                viewProofBtn.classList.add('hidden');
+            }
+
+            document.getElementById('receipt-modal').classList.remove('hidden');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receipt-modal').classList.add('hidden');
+        }
+
+        // --- DASHBOARD GURULATIH ---
+        function updateAllAdminViews() {
+            updateAdminKPIs();
+            renderAdminMatrix();
+            renderPendingReceipts();
+            renderAdminMembersList();
+            renderFinanceReport();
+        }
+
+        function updateAdminKPIs() {
+            let totalCollected = 0;
+            let pendingCount = 0;
+            let totalArrears = 0;
+
+            members.forEach(m => {
+                MONTHS.forEach(month => {
+                    const p = m.payments[month];
+                    if (p) {
+                        if (p.status === 'paid') totalCollected += m.fee;
+                        if (p.status === 'pending') pendingCount++;
+                        if (p.status === 'unpaid') totalArrears += m.fee;
+                    }
+                });
+            });
+
+            document.getElementById('stat-total-members').textContent = members.length;
+            if (document.getElementById('tab-member-count')) document.getElementById('tab-member-count').textContent = members.length;
+            if (document.getElementById('quick-total-count')) document.getElementById('quick-total-count').textContent = members.length;
+            document.getElementById('stat-total-collected').textContent = `RM ${totalCollected.toFixed(2)}`;
+            document.getElementById('stat-pending-receipts').textContent = pendingCount;
+            document.getElementById('badge-pending-count').textContent = pendingCount;
+            document.getElementById('stat-total-arrears').textContent = `RM ${totalArrears.toFixed(2)}`;
+        }
+
+        function sendWhatsAppReminder(memberId) {
+            const m = members.find(item => item.id === memberId);
+            if (!m) return;
+
+            const unpaidMonths = MONTHS.filter(mon => m.payments[mon]?.status === 'unpaid');
+            let cleanPhone = m.phone.replace(/[^0-9]/g, '');
+            if (cleanPhone.startsWith('0')) cleanPhone = '6' + cleanPhone;
+
+            const text = unpaidMonths.length > 0
+                ? `Assalamualaikum. Peringatan mesra daripada *Akademi Gayong Nur Insani (Johor Bahru)*. Yuran bulanan bagi anak tuan/puan *${m.name}* (${m.id}) masih tertunggak untuk bulan *${unpaidMonths.join(', ')}* (Jumlah: RM ${(unpaidMonths.length * m.fee).toFixed(2)}). Mohon muat naik resit bayaran di sistem yuran. Terima kasih - Cikgu Bujal.`
+                : `Assalamualaikum. Terima kasih kerana sentiasa menjelaskan yuran bulanan *${m.name}* di *Akademi Gayong Nur Insani (Johor Bahru)* tepat pada masanya. - Cikgu Bujal.`;
+
+            window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function renderAdminMatrix() {
+            const search = document.getElementById('admin-search-member').value.toLowerCase();
+            const tbody = document.getElementById('admin-matrix-body');
+            tbody.innerHTML = '';
+
+            const filtered = members.filter(m => m.name.toLowerCase().includes(search) || m.ic.includes(search) || m.id.toLowerCase().includes(search));
+
+            filtered.forEach(m => {
+                let rowHtml = `
+                    <tr class="hover:bg-slate-50/80 transition">
+                        <td class="py-3 px-4 sticky left-0 bg-white z-10 border-r border-slate-100">
+                            <div class="flex items-center justify-between gap-2">
+                                <div>
+                                    <p class="font-bold text-slate-900">${m.name}</p>
+                                    <p class="text-[11px] text-slate-500">${m.id} • ${m.ic}</p>
+                                </div>
+                                <button onclick="sendWhatsAppReminder('${m.id}')" title="Hantar Peringatan WhatsApp" class="w-7 h-7 rounded-lg bg-emerald-50 hover:bg-emerald-500 text-emerald-600 hover:text-white flex items-center justify-center transition shrink-0">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                </button>
+                            </div>
+                        </td>
+                `;
+
+                MONTHS.forEach(month => {
+                    const p = m.payments[month] || { status: 'not_started' };
+                    let badge = '';
+                    if (p.status === 'paid') {
+                        badge = `<span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 font-bold hover:bg-emerald-200" title="Disahkan (${p.method})"><i class="fa-solid fa-check"></i></span>`;
+                    } else if (p.status === 'pending') {
+                        badge = `<span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-amber-100 text-amber-700 font-bold hover:bg-amber-200 animate-pulse" title="Menunggu Pengesahan Resit"><i class="fa-solid fa-clock"></i></span>`;
+                    } else if (p.status === 'unpaid') {
+                        badge = `<span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-rose-100 text-rose-600 font-bold hover:bg-rose-200" title="Belum Bayar"><i class="fa-solid fa-xmark"></i></span>`;
+                    } else {
+                        badge = `<span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-400" title="Belum Mula">-</span>`;
+                    }
+
+                    rowHtml += `
+                        <td class="py-2 px-1 text-center">
+                            <button onclick="openAdminEditModal('${m.id}', '${month}')" class="focus:outline-none">
+                                ${badge}
+                            </button>
+                        </td>
+                    `;
+                });
+
+                rowHtml += `</tr>`;
+                tbody.innerHTML += rowHtml;
+            });
+        }
+
+        function openAdminEditModal(memberId, month) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            currentEditTarget = { memberId, month };
+            const mIndex = MONTHS.indexOf(month);
+            document.getElementById('edit-modal-member-name').textContent = member.name;
+            document.getElementById('edit-modal-month').textContent = `BULAN: ${FULL_MONTHS[mIndex].toUpperCase()} 2026 (RM ${member.fee})`;
+            document.getElementById('admin-edit-modal').classList.remove('hidden');
+        }
+
+        function closeAdminEditModal() {
+            document.getElementById('admin-edit-modal').classList.add('hidden');
+        }
+
+        function setPaymentStatus(status, method) {
+            const { memberId, month } = currentEditTarget;
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+
+            if (status === 'paid') {
+                const receiptNo = `RESIT-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+                const ref = method === 'Tunai' ? 'TUNAI-GELANGGANG' : 'ONLINE-SAH';
+                member.payments[month] = {
+                    status: 'paid',
+                    method: method,
+                    ref: ref,
+                    date: new Date().toLocaleDateString('ms-MY'),
+                    receiptNo: receiptNo,
+                    receiptFile: member.payments[month]?.receiptFile || '',
+                    receiptDataUrl: member.payments[month]?.receiptDataUrl || null,
+                    receiptType: member.payments[month]?.receiptType || null
+                };
+                postToGoogleSheets({
+                    type: 'payment',
+                    id: member.id,
+                    name: member.name,
+                    months: month,
+                    amount: member.fee,
+                    ref: `${ref} (${receiptNo})`,
+                    method: method,
+                    status: 'Disahkan'
+                });
+                showToast(`Bayaran ${month} bagi ${member.name} disahkan!`, 'success');
+            } else {
+                member.payments[month] = { status: 'unpaid', method: '', ref: '', date: '', receiptNo: '' };
+                showToast(`Status ${month} ditukar kepada Belum Bayar.`, 'info');
+            }
+
+            saveToStorage();
+            closeAdminEditModal();
+            updateAllAdminViews();
+        }
+
+        function renderPendingReceipts() {
+            const container = document.getElementById('pending-receipts-list');
+            container.innerHTML = '';
+            let count = 0;
+
+            members.forEach(m => {
+                MONTHS.forEach(month => {
+                    const p = m.payments[month];
+                    if (p && p.status === 'pending') {
+                        count++;
+                        container.innerHTML += `
+                            <div class="border border-amber-200 bg-amber-50/40 rounded-2xl p-4 flex flex-col justify-between space-y-4">
+                                <div>
+                                    <div class="flex justify-between items-start">
+                                        <span class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-900 text-xs font-extrabold uppercase">Bulan ${month} 2026</span>
+                                        <span class="text-sm font-extrabold text-slate-900">RM ${m.fee.toFixed(2)}</span>
+                                    </div>
+                                    <h4 class="font-bold text-slate-900 mt-2.5 text-sm">${m.name}</h4>
+                                    <p class="text-xs text-slate-500">${m.gelanggang}</p>
+                                    <div class="mt-3 p-3 rounded-xl bg-white border border-slate-200 text-xs space-y-1">
+                                        <p><span class="text-slate-400">Kaedah:</span> <span class="font-semibold">${p.method}</span></p>
+                                        <p><span class="text-slate-400">No. Rujukan:</span> <span class="font-mono font-bold text-blue-700">${p.ref}</span></p>
+                                        <p><span class="text-slate-400">Tarikh Hantar:</span> <span class="font-semibold">${p.date || '15/11/2026'}</span></p>
+                                        <button type="button" onclick="openProofModal('${m.id}', '${month}', true)" class="mt-2 w-full py-2 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold flex items-center justify-center transition">
+                                            <i class="fa-solid fa-eye mr-1.5"></i> Lihat Bukti Resit (${p.receiptFile || 'resit.jpg'})
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="verifyReceipt('${m.id}', '${month}', false)" class="flex-1 py-2 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 font-bold text-xs transition">
+                                        Tolak
+                                    </button>
+                                    <button onclick="verifyReceipt('${m.id}', '${month}', true)" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition">
+                                        <i class="fa-solid fa-check mr-1"></i> Sahkan Resit
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            });
+
+            if (count === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-400">
+                        <i class="fa-regular fa-circle-check text-4xl text-emerald-400 mb-3 block"></i>
+                        <p class="font-bold text-slate-600">Tiada resit tertunggak untuk disahkan.</p>
+                        <p class="text-xs mt-1">Semua bukti bayaran ahli telah disemak oleh Cikgu Bujal.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function verifyReceipt(memberId, month, isApproved) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+
+            if (isApproved) {
+                const receiptNo = `RESIT-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+                const prevRef = member.payments[month].ref || '';
+                const prevMethod = member.payments[month].method || 'Online Transfer';
+                member.payments[month].status = 'paid';
+                member.payments[month].date = new Date().toLocaleDateString('ms-MY');
+                member.payments[month].receiptNo = receiptNo;
+
+                postToGoogleSheets({
+                    type: 'payment',
+                    id: member.id,
+                    name: member.name,
+                    months: month,
+                    amount: member.fee,
+                    ref: `${prevRef} (${receiptNo})`,
+                    method: prevMethod,
+                    status: 'Disahkan'
+                });
+
+                showToast(`Resit ${month} (${member.name}) disahkan! Ibu bapa kini boleh mencetak resit rasmi.`, 'success');
+            } else {
+                member.payments[month] = { status: 'unpaid', method: '', ref: '', date: '', receiptNo: '' };
+                showToast(`Resit ${month} (${member.name}) ditolak.`, 'error');
+            }
+
+            saveToStorage();
+            updateAllAdminViews();
+        }
+
+        // --- IMPORT EXCEL / CSV ---
+        function downloadSampleCSV() {
+            const csvContent = "Nama,NoKP,NoTelefon,Yuran\nMuhammad Irfan bin Hakim,130405031122,019-9112233,30\nNurul Iman binti Zulkifli,120918034455,013-9445566,30";
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "Templat_Import_Ahli_Akademi_Gayong_Nur_Insani.csv";
+            a.click();
+        }
+
+        function handleCSVImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const lines = e.target.result.split('\n').map(l => l.trim()).filter(l => l);
+                let addedCount = 0;
+                const defaultSchoolFee = Number(gelanggangSettings.monthlyFeeSchool ?? 30);
+                const defaultAdultFee = Number(gelanggangSettings.monthlyFeeAdult ?? 50);
+
+                for (let i = 1; i < lines.length; i++) {
+                    const cols = lines[i].split(',');
+                    if (cols.length >= 2) {
+                        const name = cols[0].trim();
+                        const ic = cols[1].trim().replace(/-/g, '');
+                        const phone = cols[2] ? cols[2].trim() : '-';
+                        const parsedFee = cols[3] ? parseFloat(cols[3].trim()) : defaultSchoolFee;
+                        const category = parsedFee >= defaultAdultFee && defaultAdultFee > defaultSchoolFee ? 'adult' : 'school';
+                        const fee = cols[3] && !isNaN(parsedFee) ? parsedFee : defaultSchoolFee;
+
+                        if (name && ic && !members.some(m => m.ic === ic)) {
+                            const newId = `AHLI${String(members.length + 1).padStart(3, '0')}`;
+                            const payments = {};
+                            MONTHS.forEach((m, idx) => {
+                                payments[m] = idx < 10 ? { status: 'not_started' } : (idx === 10 ? { status: 'unpaid' } : { status: 'not_started' });
+                            });
+                            members.push({ id: newId, name, ic, phone, gelanggang: GELANGGANG_RASMI, belt: 'Bengkung Putih', category, fee, payments });
+                            addedCount++;
+                        }
+                    }
+                }
+
+                saveToStorage();
+                updateAllAdminViews();
+                event.target.value = '';
+                showToast(`${addedCount} orang pelajar berjaya diimport masuk ke dalam senarai!`, 'success');
+            };
+            reader.readAsText(file);
+        }
+
+        // --- URUS AHLI ---
+        function addNewMember(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-member-name').value.trim();
+            const ic = document.getElementById('new-member-ic').value.trim().replace(/-/g, '');
+            const phone = document.getElementById('new-member-phone').value.trim();
+            const belt = document.getElementById('new-member-belt').value;
+            const category = document.getElementById('new-member-fee').value;
+            const fee = category === 'adult'
+                ? Number(gelanggangSettings.monthlyFeeAdult ?? 50)
+                : Number(gelanggangSettings.monthlyFeeSchool ?? 30);
+            const startMonthIdx = parseInt(document.getElementById('new-member-start-month').value, 10);
+
+            if (members.some(m => m.ic === ic)) {
+                showToast('No. Kad Pengenalan ini sudah wujud dalam rekod.', 'error');
+                return;
+            }
+
+            const newId = `AHLI${String(members.length + 1).padStart(3, '0')}`;
+            const payments = {};
+            MONTHS.forEach((m, idx) => {
+                if (idx < startMonthIdx || idx === 11) {
+                    payments[m] = { status: 'not_started' };
+                } else {
+                    payments[m] = { status: 'unpaid' };
+                }
+            });
+
+            members.push({ id: newId, name, ic, phone, gelanggang: GELANGGANG_RASMI, belt, category, fee, payments });
+            postToGoogleSheets({
+                type: 'new_member',
+                id: newId,
+                name,
+                ic,
+                phone,
+                belt,
+                category,
+                fee
+            });
+
+            saveToStorage();
+            e.target.reset();
+            applySettingsToUI();
+            updateAllAdminViews();
+            showToast(`Ahli baharu (${name} • ${newId}) berjaya didaftarkan!`, 'success');
+        }
+
+        function deleteMember(id) {
+            members = members.filter(m => m.id !== id);
+            saveToStorage();
+            updateAllAdminViews();
+            showToast('Rekod ahli telah dipadam.', 'info');
+        }
+
+        function renderAdminMembersList() {
+            const container = document.getElementById('admin-members-list');
+            document.getElementById('member-list-count').textContent = members.length;
+            container.innerHTML = '';
+
+            members.forEach(m => {
+                container.innerHTML += `
+                    <div class="py-3.5 flex items-center justify-between gap-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center">
+                                ${m.id.replace('AHLI', '#')}
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900">${m.name} <span class="text-xs font-normal text-slate-500">(${m.belt})</span></p>
+                                <p class="text-xs text-slate-500">No. KP: ${m.ic} • Tel: ${m.phone}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-bold">RM ${m.fee}/bln</span>
+                            <button onclick="sendWhatsAppReminder('${m.id}')" class="p-2 text-slate-400 hover:text-emerald-600 transition" title="WhatsApp Ibu Bapa">
+                                <i class="fa-brands fa-whatsapp text-base"></i>
+                            </button>
+                            <button onclick="deleteMember('${m.id}')" class="p-2 text-slate-400 hover:text-rose-600 transition" title="Padam Ahli">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- PENYATA KEWANGAN & EKSPORT CSV ---
+        function renderFinanceReport() {
+            let totalIncome = 0;
+            let totalOnline = 0;
+            let totalCash = 0;
+            const tbody = document.getElementById('finance-transactions-body');
+            tbody.innerHTML = '';
+
+            members.forEach(m => {
+                MONTHS.forEach(month => {
+                    const p = m.payments[month];
+                    if (p && p.status === 'paid') {
+                        totalIncome += m.fee;
+                        if (p.method && p.method.toLowerCase().includes('tunai')) {
+                            totalCash += m.fee;
+                        } else {
+                            totalOnline += m.fee;
+                        }
+
+                        tbody.innerHTML += `
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-4 font-mono text-[11px] font-bold text-slate-600">${p.receiptNo || '-'}</td>
+                                <td class="py-2.5 px-4 text-slate-500">${p.date || '2026'}</td>
+                                <td class="py-2.5 px-4 font-bold text-slate-800">${m.name}</td>
+                                <td class="py-2.5 px-4"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold">${month} 2026</span></td>
+                                <td class="py-2.5 px-4 text-slate-600">${p.method}</td>
+                                <td class="py-2.5 px-4 text-right font-extrabold text-emerald-700">RM ${m.fee.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    }
+                });
+            });
+
+            document.getElementById('fin-income').textContent = `RM ${totalIncome.toFixed(2)}`;
+            document.getElementById('fin-online').textContent = `RM ${totalOnline.toFixed(2)}`;
+            document.getElementById('fin-cash').textContent = `RM ${totalCash.toFixed(2)}`;
+        }
+
+        function exportFinanceCSV() {
+            let csv = "No Resit,ID Ahli,Nama Ahli,No KP,Gelanggang,Bulan,Kaedah Bayaran,No Rujukan,Jumlah (RM)\n";
+            members.forEach(m => {
+                MONTHS.forEach(month => {
+                    const p = m.payments[month];
+                    if (p && p.status === 'paid') {
+                        csv += `"${p.receiptNo || ''}","${m.id}","${m.name}","${m.ic}","${m.gelanggang}","${month} 2026","${p.method}","${p.ref}",${m.fee}\n`;
+                    }
+                });
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "Penyata_Kewangan_Akademi_Gayong_Nur_Insani_2026.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('Penyata Kewangan (CSV) berjaya dimuat turun!', 'success');
+        }
+
+        // --- TETAPAN QR & BANK ---
+        let tempUploadedQR = null;
+
+        function previewSettingQR(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                tempUploadedQR = e.target.result;
+                document.getElementById('setting-qr-preview-box').innerHTML = `<img src="${tempUploadedQR}" alt="Preview QR" class="w-full h-full object-contain">`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearCustomQR() {
+            tempUploadedQR = null;
+            gelanggangSettings.qrImageData = null;
+            document.getElementById('setting-qr-file').value = '';
+            document.getElementById('setting-qr-preview-box').innerHTML = DEFAULT_QR_SVG;
+            saveSettingsToStorage();
+            applySettingsToUI();
+            showToast('Kod QR dikembalikan kepada paparan lalai.', 'info');
+        }
+
+        function saveGelanggangSettings() {
+            const regFee = parseFloat(document.getElementById('setting-reg-fee').value);
+            const feeSchool = parseFloat(document.getElementById('setting-fee-school').value);
+            const feeAdult = parseFloat(document.getElementById('setting-fee-adult').value);
+            const applyToAll = document.getElementById('setting-apply-all-members').checked;
+
+            const bankName = document.getElementById('setting-bank-name').value.trim();
+            const accHolder = document.getElementById('setting-acc-holder').value.trim();
+            const accNumber = document.getElementById('setting-acc-number').value.trim();
+            const tgBotToken = document.getElementById('setting-tg-token').value.trim();
+            const tgChatId = document.getElementById('setting-tg-chatid').value.trim();
+            const googleSheetUrl = document.getElementById('setting-gsheet-url').value.trim();
+
+            if (isNaN(regFee) || isNaN(feeSchool) || isNaN(feeAdult) || regFee < 0 || feeSchool < 0 || feeAdult < 0) {
+                showToast('Sila masukkan jumlah RM yang sah bagi yuran pendaftaran dan bulanan.', 'error');
+                return;
+            }
+
+            if (!bankName || !accHolder || !accNumber) {
+                showToast('Sila lengkapkan nama bank, pemegang akaun, dan nombor akaun.', 'error');
+                return;
+            }
+
+            gelanggangSettings.regFee = regFee;
+            gelanggangSettings.monthlyFeeSchool = feeSchool;
+            gelanggangSettings.monthlyFeeAdult = feeAdult;
+            gelanggangSettings.bankName = bankName;
+            gelanggangSettings.accHolder = accHolder;
+            gelanggangSettings.accNumber = accNumber;
+            gelanggangSettings.tgBotToken = tgBotToken;
+            gelanggangSettings.tgChatId = tgChatId;
+            gelanggangSettings.googleSheetUrl = googleSheetUrl;
+            if (tempUploadedQR) {
+                gelanggangSettings.qrImageData = tempUploadedQR;
+            }
+
+            if (applyToAll) {
+                members.forEach(m => {
+                    const isAdult = m.category === 'adult' || m.belt === 'Bengkung Kuning' && m.ic.startsWith('04') || m.ic.startsWith('05');
+                    m.category = isAdult ? 'adult' : 'school';
+                    m.fee = isAdult ? feeAdult : feeSchool;
+                });
+                saveToStorage();
+            }
+
+            saveSettingsToStorage();
+            applySettingsToUI();
+            updateAllAdminViews();
+            if (currentSearchedMemberId) {
+                renderMemberResult(currentSearchedMemberId);
+            }
+            showToast('Semua tetapan (Yuran, QR, Google Sheets & Telegram) berjaya disimpan!', 'success');
+        }
+
+        // --- TOAST UTILITY ---
+        let toastTimeout;
+        function showToast(msg, type = 'success') {
+            const box = document.getElementById('toast-box');
+            const icon = document.getElementById('toast-icon');
+            const text = document.getElementById('toast-msg');
+
+            text.textContent = msg;
+            if (type === 'error') {
+                icon.className = 'fa-solid fa-circle-xmark text-rose-400 text-lg';
+            } else if (type === 'info') {
+                icon.className = 'fa-solid fa-circle-info text-blue-400 text-lg';
+            } else {
+                icon.className = 'fa-solid fa-circle-check text-emerald-400 text-lg';
+            }
+
+            box.classList.remove('hidden');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                box.classList.add('hidden');
+            }, 3500);
+        }
+
+        // Initialize default view on load
+        window.onload = function() {
+            applySettingsToUI();
+            quickSearch('120514035521');
+            if ((gelanggangSettings.googleSheetUrl || '').trim()) {
+                syncMembersFromGoogleSheets();
+            }
+        };
+    </script>
+</body>
+</html>
