@@ -119,7 +119,7 @@
                     </span>
                     <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight">Semakan & Pembayaran Yuran Bulanan</h2>
                     <p class="text-xs sm:text-sm text-slate-300 max-w-2xl">
-                        Semak status bayaran bulanan anak anda menggunakan No. Kad Pengenalan / ID Ahli, muat naik bukti resit bayaran QR/Bank, dan cetak resit rasmi yang disahkan oleh <strong>Cikgu Bujal</strong>.
+                        Semak status bayaran bulanan anak anda menggunakan Nama Penuh atau No. Kad Pengenalan, muat naik bukti resit bayaran QR/Bank, dan cetak resit rasmi yang disahkan oleh <strong>Cikgu Bujal</strong>.
                     </p>
                 </div>
                 <div class="flex flex-wrap justify-center gap-2 shrink-0">
@@ -144,7 +144,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
-                            <input type="text" id="search-ic-input" placeholder="Contoh: ahmad zaki, NUR AISYAH, 120514035521 atau AHLI001"
+                            <input type="text" id="search-ic-input" placeholder="Taip nama pelajar atau No. Kad Pengenalan..."
                                 class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm font-medium transition outline-none"
                                 oninput="handleLiveSearchSuggestions()"
                                 onkeyup="if(event.key === 'Enter') searchMember()">
@@ -160,13 +160,10 @@
                         <div id="search-matches-list" class="flex flex-wrap gap-2"></div>
                     </div>
 
-                    <!-- Pantas Pilih Contoh Ahli -->
-                    <div class="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                        <span class="font-semibold text-slate-600">Contoh pantas (<span id="quick-total-count">20</span> Ahli):</span>
-                        <button onclick="quickSearch('Ahmad Zaki')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 hover:text-amber-800 font-medium transition">Ahmad Zaki (AHLI001)</button>
-                        <button onclick="quickSearch('nur aisyah')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 hover:text-amber-800 font-medium transition">Nur Aisyah (AHLI002)</button>
-                        <button onclick="quickSearch('130219038890')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 hover:text-amber-800 font-medium transition">Muhammad Danish (AHLI003)</button>
-                        <button onclick="quickSearch('siti sarah')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 hover:text-amber-800 font-medium transition">Siti Sarah (AHLI004)</button>
+                    <!-- Senarai Pantas Ahli Berdaftar -->
+                    <div id="quick-members-bar" class="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                        <span class="font-semibold text-slate-600">Ahli berdaftar (<span id="quick-total-count">0</span>):</span>
+                        <div id="quick-members-buttons" class="flex flex-wrap gap-1.5"></div>
                     </div>
                 </div>
 
@@ -180,16 +177,16 @@
                             </div>
                             <div>
                                 <div class="flex flex-wrap items-center gap-2">
-                                    <h3 id="member-name" class="text-lg sm:text-xl font-extrabold text-slate-900">Ahmad Zaki bin Yusof</h3>
+                                    <h3 id="member-name" class="text-lg sm:text-xl font-extrabold text-slate-900">Nama Pelajar</h3>
                                     <span id="member-id-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">AHLI001</span>
                                 </div>
                                 <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
                                     <i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> <span id="member-gelanggang">Akademi Gayong Nur Insani (Johor Bahru)</span>
                                     <span class="mx-2 text-slate-300">|</span>
-                                    <i class="fa-solid fa-award text-amber-500 mr-1"></i> <span id="member-belt">Bengkung Hijau</span>
+                                    <i class="fa-solid fa-award text-amber-500 mr-1"></i> <span id="member-belt">Bengkung Putih</span>
                                 </p>
                                 <p class="text-xs text-slate-500 mt-1">
-                                    No. KP: <span id="member-ic" class="font-semibold text-slate-700">120514035521</span> • Yuran Bulanan: <span id="member-fee" class="font-bold text-emerald-700">RM 30.00</span>
+                                    No. KP: <span id="member-ic" class="font-semibold text-slate-700">-</span> • Yuran Bulanan: <span id="member-fee" class="font-bold text-emerald-700">RM 30.00</span>
                                 </p>
                             </div>
                         </div>
@@ -197,7 +194,7 @@
                         <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
                             <div class="bg-rose-50 border border-rose-200 px-4 py-2 rounded-xl text-right">
                                 <p class="text-[11px] font-semibold text-rose-600 uppercase">Jumlah Tunggakan</p>
-                                <p id="member-arrears" class="text-lg font-extrabold text-rose-700">RM 60.00</p>
+                                <p id="member-arrears" class="text-lg font-extrabold text-rose-700">RM 0.00</p>
                             </div>
                             <button onclick="openPaymentModal()" class="px-5 py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm shadow transition flex items-center">
                                 <i class="fa-solid fa-qrcode mr-2"></i> Bayar Yuran / Muat Naik Resit
@@ -340,9 +337,6 @@
                     <button onclick="syncMembersFromGoogleSheets()" id="btn-header-sync-gs" class="hidden px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow transition">
                         <i class="fa-solid fa-rotate mr-1.5"></i> Tarik Data Google Sheets
                     </button>
-                    <button onclick="resetToSampleData()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition">
-                        <i class="fa-solid fa-rotate-left mr-1.5 text-amber-400"></i> Reset Sampel 20 Ahli
-                    </button>
                 </div>
             </div>
 
@@ -351,7 +345,7 @@
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
                     <div>
                         <p class="text-xs font-bold text-slate-400 uppercase">Jumlah Ahli Aktif</p>
-                        <p id="stat-total-members" class="text-2xl font-extrabold text-slate-900 mt-1">20</p>
+                        <p id="stat-total-members" class="text-2xl font-extrabold text-slate-900 mt-1">0</p>
                         <p class="text-xs text-emerald-600 font-medium mt-1"><i class="fa-solid fa-building-shield mr-1"></i>1 Gelanggang</p>
                     </div>
                     <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
@@ -400,7 +394,7 @@
                     <span id="badge-pending-count" class="ml-1.5 px-2 py-0.5 text-xs rounded-full bg-amber-400 text-slate-900 font-extrabold">0</span>
                 </button>
                 <button onclick="switchAdminTab('rekod')" id="tab-admin-rekod" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
-                    <i class="fa-solid fa-table-list mr-2"></i>Rekod Yuran Bulanan (<span id="tab-member-count">20</span> Ahli)
+                    <i class="fa-solid fa-table-list mr-2"></i>Rekod Yuran Bulanan (<span id="tab-member-count">0</span> Ahli)
                 </button>
                 <button onclick="switchAdminTab('ahli')" id="tab-admin-ahli" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
                     <i class="fa-solid fa-user-plus mr-2"></i>Urus Ahli & Import Excel
@@ -544,7 +538,7 @@
                     <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                         <div class="flex justify-between items-center mb-4">
                             <div>
-                                <h3 class="text-lg font-extrabold text-slate-900">Senarai Ahli Berdaftar (<span id="member-list-count">20</span>)</h3>
+                                <h3 class="text-lg font-extrabold text-slate-900">Senarai Ahli Berdaftar (<span id="member-list-count">0</span>)</h3>
                                 <p class="text-xs text-slate-500">Akademi Gayong Nur Insani (Johor Bahru)</p>
                             </div>
                         </div>
@@ -854,8 +848,8 @@
                 <div class="py-4 border-b border-slate-200 grid grid-cols-2 gap-3 text-xs">
                     <div>
                         <p class="text-slate-400 font-semibold uppercase">Diterima Daripada:</p>
-                        <p id="rec-member-name" class="font-extrabold text-slate-900 text-sm mt-0.5">Ahmad Zaki bin Yusof</p>
-                        <p id="rec-member-ic" class="text-slate-600 mt-0.5">No. KP: 120514035521</p>
+                        <p id="rec-member-name" class="font-extrabold text-slate-900 text-sm mt-0.5">-</p>
+                        <p id="rec-member-ic" class="text-slate-600 mt-0.5">No. KP: -</p>
                     </div>
                     <div class="text-right">
                         <p class="text-slate-400 font-semibold uppercase">Tarikh Disahkan:</p>
@@ -953,7 +947,7 @@
             <div class="bg-slate-900 px-5 py-4 flex justify-between items-center text-white">
                 <div>
                     <h3 class="font-extrabold text-sm"><i class="fa-solid fa-file-invoice text-amber-400 mr-2"></i>Bukti Pembayaran Ahli</h3>
-                    <p id="proof-modal-subtitle" class="text-[11px] text-slate-300 mt-0.5">Ahmad Zaki • Bulan Okt 2026</p>
+                    <p id="proof-modal-subtitle" class="text-[11px] text-slate-300 mt-0.5">Nama Ahli • Bulan Okt 2026</p>
                 </div>
                 <button onclick="closeProofModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
@@ -1004,7 +998,7 @@
     <script>
         const MONTHS = ['JAN', 'FEB', 'MAC', 'APR', 'MEI', 'JUN', 'JUL', 'OGO', 'SEP', 'OKT', 'NOV', 'DIS'];
         const FULL_MONTHS = ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'];
-        const STORAGE_KEY = 'akademi_gayong_nur_insani_v1';
+        const STORAGE_KEY = 'akademi_gayong_nur_insani_v2';
         const SETTINGS_KEY = 'akademi_gayong_nur_insani_settings_v1';
         const GELANGGANG_RASMI = 'Akademi Gayong Nur Insani (Johor Bahru)';
 
@@ -1154,108 +1148,7 @@ function doPost(e) {
             </svg>
         `;
 
-        function generate20SampleMembers() {
-            const rawList = [
-                { id: 'AHLI001', name: 'Ahmad Zaki bin Yusof', ic: '120514035521', phone: '013-9123456', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'pending_oct' },
-                { id: 'AHLI002', name: 'Nur Aisyah binti Kamal', ic: '110822036614', phone: '019-9876543', belt: 'Bengkung Merah', category: 'school', fee: 30, pattern: 'pending_nov' },
-                { id: 'AHLI003', name: 'Muhammad Danish bin Razak', ic: '130219038890', phone: '012-9001122', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'arrears_2' },
-                { id: 'AHLI004', name: 'Siti Sarah binti Abdullah', ic: '101105031122', phone: '017-9334455', belt: 'Bengkung Kuning', category: 'school', fee: 30, pattern: 'pending_oct' },
-                { id: 'AHLI005', name: 'Muhammad Hafiz bin Ismail', ic: '090412034411', phone: '014-8112233', belt: 'Bengkung Merah', category: 'school', fee: 30, pattern: 'full_paid' },
-                { id: 'AHLI006', name: 'Nurul Izzah binti Che Hassan', ic: '140728037788', phone: '011-12345678', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'pending_sep' },
-                { id: 'AHLI007', name: 'Wan Muhammad Irfan bin Wan Azmi', ic: '120903032299', phone: '013-9556677', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'full_paid' },
-                { id: 'AHLI008', name: 'Aina Sofea binti Baharudin', ic: '131215039900', phone: '016-9443322', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'pending_nov' },
-                { id: 'AHLI009', name: 'Muhammad Luqman Hakim bin Zulkifli', ic: '110327035544', phone: '018-9778899', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'arrears_1' },
-                { id: 'AHLI010', name: 'Puteri Balqis binti Mohd Noor', ic: '150110036677', phone: '019-9221100', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'mid_join_paid' },
-                { id: 'AHLI011', name: 'Ahmad Syafiq bin Roslan', ic: '050618031199', phone: '012-9887766', belt: 'Bengkung Kuning', category: 'adult', fee: 50, pattern: 'full_paid' },
-                { id: 'AHLI012', name: 'Nur Damia Qistina binti Zamri', ic: '120814033311', phone: '017-9665544', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'arrears_2' },
-                { id: 'AHLI013', name: 'Muhammad Faris bin Kamarudin', ic: '100921038822', phone: '013-9012345', belt: 'Bengkung Merah', category: 'school', fee: 30, pattern: 'full_paid' },
-                { id: 'AHLI014', name: 'Siti Khadijah binti Omar', ic: '130502034499', phone: '014-9321654', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'mid_join_paid' },
-                { id: 'AHLI015', name: 'Nik Muhammad Harith bin Nik Mat', ic: '111130037711', phone: '019-9654321', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'full_paid' },
-                { id: 'AHLI016', name: 'Nur Batrisyia binti Hamzah', ic: '140419032244', phone: '016-9119988', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'arrears_1' },
-                { id: 'AHLI017', name: 'Muhammad Amirul Mukminin bin Saiful', ic: '040825035588', phone: '011-23456789', belt: 'Bengkung Kuning', category: 'adult', fee: 50, pattern: 'full_paid' },
-                { id: 'AHLI018', name: 'Anis Suraya binti Alias', ic: '120211036633', phone: '018-9445566', belt: 'Bengkung Hijau', category: 'school', fee: 30, pattern: 'full_paid' },
-                { id: 'AHLI019', name: 'Muhammad Alif Imran bin Fauzi', ic: '150607039955', phone: '013-9770011', belt: 'Bengkung Putih', category: 'school', fee: 30, pattern: 'mid_join_paid' },
-                { id: 'AHLI020', name: 'Nurul Ain Mardhiah binti Sulaiman', ic: '100129031166', phone: '017-9228844', belt: 'Bengkung Merah', category: 'school', fee: 30, pattern: 'full_paid' }
-            ];
-
-            let serialCounter = 101;
-            return rawList.map((item, idx) => {
-                const payments = {};
-                MONTHS.forEach((m, mIdx) => {
-                    if (mIdx === 11) {
-                        payments[m] = { status: 'not_started' };
-                        return;
-                    }
-                    if (item.pattern === 'mid_join_paid' && mIdx < 5) {
-                        payments[m] = { status: 'not_started' };
-                        return;
-                    }
-
-                    let status = 'paid';
-                    let method = (idx + mIdx) % 3 === 0 ? 'Tunai' : 'Online Transfer';
-                    let ref = method === 'Tunai' ? 'TUNAI' : `M2U${8100 + serialCounter}`;
-                    let date = `05/${String(mIdx + 1).padStart(2, '0')}/2026`;
-                    let receiptNo = `RESIT-2026-${String(serialCounter++).padStart(4, '0')}`;
-                    let receiptFile = null;
-                    let receiptDataUrl = null;
-                    let receiptType = null;
-
-                    if (item.pattern === 'pending_oct' && mIdx === 9) {
-                        status = 'pending';
-                        method = 'Online Transfer';
-                        ref = `DNQR${7700 + idx}`;
-                        date = '15/11/2026';
-                        receiptNo = '';
-                        receiptFile = `resit_okt_${item.id.toLowerCase()}.jpg`;
-                        receiptType = 'image/svg+xml';
-                        receiptDataUrl = createSampleReceiptSVG(item.name, 'Oktober', item.fee, ref);
-                    } else if (item.pattern === 'pending_nov' && mIdx === 10) {
-                        status = 'pending';
-                        method = 'Online Transfer';
-                        ref = `DNQR${7700 + idx}`;
-                        date = '15/11/2026';
-                        receiptNo = '';
-                        receiptFile = `resit_nov_${item.id.toLowerCase()}.jpg`;
-                        receiptType = 'image/svg+xml';
-                        receiptDataUrl = createSampleReceiptSVG(item.name, 'November', item.fee, ref);
-                    } else if (item.pattern === 'pending_sep' && mIdx === 8) {
-                        status = 'pending';
-                        method = 'Online Transfer';
-                        ref = `DNQR${7700 + idx}`;
-                        date = '15/11/2026';
-                        receiptNo = '';
-                        receiptFile = `resit_sep_${item.id.toLowerCase()}.jpg`;
-                        receiptType = 'image/svg+xml';
-                        receiptDataUrl = createSampleReceiptSVG(item.name, 'September', item.fee, ref);
-                    } else if (item.pattern === 'pending_sep' && mIdx > 8) {
-                        status = 'unpaid';
-                        method = ''; ref = ''; date = ''; receiptNo = '';
-                    } else if (item.pattern === 'arrears_2' && (mIdx === 9 || mIdx === 10)) {
-                        status = 'unpaid';
-                        method = ''; ref = ''; date = ''; receiptNo = '';
-                    } else if (item.pattern === 'arrears_1' && mIdx === 10) {
-                        status = 'unpaid';
-                        method = ''; ref = ''; date = ''; receiptNo = '';
-                    }
-
-                    payments[m] = { status, method, ref, date, receiptNo, receiptFile, receiptDataUrl, receiptType };
-                });
-
-                return {
-                    id: item.id,
-                    name: item.name,
-                    ic: item.ic,
-                    phone: item.phone,
-                    gelanggang: GELANGGANG_RASMI,
-                    belt: item.belt,
-                    category: item.category || (item.fee >= 50 ? 'adult' : 'school'),
-                    fee: item.fee,
-                    payments
-                };
-            });
-        }
-
-        // Load Settings & Members
+        // Load Settings & Members (Tiada data sampel 20 ahli - ikut data sebenar Google Sheets / Gurulatih)
         let gelanggangSettings = {
             regFee: 20,
             monthlyFeeSchool: 30,
@@ -1284,9 +1177,9 @@ function doPost(e) {
         let members = [];
         try {
             const saved = localStorage.getItem(STORAGE_KEY);
-            members = saved ? JSON.parse(saved) : generate20SampleMembers();
+            members = saved ? JSON.parse(saved) : [];
         } catch (e) {
-            members = generate20SampleMembers();
+            members = [];
         }
 
         function saveToStorage() {
@@ -1299,6 +1192,24 @@ function doPost(e) {
             try {
                 localStorage.setItem(SETTINGS_KEY, JSON.stringify(gelanggangSettings));
             } catch (e) {}
+        }
+
+        function renderQuickMembersBar() {
+            const totalCountEl = document.getElementById('quick-total-count');
+            const buttonsContainer = document.getElementById('quick-members-buttons');
+            if (totalCountEl) totalCountEl.textContent = members.length;
+            if (!buttonsContainer) return;
+
+            if (members.length === 0) {
+                buttonsContainer.innerHTML = `<span class="text-slate-400 italic">Belum ada rekod ahli. Sila daftar atau tarik data dari Google Sheets di Dashboard Gurulatih.</span>`;
+                return;
+            }
+
+            buttonsContainer.innerHTML = members.slice(0, 6).map(m => `
+                <button onclick="quickSearch('${m.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 hover:text-amber-800 font-medium transition">
+                    ${m.name} (${m.id})
+                </button>
+            `).join('');
         }
 
         function applySettingsToUI() {
@@ -1355,6 +1266,7 @@ function doPost(e) {
             document.getElementById('info-tab-qr-container').innerHTML = qrHtml;
             document.getElementById('payment-modal-qr-box').innerHTML = qrHtml;
             document.getElementById('setting-qr-preview-box').innerHTML = qrHtml;
+            renderQuickMembersBar();
         }
 
         // --- GOOGLE SHEETS INTEGRATION FUNCTIONS ---
@@ -1375,28 +1287,32 @@ function doPost(e) {
             }
         }
 
-        async function syncMembersFromGoogleSheets() {
+        async function syncMembersFromGoogleSheets(silent = false) {
             const inputUrl = document.getElementById('setting-gsheet-url') ? document.getElementById('setting-gsheet-url').value.trim() : '';
             const url = inputUrl || (gelanggangSettings.googleSheetUrl || '').trim();
 
             if (!url) {
-                showToast('Sila tampal Google Sheets Web App URL terlebih dahulu.', 'error');
+                if (!silent) showToast('Sila tampal Google Sheets Web App URL terlebih dahulu.', 'error');
                 return;
             }
 
-            showToast('Sedang menarik senarai ahli dari Google Sheets...', 'info');
+            if (!silent) showToast('Sedang menarik senarai ahli dari Google Sheets...', 'info');
             try {
                 const separator = url.includes('?') ? '&' : '?';
                 const res = await fetch(`${url}${separator}action=getMembers`);
                 const rows = await res.json();
 
                 if (!Array.isArray(rows)) {
-                    showToast('Format data Google Sheets tidak sah. Sila pastikan skrip Apps Script telah diterbitkan (Deploy).', 'error');
+                    if (!silent) showToast('Format data Google Sheets tidak sah. Sila pastikan skrip Apps Script telah diterbitkan (Deploy).', 'error');
                     return;
                 }
 
                 if (rows.length === 0) {
-                    showToast('Tab "Senarai_Ahli" di Google Sheets masih kosong. Anda boleh tekan "Hantar Ahli Semasa Ke Google Sheets".', 'info');
+                    members = [];
+                    saveToStorage();
+                    renderQuickMembersBar();
+                    updateAllAdminViews();
+                    if (!silent) showToast('Tab "Senarai_Ahli" di Google Sheets masih kosong.', 'info');
                     return;
                 }
 
@@ -1447,10 +1363,19 @@ function doPost(e) {
                 }
 
                 saveToStorage();
+                renderQuickMembersBar();
                 updateAllAdminViews();
-                showToast(`Berjaya segerakkan ${rows.length} rekod ahli terkini daripada Google Sheets!`, 'success');
+                if (currentSearchedMemberId) {
+                    if (members.some(m => m.id === currentSearchedMemberId)) {
+                        renderMemberResult(currentSearchedMemberId);
+                    } else {
+                        currentSearchedMemberId = null;
+                        document.getElementById('member-result-card').classList.add('hidden');
+                    }
+                }
+                if (!silent) showToast(`Berjaya segerakkan ${rows.length} rekod ahli terkini daripada Google Sheets!`, 'success');
             } catch (err) {
-                showToast('Gagal membaca Google Sheets. Pastikan akses Web App ditetapkan kepada "Anyone".', 'error');
+                if (!silent) showToast('Gagal membaca Google Sheets. Pastikan akses Web App ditetapkan kepada "Anyone".', 'error');
             }
         }
 
@@ -1488,14 +1413,6 @@ function doPost(e) {
             }
         }
 
-        function resetToSampleData() {
-            members = generate20SampleMembers();
-            saveToStorage();
-            updateAllAdminViews();
-            if (currentSearchedMemberId) renderMemberResult(currentSearchedMemberId);
-            showToast('Data sampel 20 ahli & 1 gelanggang berjaya ditetapkan semula!', 'success');
-        }
-
         let currentSearchedMemberId = null;
         let currentEditTarget = { memberId: null, month: null };
 
@@ -1511,6 +1428,7 @@ function doPost(e) {
                 viewAdmin.classList.add('hidden');
                 btnAhli.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-slate-900 shadow";
                 btnAdmin.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all";
+                renderQuickMembersBar();
                 if (currentSearchedMemberId) renderMemberResult(currentSearchedMemberId);
             } else {
                 viewAhli.classList.add('hidden');
@@ -2161,6 +2079,17 @@ function doPost(e) {
 
             const filtered = members.filter(m => m.name.toLowerCase().includes(search) || m.ic.includes(search) || m.id.toLowerCase().includes(search));
 
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="13" class="py-8 text-center text-slate-400 font-medium">
+                            Tiada rekod ahli dijumpai. Sila daftar ahli baharu atau tarik senarai dari Google Sheets.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
             filtered.forEach(m => {
                 let rowHtml = `
                     <tr class="hover:bg-slate-50/80 transition">
@@ -2388,6 +2317,7 @@ function doPost(e) {
                 }
 
                 saveToStorage();
+                renderQuickMembersBar();
                 updateAllAdminViews();
                 event.target.value = '';
                 postToGoogleSheets({
@@ -2450,6 +2380,7 @@ function doPost(e) {
             const target = members.find(m => m.id === id);
             members = members.filter(m => m.id !== id);
             saveToStorage();
+            renderQuickMembersBar();
             updateAllAdminViews();
             if (currentSearchedMemberId === id) {
                 currentSearchedMemberId = null;
@@ -2468,6 +2399,16 @@ function doPost(e) {
             const container = document.getElementById('admin-members-list');
             document.getElementById('member-list-count').textContent = members.length;
             container.innerHTML = '';
+
+            if (members.length === 0) {
+                container.innerHTML = `
+                    <div class="py-10 text-center text-slate-400 text-xs">
+                        <p class="font-bold text-slate-600 text-sm">Belum ada senarai ahli berdaftar.</p>
+                        <p class="mt-1">Gunakan borang di sebelah kiri untuk mendaftar ahli baharu atau klik <strong>Tarik Data Google Sheets</strong>.</p>
+                    </div>
+                `;
+                return;
+            }
 
             members.forEach(m => {
                 container.innerHTML += `
@@ -2657,11 +2598,14 @@ function doPost(e) {
         }
 
         // Initialize default view on load
-        window.onload = function() {
+        window.onload = async function() {
             applySettingsToUI();
-            quickSearch('120514035521');
+            updateAllAdminViews();
             if ((gelanggangSettings.googleSheetUrl || '').trim()) {
-                syncMembersFromGoogleSheets();
+                await syncMembersFromGoogleSheets(true);
+            }
+            if (members.length > 0) {
+                quickSearch(members[0].name);
             }
         };
     </script>
