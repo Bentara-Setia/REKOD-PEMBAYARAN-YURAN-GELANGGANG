@@ -696,7 +696,7 @@
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Google Sheets Web App URL</label>
-                            <input type="url" id="setting-gsheet-url" placeholder="https://script.google.com/macros/s/AKfycbx.../exec" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono outline-none focus:ring-2 focus:ring-emerald-600">
+                            <input type="url" id="setting-gsheet-url" placeholder="https://script.google.com/macros/s/AKfycbzNBhpsnhtD1Ctv04pmNVLZc8wTvTh8PWuBLLxwGlgZ46BUWacSN9GcNym45zTTlp2A-A/exec" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono outline-none focus:ring-2 focus:ring-emerald-600">
                         </div>
 
                         <div class="flex flex-col sm:flex-row gap-2">
@@ -1068,26 +1068,23 @@ function doPost(e) {
     return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
   }
 
-  if (payload.type == "sync_all_members") {
+  if (payload.type == "sync_all_members" || payload.type == "delete_member" || payload.type == "replace_all_members") {
     var memSheet = ss.getSheetByName("Senarai_Ahli");
     if (memSheet && Array.isArray(payload.members)) {
-      var existing = memSheet.getDataRange().getValues();
-      var existingIds = {};
-      for (var i = 1; i < existing.length; i++) {
-        existingIds[String(existing[i][0]).trim()] = true;
+      var lastRow = memSheet.getLastRow();
+      if (lastRow > 1) {
+        memSheet.getRange(2, 1, lastRow - 1, memSheet.getLastColumn()).clearContent();
       }
-      payload.members.forEach(function(m) {
-        if (!existingIds[String(m.id).trim()]) {
-          memSheet.appendRow([
-            m.id,
-            m.name,
-            "'" + m.ic,
-            "'" + m.phone,
-            m.belt,
-            m.category,
-            m.fee
-          ]);
-        }
+      payload.members.forEach(function(m, index) {
+        memSheet.getRange(index + 2, 1, 1, 7).setValues([[
+          m.id,
+          m.name,
+          "'" + m.ic,
+          "'" + m.phone,
+          m.belt,
+          m.category,
+          m.fee
+        ]]);
       });
     }
     return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
@@ -1269,12 +1266,19 @@ function doPost(e) {
             qrImageData: null,
             tgBotToken: '9044186434:AAHQTkpV3mt6vOsg681WzgyJYfI7Kxbv1Ag',
             tgChatId: '34633133',
-            googleSheetUrl: ''
+            googleSheetUrl: 'https://script.google.com/macros/s/AKfycbzNBhpsnhtD1Ctv04pmNVLZc8wTvTh8PWuBLLxwGlgZ46BUWacSN9GcNym45zTTlp2A-A/exec'
         };
 
         try {
             const savedSettings = localStorage.getItem(SETTINGS_KEY);
-            if (savedSettings) gelanggangSettings = { ...gelanggangSettings, ...JSON.parse(savedSettings) };
+            if (savedSettings) {
+                const parsed = JSON.parse(savedSettings);
+                gelanggangSettings = {
+                    ...gelanggangSettings,
+                    ...parsed,
+                    googleSheetUrl: parsed.googleSheetUrl || gelanggangSettings.googleSheetUrl
+                };
+            }
         } catch (e) {}
 
         let members = [];
@@ -1396,7 +1400,6 @@ function doPost(e) {
                     return;
                 }
 
-                let importedCount = 0;
                 const defaultSchoolFee = Number(gelanggangSettings.monthlyFeeSchool ?? 30);
 
                 rows.forEach((row, idx) => {
@@ -1434,11 +1437,9 @@ function doPost(e) {
                             fee,
                             payments
                         });
-                        importedCount++;
                     }
                 });
 
-                // Buang ahli dalam memori tempatan yang sudah dipadam di Google Sheets (jika Google Sheets ada rekod)
                 const sheetIds = new Set(rows.map(r => String(r.ID_Ahli || '').trim()).filter(Boolean));
                 const sheetIcs = new Set(rows.map(r => String(r.No_KP || '').replace(/[^0-9]/g, '').trim()).filter(Boolean));
                 if (sheetIds.size > 0 || sheetIcs.size > 0) {
