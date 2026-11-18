@@ -85,7 +85,7 @@
                             <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-amber-400 leading-tight uppercase">
                                 AKADEMI GAYONG NUR INSANI
                             </h1>
-                            <p class="text-xs text-slate-300">Sistem Pengurusan & Semakan Yuran Gelanggang • Johor Bahru</p>
+                            <p id="header-subtitle-gelanggang" class="text-xs text-slate-300">Sistem Pengurusan & Semakan Yuran • 4 Gelanggang</p>
                         </div>
                     </div>
                 </div>
@@ -115,11 +115,11 @@
             <div class="bg-gradient-to-r from-blue-900 via-slate-900 to-blue-950 rounded-2xl p-6 text-white shadow-md border border-blue-800/60 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="space-y-1.5 text-center md:text-left">
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
-                        <i class="fa-solid fa-shield-halved mr-1.5"></i> Akademi Gayong Nur Insani • Johor Bahru
+                        <i class="fa-solid fa-shield-halved mr-1.5"></i> Akademi Gayong Nur Insani • <span id="banner-gelanggang-count" class="ml-1">4 Gelanggang</span>
                     </span>
                     <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight">Semakan & Pembayaran Yuran Bulanan</h2>
                     <p class="text-xs sm:text-sm text-slate-300 max-w-2xl">
-                        Semak status bayaran bulanan anak anda menggunakan Nama Penuh atau No. Kad Pengenalan, muat naik bukti resit bayaran QR/Bank, dan cetak resit rasmi yang disahkan oleh <strong>Cikgu Bujal</strong>.
+                        Semak status bayaran bulanan anak anda menggunakan Nama Penuh atau No. Kad Pengenalan, muat naik bukti resit bayaran QR/Bank, dan cetak resit rasmi yang disahkan oleh <strong id="banner-coach-name">Gurulatih Gelanggang</strong>.
                     </p>
                 </div>
                 <div class="flex flex-wrap justify-center gap-2 shrink-0">
@@ -144,7 +144,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
-                            <input type="text" id="search-ic-input" placeholder="Taip nama pelajar atau No. Kad Pengenalan..."
+                            <input type="text" id="search-ic-input" value="" autocomplete="off" placeholder="Taip nama pelajar atau No. Kad Pengenalan..."
                                 class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm font-medium transition outline-none"
                                 oninput="handleLiveSearchSuggestions()"
                                 onkeyup="if(event.key === 'Enter') searchMember()">
@@ -160,10 +160,11 @@
                         <div id="search-matches-list" class="flex flex-wrap gap-2"></div>
                     </div>
 
-                    <!-- Senarai Pantas Ahli Berdaftar -->
-                    <div id="quick-members-bar" class="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                        <span class="font-semibold text-slate-600">Ahli berdaftar (<span id="quick-total-count">0</span>):</span>
-                        <div id="quick-members-buttons" class="flex flex-wrap gap-1.5"></div>
+                    <!-- Bilangan Ahli Berdaftar Sahaja -->
+                    <div id="quick-members-bar" class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+                        <span class="inline-flex items-center font-semibold text-slate-600">
+                            <i class="fa-solid fa-users text-blue-600 mr-1.5"></i>Ahli berdaftar: <strong id="quick-total-count" class="mx-1 text-slate-900 font-extrabold">0</strong> orang pelajar (<span id="quick-gelanggang-count">4</span> gelanggang aktif)
+                        </span>
                     </div>
                 </div>
 
@@ -181,7 +182,7 @@
                                     <span id="member-id-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">AHLI001</span>
                                 </div>
                                 <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
-                                    <i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> <span id="member-gelanggang">Akademi Gayong Nur Insani (Johor Bahru)</span>
+                                    <i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> <span id="member-gelanggang" class="font-semibold text-slate-800">Gelanggang Utama</span>
                                     <span class="mx-2 text-slate-300">|</span>
                                     <i class="fa-solid fa-award text-amber-500 mr-1"></i> <span id="member-belt">Bengkung Putih</span>
                                 </p>
@@ -227,115 +228,147 @@
                 </div>
             </div>
 
-            <!-- TAB 2: MAKLUMAT GELANGGANG & KOD QR RASMI -->
-            <div id="ahli-content-gelanggang" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
-                <div class="bg-slate-900 rounded-2xl p-6 text-white shadow-lg border border-slate-800 flex flex-col justify-between space-y-5">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Gelanggang Rasmi</span>
-                                <h3 class="text-xl font-extrabold mt-0.5">AKADEMI GAYONG NUR INSANI</h3>
-                                <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-location-dot mr-1.5 text-rose-400"></i>Johor Bahru, Johor</p>
-                            </div>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Aktif</span>
+            <!-- TAB 2: MAKLUMAT GELANGGANG & KOD QR RASMI (4 GELANGGANG) -->
+            <div id="ahli-content-gelanggang" class="hidden space-y-5 animate-fade-in">
+                <!-- Pemilih Gelanggang untuk Ibu Bapa -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-building-shield"></i>
                         </div>
-                        <div class="space-y-3 bg-slate-800/80 p-4 rounded-xl border border-slate-700/70 text-sm">
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Gurulatih Utama:</span>
-                                <span class="font-bold text-amber-300">Cikgu Bujal</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Hari Latihan:</span>
-                                <span class="font-semibold text-white">Jumaat & Sabtu</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Masa Latihan:</span>
-                                <span class="font-semibold text-amber-300">8:30 PM – 10:30 PM</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Yuran Pendaftaran:</span>
-                                <span id="info-tab-reg-fee" class="font-semibold text-amber-300">RM 20.00 (Sekali Sahaja)</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Kadar Yuran Bulanan:</span>
-                                <span id="info-tab-monthly-fee" class="font-semibold text-emerald-400">RM 30 (Sekolah) / RM 50 (Dewasa)</span>
-                            </div>
+                        <div>
+                            <p class="text-xs font-extrabold text-slate-900 uppercase">Pilih Gelanggang Latihan</p>
+                            <p class="text-[11px] text-slate-500">Paparan maklumat gurulatih, jadual latihan, dan Kod QR / Akaun Bank mengikut gelanggang.</p>
                         </div>
                     </div>
-                    <div class="pt-2">
-                        <a href="https://wa.me/60163879047" target="_blank" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center transition shadow">
-                            <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Hubungi Cikgu Bujal (WhatsApp)
-                        </a>
+                    <div id="ahli-gelanggang-pills" class="flex flex-wrap gap-2">
+                        <!-- Populated by JS -->
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-5">
-                    <div>
-                        <div class="flex justify-between items-center mb-3">
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-pink-600">Saluran Pembayaran</span>
-                                <h3 class="text-xl font-extrabold text-slate-900">DuitNow QR & Akaun Gelanggang</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-slate-900 rounded-2xl p-6 text-white shadow-lg border border-slate-800 flex flex-col justify-between space-y-5">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Gelanggang Rasmi</span>
+                                    <h3 id="info-tab-gel-name" class="text-xl font-extrabold mt-0.5">AKADEMI GAYONG NUR INSANI (GELANGGANG 1)</h3>
+                                    <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-location-dot mr-1.5 text-rose-400"></i><span id="info-tab-gel-location">Johor Bahru, Johor</span></p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Aktif</span>
                             </div>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-pink-50 text-pink-700 border border-pink-200">DuitNow</span>
+                            <div class="space-y-3 bg-slate-800/80 p-4 rounded-xl border border-slate-700/70 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Gurulatih Gelanggang:</span>
+                                    <span id="info-tab-coach-name" class="font-bold text-amber-300">Cikgu Bujal</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">No. Telefon / WhatsApp:</span>
+                                    <span id="info-tab-coach-phone" class="font-semibold text-white">016-3879047</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Hari Latihan:</span>
+                                    <span id="info-tab-gel-days" class="font-semibold text-white">Jumaat & Sabtu</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Masa Latihan:</span>
+                                    <span id="info-tab-gel-time" class="font-semibold text-amber-300">8:30 PM – 10:30 PM</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Yuran Pendaftaran:</span>
+                                    <span id="info-tab-reg-fee" class="font-semibold text-amber-300">RM 20.00 (Sekali Sahaja)</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Kadar Yuran Bulanan:</span>
+                                    <span id="info-tab-monthly-fee" class="font-semibold text-emerald-400">RM 30 (Sekolah) / RM 50 (Dewasa)</span>
+                                </div>
+                            </div>
                         </div>
-                        <p class="text-xs text-slate-500 mb-4">Imbas Kod QR di bawah atau pindahkan yuran ke akaun rasmi akademi, kemudian muat naik gambar/PDF resit di halaman Semak Yuran.</p>
-                        
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
-                            <div id="info-tab-qr-container" class="w-36 h-36 bg-white rounded-xl border-2 border-pink-500 flex items-center justify-center p-2 shrink-0 shadow-sm overflow-hidden">
-                                <!-- Populated by JS -->
-                            </div>
-                            <div class="space-y-2.5 w-full text-center sm:text-left">
-                                <div>
-                                    <p class="text-[11px] font-bold text-slate-400 uppercase">Nama Bank</p>
-                                    <p id="info-tab-bank-name" class="text-sm font-extrabold text-slate-800">Maybank Islamic</p>
-                                </div>
-                                <div>
-                                    <p class="text-[11px] font-bold text-slate-400 uppercase">Nama Pemegang Akaun</p>
-                                    <p id="info-tab-acc-holder" class="text-sm font-bold text-slate-700">Akademi Gayong Nur Insani</p>
-                                </div>
-                                <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-sm">
-                                    <span id="info-tab-acc-number" class="font-mono font-extrabold text-slate-900 text-sm">562106548892</span>
-                                    <button type="button" onclick="copyAccNumber()" class="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center bg-blue-50 px-2.5 py-1 rounded-lg">
-                                        <i class="fa-regular fa-copy mr-1"></i> Salin
-                                    </button>
-                                </div>
-                            </div>
+                        <div class="pt-2">
+                            <a id="info-tab-wa-link" href="https://wa.me/60163879047" onclick="openCoachWhatsApp(event)" target="_blank" rel="noopener noreferrer" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center transition shadow">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> <span id="info-tab-wa-text">Hubungi Cikgu Bujal (WhatsApp)</span>
+                            </a>
                         </div>
                     </div>
-                    <button onclick="switchAhliTab('semak')" class="w-full py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm transition shadow">
-                        <i class="fa-solid fa-upload mr-2"></i> Pergi Ke Muat Naik Bukti Resit
-                    </button>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-5">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <span id="info-tab-qr-badge" class="text-xs font-bold uppercase tracking-wider text-pink-600">Saluran Pembayaran Gelanggang</span>
+                                    <h3 class="text-xl font-extrabold text-slate-900">DuitNow QR & Akaun Gelanggang</h3>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-pink-50 text-pink-700 border border-pink-200">DuitNow</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mb-4">Imbas Kod QR di bawah atau pindahkan yuran ke akaun gelanggang ini, kemudian muat naik gambar/PDF resit di halaman Semak Yuran.</p>
+                            
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
+                                <div id="info-tab-qr-container" class="w-36 h-36 bg-white rounded-xl border-2 border-pink-500 flex items-center justify-center p-2 shrink-0 shadow-sm overflow-hidden">
+                                    <!-- Populated by JS -->
+                                </div>
+                                <div class="space-y-2.5 w-full text-center sm:text-left">
+                                    <div>
+                                        <p class="text-[11px] font-bold text-slate-400 uppercase">Nama Bank</p>
+                                        <p id="info-tab-bank-name" class="text-sm font-extrabold text-slate-800">Maybank Islamic</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[11px] font-bold text-slate-400 uppercase">Nama Pemegang Akaun</p>
+                                        <p id="info-tab-acc-holder" class="text-sm font-bold text-slate-700">Akademi Gayong Nur Insani</p>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-sm">
+                                        <span id="info-tab-acc-number" class="font-mono font-extrabold text-slate-900 text-sm">562106548892</span>
+                                        <button type="button" onclick="copyAccNumber('info-tab-acc-number')" class="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center bg-blue-50 px-2.5 py-1 rounded-lg">
+                                            <i class="fa-regular fa-copy mr-1"></i> Salin
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="switchAhliTab('semak')" class="w-full py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm transition shadow">
+                            <i class="fa-solid fa-upload mr-2"></i> Pergi Ke Muat Naik Bukti Resit
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- ===================================================================== -->
-        <!-- VIEW 2: DASHBOARD GURULATIH (ADMIN VIEW)                              -->
+        <!-- VIEW 2: DASHBOARD GURULATIH (ADMIN VIEW - 4 GELANGGANG)               -->
         <!-- ===================================================================== -->
         <div id="view-admin" class="hidden space-y-6 animate-fade-in">
 
-            <!-- Ringkasan Info Gurulatih & Gelanggang -->
-            <div class="bg-slate-900 text-white rounded-2xl p-5 shadow-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border border-slate-800">
+            <!-- Ringkasan Info Gurulatih & Penapis 4 Gelanggang -->
+            <div class="bg-slate-900 text-white rounded-2xl p-5 shadow-md flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border border-slate-800">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-extrabold text-lg shadow">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-extrabold text-lg shadow shrink-0">
                         <i class="fa-solid fa-user-ninja"></i>
                     </div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <h2 class="text-base sm:text-lg font-extrabold text-white">Gurulatih: Cikgu Bujal</h2>
+                            <h2 id="admin-header-coach-name" class="text-base sm:text-lg font-extrabold text-white">Panel Pengurusan 4 Gelanggang</h2>
                             <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Aktif</span>
                             <span id="gsheet-status-pill" class="hidden px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">
-                                <i class="fa-solid fa-table mr-1"></i>Google Sheets Aktif
+                                <i class="fa-solid fa-table mr-1"></i>1 Google Sheets Berpusat
                             </span>
                         </div>
-                        <p class="text-xs text-slate-300 mt-0.5">
-                            <i class="fa-solid fa-location-dot text-amber-400 mr-1"></i> Akademi Gayong Nur Insani • Johor Bahru
+                        <p id="admin-header-coach-sub" class="text-xs text-slate-300 mt-0.5">
+                            <i class="fa-solid fa-building-shield text-amber-400 mr-1"></i> Paparan: Semua Gelanggang (4 Gelanggang Aktif)
                         </p>
                     </div>
                 </div>
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-end">
+                    <!-- Penapis Gelanggang (Kaedah 1) -->
+                    <div class="flex items-center bg-slate-800 border border-slate-700 rounded-xl px-3 py-1.5">
+                        <i class="fa-solid fa-filter text-amber-400 text-xs mr-2"></i>
+                        <select id="admin-gelanggang-filter" onchange="onAdminGelanggangFilterChange()" class="bg-transparent text-white text-xs font-bold outline-none cursor-pointer">
+                            <option value="ALL" class="text-slate-900">Semua Gelanggang (4)</option>
+                        </select>
+                    </div>
+                    <button onclick="openGelanggangManagerTab()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-extrabold shadow transition">
+                        <i class="fa-solid fa-pen-to-square mr-1.5"></i> Urus Gelanggang, Gurulatih & QR
+                    </button>
                     <button onclick="syncMembersFromGoogleSheets()" id="btn-header-sync-gs" class="hidden px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow transition">
-                        <i class="fa-solid fa-rotate mr-1.5"></i> Tarik Data Google Sheets
+                        <i class="fa-solid fa-rotate mr-1.5"></i> Segerak Sheets
                     </button>
                 </div>
             </div>
@@ -346,7 +379,7 @@
                     <div>
                         <p class="text-xs font-bold text-slate-400 uppercase">Jumlah Ahli Aktif</p>
                         <p id="stat-total-members" class="text-2xl font-extrabold text-slate-900 mt-1">0</p>
-                        <p class="text-xs text-emerald-600 font-medium mt-1"><i class="fa-solid fa-building-shield mr-1"></i>1 Gelanggang</p>
+                        <p id="stat-gelanggang-label" class="text-xs text-emerald-600 font-medium mt-1"><i class="fa-solid fa-building-shield mr-1"></i>4 Gelanggang</p>
                     </div>
                     <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
                         <i class="fa-solid fa-users"></i>
@@ -399,11 +432,14 @@
                 <button onclick="switchAdminTab('ahli')" id="tab-admin-ahli" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
                     <i class="fa-solid fa-user-plus mr-2"></i>Urus Ahli & Import Excel
                 </button>
+                <button onclick="switchAdminTab('gelanggang')" id="tab-admin-gelanggang" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-building-shield mr-2 text-amber-600"></i>Urus Gelanggang, Gurulatih & QR
+                </button>
                 <button onclick="switchAdminTab('kewangan')" id="tab-admin-kewangan" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
                     <i class="fa-solid fa-file-chart-column mr-2"></i>Penyata Kewangan
                 </button>
                 <button onclick="switchAdminTab('tetapan')" id="tab-admin-tetapan" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
-                    <i class="fa-solid fa-sliders mr-2 text-blue-600"></i>Tetapan Yuran, QR, Telegram & Google Sheets
+                    <i class="fa-solid fa-sliders mr-2 text-blue-600"></i>Tetapan Yuran, QR Utama, Telegram & Sheets
                 </button>
             </div>
 
@@ -436,7 +472,7 @@
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase">
-                                <th class="py-3.5 px-4 sticky left-0 bg-slate-50 z-10 min-w-[200px]">Nama Ahli / WhatsApp</th>
+                                <th class="py-3.5 px-4 sticky left-0 bg-slate-50 z-10 min-w-[220px]">Nama Ahli / Gelanggang</th>
                                 <th class="py-3.5 px-2 text-center">JAN</th>
                                 <th class="py-3.5 px-2 text-center">FEB</th>
                                 <th class="py-3.5 px-2 text-center">MAC</th>
@@ -464,7 +500,7 @@
                     <div class="space-y-1">
                         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-200 text-blue-900 uppercase">Pendaftaran Pukal</span>
                         <h4 class="text-base font-extrabold text-slate-900">Import Senarai Pelajar Dari Fail Excel / CSV</h4>
-                        <p class="text-xs text-slate-600 max-w-xl">Muat naik fail CSV mengandungi lajur: <strong>Nama, NoKP, NoTelefon, Yuran</strong> untuk memasukkan ramai pelajar serentak.</p>
+                        <p class="text-xs text-slate-600 max-w-xl">Muat naik fail CSV mengandungi lajur: <strong>Nama, NoKP, NoTelefon, Yuran, Gelanggang</strong> untuk memasukkan ramai pelajar serentak ke dalam satu Google Sheets.</p>
                     </div>
                     <div class="flex flex-wrap gap-2 shrink-0">
                         <button onclick="downloadSampleCSV()" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs transition">
@@ -482,6 +518,12 @@
                         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 uppercase">Khusus Gurulatih</span>
                         <h3 class="text-lg font-extrabold text-slate-900 mt-1 mb-4">Daftar Ahli Baharu</h3>
                         <form onsubmit="addNewMember(event)" class="space-y-3.5">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Gelanggang Latihan *</label>
+                                <select id="new-member-gelanggang" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold text-slate-800 outline-none bg-white focus:ring-2 focus:ring-blue-600">
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Nama Penuh Ahli *</label>
                                 <input type="text" id="new-member-name" required placeholder="Contoh: Muhammad Amirul"
@@ -509,11 +551,17 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-slate-700 mb-1">Yuran Bulanan</label>
-                                    <select id="new-member-fee" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm outline-none bg-white">
+                                    <select id="new-member-fee" onchange="toggleCustomNewFeeInput()" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm outline-none bg-white">
                                         <option value="school">RM 30.00 (Sekolah)</option>
                                         <option value="adult">RM 50.00 (Dewasa)</option>
+                                        <option value="custom">Harga Khas (RM)</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div id="new-member-custom-fee-box" class="hidden">
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Masukkan Harga Yuran Khas (RM)</label>
+                                <input type="number" min="0" step="1" id="new-member-custom-fee-val" placeholder="Contoh: 25"
+                                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-600">
                             </div>
                             <div class="bg-amber-50 border border-amber-200 rounded-xl px-3.5 py-2.5 flex justify-between items-center text-xs">
                                 <span class="font-bold text-amber-900">Yuran Pendaftaran Semasa:</span>
@@ -536,26 +584,46 @@
                     </div>
 
                     <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                        <div class="flex justify-between items-center mb-4">
+                        <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
                             <div>
                                 <h3 class="text-lg font-extrabold text-slate-900">Senarai Ahli Berdaftar (<span id="member-list-count">0</span>)</h3>
-                                <p class="text-xs text-slate-500">Akademi Gayong Nur Insani (Johor Bahru)</p>
+                                <p class="text-xs text-slate-500">Klik ikon <strong>Pensel</strong> untuk tukar gelanggang/yuran ahli atau ikon <strong>Tong Sampah</strong> untuk padam (Auto-Sync Google Sheets).</p>
                             </div>
                         </div>
-                        <div id="admin-members-list" class="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
+                        <div id="admin-members-list" class="divide-y divide-slate-100 max-h-[540px] overflow-y-auto">
                             <!-- Populated by JS -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ADMIN TAB 4: PENYATA KEWANGAN & LAPORAN -->
+            <!-- ADMIN TAB 4: URUS 4 GELANGGANG, GURULATIH & QR BANK -->
+            <div id="admin-content-gelanggang" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-slate-100">
+                        <div>
+                            <span class="text-xs font-bold text-amber-600 uppercase">Pengurusan Cawangan, Jurulatih & Akaun Bank</span>
+                            <h3 class="text-lg font-extrabold text-slate-900">Senarai Gelanggang, Gurulatih & Kod QR Khas</h3>
+                            <p class="text-xs text-slate-500">Setiap gelanggang boleh menggunakan <strong>nama gurulatih, nombor WhatsApp, akaun bank, dan gambar Kod QR DuitNow berbeza</strong>.</p>
+                        </div>
+                        <button type="button" onclick="addNewGelanggang()" class="px-4 py-2.5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs shadow transition flex items-center shrink-0">
+                            <i class="fa-solid fa-plus mr-1.5"></i> Tambah Gelanggang Baharu
+                        </button>
+                    </div>
+
+                    <div id="gelanggang-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN TAB 5: PENYATA KEWANGAN & LAPORAN -->
             <div id="admin-content-kewangan" class="hidden space-y-6">
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                         <div>
                             <h3 class="text-lg font-extrabold text-slate-900">Penyata Kewangan & Kutipan Yuran (2026)</h3>
-                            <p class="text-xs text-slate-500">Ringkasan pendapatan bulanan berdasarkan resit yang telah disahkan oleh Cikgu Bujal.</p>
+                            <p id="fin-subtitle-coach" class="text-xs text-slate-500">Ringkasan pendapatan bulanan mengikut penapis gelanggang semasa.</p>
                         </div>
                         <button onclick="exportFinanceCSV()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition flex items-center">
                             <i class="fa-solid fa-file-csv text-base mr-2"></i> Muat Turun Laporan (CSV / Excel)
@@ -584,6 +652,7 @@
                                     <th class="py-3 px-4">No. Resit</th>
                                     <th class="py-3 px-4">Tarikh</th>
                                     <th class="py-3 px-4">Nama Ahli</th>
+                                    <th class="py-3 px-4">Gelanggang</th>
                                     <th class="py-3 px-4">Bulan</th>
                                     <th class="py-3 px-4">Kaedah</th>
                                     <th class="py-3 px-4 text-right">Jumlah</th>
@@ -597,7 +666,7 @@
                 </div>
             </div>
 
-            <!-- ADMIN TAB 5: TETAPAN YURAN, QR, TELEGRAM & GOOGLE SHEETS -->
+            <!-- ADMIN TAB 6: TETAPAN YURAN, QR UTAMA, TELEGRAM & GOOGLE SHEETS -->
             <div id="admin-content-tetapan" class="hidden">
                 <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6">
                     <!-- Bahagian 0: Tetapan Kadar Yuran -->
@@ -605,7 +674,7 @@
                         <div>
                             <span class="text-xs font-bold text-emerald-600 uppercase">Kadar Yuran Akademi</span>
                             <h3 class="font-extrabold text-lg text-slate-900">Tetapan Yuran Pendaftaran & Yuran Bulanan</h3>
-                            <p class="text-xs text-slate-500">Perubahan harga di sini akan terus dikemas kini secara automatik ke seluruh sistem.</p>
+                            <p class="text-xs text-slate-500">Perubahan harga di sini akan terus dikemas kini secara automatik ke seluruh sistem dan Google Sheets.</p>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -626,34 +695,38 @@
                         <div class="flex items-center space-x-2 bg-emerald-50 border border-emerald-200 p-3 rounded-xl">
                             <input type="checkbox" id="setting-apply-all-members" checked class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4">
                             <label for="setting-apply-all-members" class="text-xs font-semibold text-emerald-900 cursor-pointer">
-                                Kemas kini kadar yuran bulanan baharu ini terus kepada semua <strong>ahli sedia ada</strong> dalam senarai.
+                                Kemas kini kadar yuran bulanan baharu ini terus kepada semua <strong>ahli sedia ada</strong> dalam senarai & Google Sheets.
                             </label>
                         </div>
+
+                        <button type="button" onclick="saveFeeRatesOnly()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition flex items-center justify-center">
+                            <i class="fa-solid fa-tags mr-1.5"></i> Simpan & Kemas Kini Harga Yuran Sekarang
+                        </button>
                     </div>
 
-                    <!-- Bahagian 1: Akaun Bank & QR -->
+                    <!-- Bahagian 1: Akaun Bank & QR Utama (Sandaran) -->
                     <div class="space-y-4 pb-6 border-b border-slate-200">
                         <div class="border-b border-slate-100 pb-3">
-                            <span class="text-xs font-bold text-amber-600 uppercase">Maklumat Pembayaran Gelanggang</span>
-                            <h3 class="font-extrabold text-lg text-slate-900">Tetapan Kod QR DuitNow & Nombor Akaun</h3>
-                            <p class="text-xs text-slate-500">Maklumat ini akan dipaparkan kepada ibu bapa semasa mereka membayar yuran.</p>
+                            <span class="text-xs font-bold text-amber-600 uppercase">Akaun Induk / Sandaran</span>
+                            <h3 class="font-extrabold text-lg text-slate-900">Tetapan Kod QR DuitNow & Akaun Bank Utama</h3>
+                            <p class="text-xs text-slate-500">Digunakan sebagai sandaran jika sesebuah gelanggang belum memuat naik Kod QR tersendiri di tab <strong>Urus Gelanggang, Gurulatih & QR</strong>.</p>
                         </div>
 
                         <div class="space-y-3">
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Bank</label>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Bank Utama</label>
                                 <input type="text" id="setting-bank-name" placeholder="Contoh: Maybank Islamic" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-600">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Pemegang Akaun</label>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Pemegang Akaun Utama</label>
                                 <input type="text" id="setting-acc-holder" placeholder="Contoh: Akademi Gayong Nur Insani" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-600">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombor Akaun Bank</label>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombor Akaun Bank Utama</label>
                                 <input type="text" id="setting-acc-number" placeholder="Contoh: 562106548892" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-mono font-bold outline-none focus:ring-2 focus:ring-blue-600">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Muat Naik Gambar Kod QR DuitNow Sebenar (Opsional)</label>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Muat Naik Gambar Kod QR DuitNow Utama (Opsional)</label>
                                 <input type="file" id="setting-qr-file" accept="image/*" onchange="previewSettingQR(event)" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-700 file:text-white hover:file:bg-blue-800 border border-slate-200 rounded-xl p-1.5 cursor-pointer">
                             </div>
 
@@ -662,30 +735,30 @@
                                     <!-- Populated by JS -->
                                 </div>
                                 <div class="text-xs space-y-1">
-                                    <p class="font-bold text-slate-800">Paparan Kod QR Semasa</p>
-                                    <p class="text-slate-500">Muat naik gambar Kod QR DuitNow / Bank anda supaya ibu bapa boleh terus mengimbasnya.</p>
+                                    <p class="font-bold text-slate-800">Paparan Kod QR Utama</p>
+                                    <p class="text-slate-500">Untuk menetapkan Kod QR berbeza bagi setiap gelanggang, klik butang <strong>Edit</strong> pada gelanggang di tab <strong>Urus Gelanggang</strong>.</p>
                                     <button type="button" onclick="clearCustomQR()" class="text-rose-600 font-bold hover:underline pt-1">Guna QR Lalai</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Bahagian 2: Sambungan Pangkalan Data Google Sheets -->
+                    <!-- Bahagian 2: Sambungan Pangkalan Data Google Sheets (Kaedah 1: 1 Fail Berpusat) -->
                     <div class="space-y-4 pb-6 border-b border-slate-200">
                         <div>
-                            <span class="text-xs font-bold text-emerald-600 uppercase flex items-center"><i class="fa-solid fa-table mr-1.5 text-sm"></i>Pangkalan Data Berpusat Google Sheets</span>
+                            <span class="text-xs font-bold text-emerald-600 uppercase flex items-center"><i class="fa-solid fa-table mr-1.5 text-sm"></i>1 Google Sheets Berpusat Untuk Semua Gelanggang</span>
                             <h3 class="font-extrabold text-lg text-slate-900">Sambungan Senarai Ahli & Rekod Pembayaran (Google Sheets)</h3>
-                            <p class="text-xs text-slate-500">Tampal <strong>Web App URL</strong> daripada Google Apps Script anda untuk menarik senarai ahli dari tab <code class="bg-slate-100 px-1 rounded">Senarai_Ahli</code> dan menyimpan semua rekod bayaran ke tab <code class="bg-slate-100 px-1 rounded">Rekod_Pembayaran</code> secara automatik.</p>
+                            <p class="text-xs text-slate-500">Semua gelanggang disimpan dalam satu fail Google Sheets yang sama dengan lajur ke-8 bernama <code class="bg-slate-100 px-1 rounded font-bold">Gelanggang</code>.</p>
                         </div>
 
                         <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 text-xs text-emerald-950 space-y-2">
                             <div class="flex items-center justify-between">
-                                <p class="font-bold"><i class="fa-solid fa-code mr-1"></i> Kod Google Apps Script (Extensions → Apps Script):</p>
+                                <p class="font-bold"><i class="fa-solid fa-code mr-1"></i> Kod Google Apps Script (Versi Multi-Gelanggang):</p>
                                 <button type="button" onclick="copyAppsScriptCode()" class="px-2.5 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] transition">
                                     <i class="fa-regular fa-copy mr-1"></i> Salin Kod Script
                                 </button>
                             </div>
-                            <p class="text-emerald-800">Tampal kod ini di dalam <strong>Apps Script</strong> Google Sheets anda, kemudian klik <strong>Deploy → New deployment → Web app → Who has access: Anyone</strong> dan tampal pautan URL di bawah:</p>
+                            <p class="text-emerald-800">Pastikan baris 1 tab <strong>Senarai_Ahli</strong> mempunyai 8 lajur: <code class="bg-white px-1 rounded">ID_Ahli | Nama_Penuh | No_KP | No_Telefon | Bengkung | Kategori | Yuran_Bulanan | Gelanggang</code>.</p>
                         </div>
 
                         <div>
@@ -695,7 +768,7 @@
 
                         <div class="flex flex-col sm:flex-row gap-2">
                             <button type="button" onclick="syncMembersFromGoogleSheets()" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition flex items-center justify-center">
-                                <i class="fa-solid fa-cloud-arrow-down mr-1.5"></i> Uji & Tarik Senarai Ahli Dari Google Sheets
+                                <i class="fa-solid fa-cloud-arrow-down mr-1.5"></i> Tarik Senarai Ahli Dari Google Sheets
                             </button>
                             <button type="button" onclick="pushAllMembersToGoogleSheets()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow transition flex items-center justify-center">
                                 <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Hantar Ahli Semasa Ke Google Sheets
@@ -709,7 +782,7 @@
                             <div>
                                 <span class="text-xs font-bold text-sky-600 uppercase flex items-center"><i class="fa-brands fa-telegram mr-1.5 text-sm"></i>Penghantaran Automatik Telegram</span>
                                 <h3 class="font-extrabold text-lg text-slate-900">Hantar Gambar/PDF Resit Terus Ke Telegram</h3>
-                                <p class="text-xs text-slate-500">Setiap kali ibu bapa memuat naik bukti bayaran, gambar/PDF resit beserta maklumat pembayar akan terus masuk ke Telegram Cikgu Bujal.</p>
+                                <p class="text-xs text-slate-500">Setiap kali ibu bapa memuat naik bukti bayaran, gambar/PDF resit beserta nama gelanggang dan maklumat pembayar akan terus masuk ke Telegram.</p>
                             </div>
                         </div>
 
@@ -719,7 +792,7 @@
                                 <input type="text" id="setting-tg-token" placeholder="Contoh: 9044186434:AAHQTkpV3mt6vOsg681WzgyJYfI7Kxbv1Ag" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono outline-none focus:ring-2 focus:ring-sky-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Telegram Chat ID (Cikgu Bujal / Grup)</label>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Telegram Chat ID (Pentadbir / Grup)</label>
                                 <div class="flex gap-1.5">
                                     <input type="text" id="setting-tg-chatid" placeholder="34633133" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs font-mono outline-none focus:ring-2 focus:ring-sky-500">
                                     <button type="button" onclick="autoDetectTelegramChatId()" id="btn-detect-tg-id" class="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs shrink-0 shadow-sm transition flex items-center" title="Kesan Chat ID secara automatik dari mesej terakhir bot">
@@ -755,7 +828,10 @@
     <div id="payment-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in my-auto">
             <div class="bg-slate-900 px-6 py-4 flex justify-between items-center text-white">
-                <h3 class="font-extrabold text-base"><i class="fa-solid fa-qrcode text-amber-400 mr-2"></i>Bayar Yuran & Muat Naik Resit</h3>
+                <div>
+                    <h3 class="font-extrabold text-base"><i class="fa-solid fa-qrcode text-amber-400 mr-2"></i>Bayar Yuran & Muat Naik Resit</h3>
+                    <p id="payment-modal-gelanggang-badge" class="text-[11px] text-amber-300 mt-0.5">Gelanggang Utama</p>
+                </div>
                 <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form onsubmit="submitPaymentReceipt(event)" class="p-6 space-y-4">
@@ -765,13 +841,13 @@
                     </div>
                     <div class="text-xs space-y-2 w-full text-center sm:text-left">
                         <div>
-                            <p class="font-extrabold text-slate-800 uppercase text-[11px]">Akaun Rasmi Akademi:</p>
+                            <p class="font-extrabold text-slate-800 uppercase text-[11px]">Akaun Rasmi Gelanggang:</p>
                             <p id="payment-modal-bank-name" class="text-slate-700 font-bold">Maybank Islamic</p>
                             <p id="payment-modal-acc-holder" class="text-slate-600 font-medium">Akademi Gayong Nur Insani</p>
                         </div>
                         <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-sm">
                             <span id="acc-number-text" class="font-mono font-extrabold text-slate-900 text-sm">562106548892</span>
-                            <button type="button" onclick="copyAccNumber()" class="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center bg-blue-50 px-2.5 py-1 rounded-lg">
+                            <button type="button" onclick="copyAccNumber('acc-number-text')" class="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center bg-blue-50 px-2.5 py-1 rounded-lg">
                                 <i class="fa-regular fa-copy mr-1"></i> Salin
                             </button>
                         </div>
@@ -836,7 +912,7 @@
                         </div>
                         <div>
                             <h3 class="font-extrabold text-sm sm:text-base text-slate-900 uppercase">AKADEMI GAYONG NUR INSANI</h3>
-                            <p class="text-xs text-slate-500">Johor Bahru • Gurulatih: Cikgu Bujal</p>
+                            <p id="rec-coach-subtitle" class="text-xs text-slate-500">Gelanggang • Gurulatih</p>
                         </div>
                     </div>
                     <div class="text-right">
@@ -889,7 +965,7 @@
                 </div>
 
                 <div class="mt-5 pt-3 border-t border-dashed border-slate-300 flex justify-between items-center text-[11px] text-slate-500">
-                    <span>Resit janaan komputer. Disahkan oleh Cikgu Bujal.</span>
+                    <span id="rec-footer-coach">Resit janaan komputer. Disahkan oleh Gurulatih.</span>
                     <button id="rec-view-proof-btn" type="button" class="no-print text-blue-600 font-bold hover:underline">
                         <i class="fa-solid fa-image mr-1"></i> Lihat Bukti Resit Asal
                     </button>
@@ -986,6 +1062,148 @@
         </div>
     </div>
 
+    <!-- ===================================================================== -->
+    <!-- MODAL 5: EDIT MAKLUMAT & HARGA YURAN AHLI (KHUSUS GURULATIH)          -->
+    <!-- ===================================================================== -->
+    <div id="edit-member-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in">
+            <div class="bg-slate-900 px-5 py-4 flex justify-between items-center text-white">
+                <h3 class="font-extrabold text-sm"><i class="fa-solid fa-user-pen text-amber-400 mr-2"></i>Edit Maklumat, Gelanggang & Yuran Ahli</h3>
+                <button onclick="closeEditMemberModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="saveEditedMember(event)" class="p-5 space-y-3.5">
+                <input type="hidden" id="edit-mem-id">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Gelanggang Latihan *</label>
+                    <select id="edit-mem-gelanggang" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold outline-none bg-white focus:ring-2 focus:ring-blue-600">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Penuh Ahli *</label>
+                    <input type="text" id="edit-mem-name" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">No. Kad Pengenalan *</label>
+                        <input type="text" id="edit-mem-ic" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">No. Telefon WhatsApp *</label>
+                        <input type="text" id="edit-mem-phone" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Tahap Bengkung</label>
+                        <select id="edit-mem-belt" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none bg-white">
+                            <option value="Bengkung Putih">Bengkung Putih</option>
+                            <option value="Bengkung Hijau">Bengkung Hijau</option>
+                            <option value="Bengkung Merah">Bengkung Merah</option>
+                            <option value="Bengkung Kuning">Bengkung Kuning</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Yuran Bulanan Khas (RM) *</label>
+                        <input type="number" min="0" step="1" id="edit-mem-fee" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-extrabold text-emerald-700 outline-none focus:ring-2 focus:ring-emerald-600">
+                    </div>
+                </div>
+                <div class="flex gap-2.5 pt-2">
+                    <button type="button" onclick="closeEditMemberModal()" class="flex-1 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-50">Batal</button>
+                    <button type="submit" class="flex-1 py-2.5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs shadow">
+                        <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 6: EDIT GELANGGANG, GURULATIH, AKAUN BANK & KOD QR KHAS         -->
+    <!-- ===================================================================== -->
+    <div id="edit-gelanggang-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in my-auto">
+            <div class="bg-slate-900 px-5 py-4 flex justify-between items-center text-white">
+                <h3 id="gel-modal-title" class="font-extrabold text-sm"><i class="fa-solid fa-building-shield text-amber-400 mr-2"></i>Edit Gelanggang, Gurulatih & Kod QR</h3>
+                <button onclick="closeEditGelanggangModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="saveGelanggangItem(event)" class="p-5 space-y-3.5 max-h-[82vh] overflow-y-auto">
+                <input type="hidden" id="edit-gel-id">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Gelanggang *</label>
+                    <input type="text" id="edit-gel-name" required placeholder="Contoh: Gelanggang Utama Johor Bahru" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-extrabold outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Lokasi / Alamat Gelanggang *</label>
+                    <input type="text" id="edit-gel-location" required placeholder="Contoh: Taman Bukit Indah, Johor Bahru" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Gurulatih *</label>
+                        <input type="text" id="edit-gel-coach" required placeholder="Contoh: Cikgu Bujal" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">No. Telefon WhatsApp *</label>
+                        <input type="text" id="edit-gel-phone" required placeholder="Contoh: 016-3879047" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-mono font-bold text-emerald-700 outline-none focus:ring-2 focus:ring-emerald-600">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Hari Latihan</label>
+                        <input type="text" id="edit-gel-days" placeholder="Contoh: Jumaat & Sabtu" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Masa Latihan</label>
+                        <input type="text" id="edit-gel-time" placeholder="Contoh: 8:30 PM – 10:30 PM" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                </div>
+
+                <!-- Tetapan Akaun Bank & Kod QR Khusus Gelanggang -->
+                <div class="pt-3 border-t border-slate-200 space-y-3">
+                    <div>
+                        <span class="text-[11px] font-extrabold text-pink-600 uppercase"><i class="fa-solid fa-qrcode mr-1"></i>Akaun Bank & Kod QR Khusus Gelanggang Ini</span>
+                        <p class="text-[11px] text-slate-500">Kosongkan jika gelanggang ini menggunakan Akaun Bank & Kod QR Utama Akademi.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Nama Bank Gelanggang</label>
+                            <input type="text" id="edit-gel-bank" placeholder="Contoh: CIMB Islamic" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold outline-none focus:ring-2 focus:ring-pink-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">No. Akaun Bank</label>
+                            <input type="text" id="edit-gel-acc-num" placeholder="Contoh: 7612345678" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono font-bold outline-none focus:ring-2 focus:ring-pink-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Pemegang Akaun</label>
+                        <input type="text" id="edit-gel-acc-holder" placeholder="Contoh: Bendahari Gelanggang Skudai" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold outline-none focus:ring-2 focus:ring-pink-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Muat Naik Gambar Kod QR DuitNow Gelanggang Ini</label>
+                        <input type="file" id="edit-gel-qr-file" accept="image/*" onchange="previewGelanggangModalQR(event)" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-pink-600 file:text-white hover:file:bg-pink-700 border border-slate-200 rounded-xl p-1 cursor-pointer">
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center gap-3">
+                        <div id="edit-gel-qr-preview" class="w-16 h-16 bg-white rounded-lg border-2 border-pink-500 flex items-center justify-center p-1 shrink-0 overflow-hidden">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="text-[11px] space-y-1">
+                            <p class="font-bold text-slate-800">Pratonton Kod QR Gelanggang</p>
+                            <p class="text-slate-500">Ibu bapa bagi pelajar gelanggang ini akan terus nampak QR & akaun ini semasa membayar.</p>
+                            <button type="button" onclick="clearGelanggangModalQR()" class="text-rose-600 font-bold hover:underline">Guna QR Utama Akademi</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-2.5 pt-2">
+                    <button type="button" onclick="closeEditGelanggangModal()" class="flex-1 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-50">Batal</button>
+                    <button type="submit" class="flex-1 py-2.5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs shadow">
+                        <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Gelanggang
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- TOAST NOTIFICATION -->
     <div id="toast-box" class="hidden fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-xl border border-slate-700 flex items-center space-x-3 animate-fade-in">
         <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
@@ -993,16 +1211,70 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- JAVASCRIPT LOGIC & APPLICATION STATE                                  -->
+    <!-- JAVASCRIPT LOGIC & APPLICATION STATE (MULTI-GELANGGANG KAEDAH 1)      -->
     <!-- ===================================================================== -->
     <script>
         const MONTHS = ['JAN', 'FEB', 'MAC', 'APR', 'MEI', 'JUN', 'JUL', 'OGO', 'SEP', 'OKT', 'NOV', 'DIS'];
         const FULL_MONTHS = ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'];
         const STORAGE_KEY = 'akademi_gayong_nur_insani_v2';
-        const SETTINGS_KEY = 'akademi_gayong_nur_insani_settings_v1';
-        const GELANGGANG_RASMI = 'Akademi Gayong Nur Insani (Johor Bahru)';
+        const SETTINGS_KEY = 'akademi_gayong_nur_insani_settings_v2';
 
-        // Kod Google Apps Script untuk disalin terus oleh Cikgu Bujal
+        const DEFAULT_GELANGGANG_LIST = [
+            {
+                id: 'GEL01',
+                name: 'Gelanggang Utama Johor Bahru',
+                location: 'Johor Bahru, Johor',
+                coachName: 'Cikgu Bujal',
+                coachPhone: '016-3879047',
+                days: 'Jumaat & Sabtu',
+                time: '8:30 PM – 10:30 PM',
+                bankName: '',
+                accHolder: '',
+                accNumber: '',
+                qrImageData: null
+            },
+            {
+                id: 'GEL02',
+                name: 'Gelanggang Cawangan 2 (Skudai)',
+                location: 'Skudai, Johor Bahru',
+                coachName: 'Cikgu Penolong 2',
+                coachPhone: '016-3879047',
+                days: 'Jumaat & Sabtu',
+                time: '8:30 PM – 10:30 PM',
+                bankName: '',
+                accHolder: '',
+                accNumber: '',
+                qrImageData: null
+            },
+            {
+                id: 'GEL03',
+                name: 'Gelanggang Cawangan 3 (Pasir Gudang)',
+                location: 'Pasir Gudang, Johor',
+                coachName: 'Cikgu Penolong 3',
+                coachPhone: '016-3879047',
+                days: 'Sabtu & Ahad',
+                time: '5:00 PM – 7:00 PM',
+                bankName: '',
+                accHolder: '',
+                accNumber: '',
+                qrImageData: null
+            },
+            {
+                id: 'GEL04',
+                name: 'Gelanggang Cawangan 4 (Kulai)',
+                location: 'Kulai, Johor',
+                coachName: 'Cikgu Penolong 4',
+                coachPhone: '016-3879047',
+                days: 'Sabtu & Ahad',
+                time: '8:30 PM – 10:30 PM',
+                bankName: '',
+                accHolder: '',
+                accNumber: '',
+                qrImageData: null
+            }
+        ];
+
+        // Kod Google Apps Script (Kaedah 1: Satu Google Sheets dengan Lajur ke-8 Gelanggang)
         const GOOGLE_APPS_SCRIPT_TEMPLATE = `function doGet(e) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var action = e.parameter.action;
@@ -1040,7 +1312,8 @@ function doPost(e) {
         payload.amount,
         payload.ref,
         payload.method,
-        payload.status
+        payload.status,
+        payload.gelanggang || ""
       ]);
     }
     return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
@@ -1056,7 +1329,8 @@ function doPost(e) {
         "'" + payload.phone,
         payload.belt,
         payload.category,
-        payload.fee
+        payload.fee,
+        payload.gelanggang || ""
       ]);
     }
     return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
@@ -1067,17 +1341,18 @@ function doPost(e) {
     if (memSheet && Array.isArray(payload.members)) {
       var lastRow = memSheet.getLastRow();
       if (lastRow > 1) {
-        memSheet.getRange(2, 1, lastRow - 1, memSheet.getLastColumn()).clearContent();
+        memSheet.getRange(2, 1, lastRow - 1, Math.max(memSheet.getLastColumn(), 8)).clearContent();
       }
       payload.members.forEach(function(m, index) {
-        memSheet.getRange(index + 2, 1, 1, 7).setValues([[
+        memSheet.getRange(index + 2, 1, 1, 8).setValues([[
           m.id,
           m.name,
           "'" + m.ic,
           "'" + m.phone,
           m.belt,
           m.category,
-          m.fee
+          m.fee,
+          m.gelanggang || ""
         ]]);
       });
     }
@@ -1099,7 +1374,7 @@ function doPost(e) {
             });
         }
 
-        function createSampleReceiptSVG(name, monthName, amount, ref) {
+        function createSampleReceiptSVG(name, monthName, amount, ref, coachName = 'Cikgu Bujal') {
             const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="420" height="520" viewBox="0 0 420 520">
                 <rect width="420" height="520" fill="#ffffff"/>
                 <rect x="0" y="0" width="420" height="75" fill="#fbbf24"/>
@@ -1121,7 +1396,7 @@ function doPost(e) {
                 <text x="35" y="395" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Tarikh &amp; Masa:</text>
                 <text x="385" y="395" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="end">15/11/2026 09:42 PM</text>
                 <rect x="30" y="430" width="360" height="55" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
-                <text x="210" y="462" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">Bukti resit digital untuk semakan Cikgu Bujal</text>
+                <text x="210" y="462" font-family="Arial, sans-serif" font-size="11" fill="#475569" text-anchor="middle">Bukti resit digital untuk semakan ${coachName}</text>
             </svg>`;
             return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
         }
@@ -1148,8 +1423,9 @@ function doPost(e) {
             </svg>
         `;
 
-        // Load Settings & Members (Tiada data sampel 20 ahli - ikut data sebenar Google Sheets / Gurulatih)
+        // Load Settings & Members
         let gelanggangSettings = {
+            gelanggangList: JSON.parse(JSON.stringify(DEFAULT_GELANGGANG_LIST)),
             regFee: 20,
             monthlyFeeSchool: 30,
             monthlyFeeAdult: 50,
@@ -1169,6 +1445,9 @@ function doPost(e) {
                 gelanggangSettings = {
                     ...gelanggangSettings,
                     ...parsed,
+                    gelanggangList: Array.isArray(parsed.gelanggangList) && parsed.gelanggangList.length > 0
+                        ? parsed.gelanggangList
+                        : JSON.parse(JSON.stringify(DEFAULT_GELANGGANG_LIST)),
                     googleSheetUrl: parsed.googleSheetUrl || gelanggangSettings.googleSheetUrl
                 };
             }
@@ -1182,6 +1461,41 @@ function doPost(e) {
             members = [];
         }
 
+        let selectedPublicGelanggangId = gelanggangSettings.gelanggangList[0]?.id || 'GEL01';
+        let adminSelectedGelanggangFilter = 'ALL';
+
+        function getDefaultGelanggangName() {
+            return gelanggangSettings.gelanggangList[0]?.name || 'Gelanggang Utama Johor Bahru';
+        }
+
+        function getGelanggangInfoByName(gelName) {
+            const clean = String(gelName || '').trim().toLowerCase();
+            return gelanggangSettings.gelanggangList.find(g => g.name.toLowerCase() === clean)
+                || gelanggangSettings.gelanggangList[0]
+                || { name: gelName || 'Gelanggang Utama', location: 'Johor Bahru', coachName: 'Cikgu Bujal', coachPhone: '016-3879047', days: 'Jumaat & Sabtu', time: '8:30 PM – 10:30 PM', bankName: '', accHolder: '', accNumber: '', qrImageData: null };
+        }
+
+        // Dapatkan butiran Bank & Kod QR khusus gelanggang (atau jatuh balik kepada Akaun Utama Akademi)
+        function getGelanggangPaymentDetails(gelObj) {
+            const g = gelObj || gelanggangSettings.gelanggangList[0] || {};
+            const hasCustomBank = Boolean((g.bankName || '').trim() || (g.accNumber || '').trim());
+            const hasCustomQR = Boolean(g.qrImageData);
+            return {
+                bankName: (g.bankName || '').trim() || gelanggangSettings.bankName,
+                accHolder: (g.accHolder || '').trim() || gelanggangSettings.accHolder,
+                accNumber: (g.accNumber || '').trim() || gelanggangSettings.accNumber,
+                qrImageData: g.qrImageData || gelanggangSettings.qrImageData,
+                isCustom: hasCustomBank || hasCustomQR
+            };
+        }
+
+        // Pastikan ahli lama tanpa nama gelanggang ditetapkan ke Gelanggang 1
+        members.forEach(m => {
+            if (!m.gelanggang || m.gelanggang === 'Akademi Gayong Nur Insani (Johor Bahru)') {
+                m.gelanggang = getDefaultGelanggangName();
+            }
+        });
+
         function saveToStorage() {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
@@ -1194,52 +1508,192 @@ function doPost(e) {
             } catch (e) {}
         }
 
+        function formatWhatsAppUrl(rawPhone, prefillText = '') {
+            let digits = String(rawPhone || '').replace(/[^0-9]/g, '');
+            if (!digits) digits = '60163879047';
+            if (digits.startsWith('0')) {
+                digits = '6' + digits;
+            } else if (!digits.startsWith('60') && digits.length >= 9 && digits.length <= 10) {
+                digits = '60' + digits;
+            }
+            const baseUrl = `https://wa.me/${digits}`;
+            return prefillText ? `${baseUrl}?text=${encodeURIComponent(prefillText)}` : baseUrl;
+        }
+
+        function openCoachWhatsApp(event) {
+            if (event) event.preventDefault();
+            const gel = gelanggangSettings.gelanggangList.find(g => g.id === selectedPublicGelanggangId) || gelanggangSettings.gelanggangList[0];
+            const coachName = (gel?.coachName || 'Cikgu Bujal').trim();
+            const coachPhone = (gel?.coachPhone || '016-3879047').trim();
+            const gelName = (gel?.name || 'Akademi Gayong Nur Insani').trim();
+            const msg = `Assalamualaikum ${coachName}, saya ingin bertanya mengenai pendaftaran / yuran di ${gelName}.`;
+            const waUrl = formatWhatsAppUrl(coachPhone, msg);
+            const waLinkEl = document.getElementById('info-tab-wa-link');
+            if (waLinkEl) waLinkEl.href = waUrl;
+            window.open(waUrl, '_blank', 'noopener,noreferrer');
+        }
+
         function renderQuickMembersBar() {
             const totalCountEl = document.getElementById('quick-total-count');
-            const buttonsContainer = document.getElementById('quick-members-buttons');
+            const gelCountEl = document.getElementById('quick-gelanggang-count');
             if (totalCountEl) totalCountEl.textContent = members.length;
-            if (!buttonsContainer) return;
+            if (gelCountEl) gelCountEl.textContent = gelanggangSettings.gelanggangList.length;
+        }
 
-            if (members.length === 0) {
-                buttonsContainer.innerHTML = `<span class="text-slate-400 italic">Belum ada rekod ahli. Sila daftar atau tarik data dari Google Sheets di Dashboard Gurulatih.</span>`;
-                return;
+        function selectPublicGelanggang(gelId) {
+            selectedPublicGelanggangId = gelId;
+            renderPublicGelanggangInfo();
+        }
+
+        function renderPublicGelanggangInfo() {
+            const list = gelanggangSettings.gelanggangList;
+            if (!list.some(g => g.id === selectedPublicGelanggangId)) {
+                selectedPublicGelanggangId = list[0]?.id || 'GEL01';
             }
 
-            buttonsContainer.innerHTML = members.slice(0, 6).map(m => `
-                <button onclick="quickSearch('${m.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-100 hover:text-amber-800 font-medium transition">
-                    ${m.name} (${m.id})
-                </button>
-            `).join('');
+            const pillsContainer = document.getElementById('ahli-gelanggang-pills');
+            if (pillsContainer) {
+                pillsContainer.innerHTML = list.map(g => {
+                    const isActive = g.id === selectedPublicGelanggangId;
+                    return `
+                        <button type="button" onclick="selectPublicGelanggang('${g.id}')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition ${isActive ? 'bg-blue-700 text-white shadow' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}">
+                            <i class="fa-solid fa-location-dot mr-1"></i>${g.name}
+                        </button>
+                    `;
+                }).join('');
+            }
+
+            const gel = list.find(g => g.id === selectedPublicGelanggangId) || list[0];
+            if (!gel) return;
+
+            document.getElementById('info-tab-gel-name').textContent = gel.name.toUpperCase();
+            document.getElementById('info-tab-gel-location').textContent = gel.location;
+            document.getElementById('info-tab-coach-name').textContent = gel.coachName;
+            document.getElementById('info-tab-coach-phone').textContent = gel.coachPhone;
+            document.getElementById('info-tab-gel-days').textContent = gel.days || 'Jumaat & Sabtu';
+            document.getElementById('info-tab-gel-time').textContent = gel.time || '8:30 PM – 10:30 PM';
+
+            // Paparkan Bank & Kod QR khusus gelanggang yang dipilih
+            const payDetails = getGelanggangPaymentDetails(gel);
+            document.getElementById('info-tab-qr-badge').textContent = payDetails.isCustom
+                ? `Akaun Khusus: ${gel.name}`
+                : 'Akaun Utama Akademi';
+            document.getElementById('info-tab-bank-name').textContent = payDetails.bankName;
+            document.getElementById('info-tab-acc-holder').textContent = payDetails.accHolder;
+            document.getElementById('info-tab-acc-number').textContent = payDetails.accNumber;
+            document.getElementById('info-tab-qr-container').innerHTML = payDetails.qrImageData
+                ? `<img src="${payDetails.qrImageData}" alt="Kod QR DuitNow" class="w-full h-full object-contain">`
+                : DEFAULT_QR_SVG;
+
+            const waLink = document.getElementById('info-tab-wa-link');
+            const waText = document.getElementById('info-tab-wa-text');
+            if (waLink) {
+                waLink.href = formatWhatsAppUrl(gel.coachPhone, `Assalamualaikum ${gel.coachName}, saya ingin bertanya mengenai pendaftaran / yuran di ${gel.name}.`);
+            }
+            if (waText) {
+                waText.textContent = `Hubungi ${gel.coachName} (${gel.coachPhone}) via WhatsApp`;
+            }
+        }
+
+        function populateGelanggangDropdowns(preserveNewMemberSelection = true) {
+            const list = gelanggangSettings.gelanggangList;
+
+            // 1. Dropdown penapis di atas Dashboard Gurulatih
+            const filterSelect = document.getElementById('admin-gelanggang-filter');
+            if (filterSelect) {
+                const prevFilter = adminSelectedGelanggangFilter;
+                filterSelect.innerHTML = `<option value="ALL" class="text-slate-900">Semua Gelanggang (${list.length})</option>` +
+                    list.map(g => `<option value="${g.name}" class="text-slate-900">${g.name} (${g.coachName})</option>`).join('');
+                if (prevFilter === 'ALL' || list.some(g => g.name === prevFilter)) {
+                    filterSelect.value = prevFilter;
+                } else {
+                    adminSelectedGelanggangFilter = 'ALL';
+                    filterSelect.value = 'ALL';
+                }
+            }
+
+            // 2. Dropdown Daftar Ahli Baharu
+            const newMemberSelect = document.getElementById('new-member-gelanggang');
+            if (newMemberSelect) {
+                const prevVal = newMemberSelect.value;
+                newMemberSelect.innerHTML = list.map(g => `<option value="${g.name}">${g.name} (${g.coachName})</option>`).join('');
+                if (preserveNewMemberSelection && prevVal && list.some(g => g.name === prevVal)) {
+                    newMemberSelect.value = prevVal;
+                } else if (adminSelectedGelanggangFilter !== 'ALL' && list.some(g => g.name === adminSelectedGelanggangFilter)) {
+                    newMemberSelect.value = adminSelectedGelanggangFilter;
+                }
+            }
+
+            // 3. Dropdown Modal Edit Ahli
+            const editMemberSelect = document.getElementById('edit-mem-gelanggang');
+            if (editMemberSelect) {
+                editMemberSelect.innerHTML = list.map(g => `<option value="${g.name}">${g.name} (${g.coachName})</option>`).join('');
+            }
+        }
+
+        function onAdminGelanggangFilterChange() {
+            const filterSelect = document.getElementById('admin-gelanggang-filter');
+            adminSelectedGelanggangFilter = filterSelect ? filterSelect.value : 'ALL';
+
+            const subEl = document.getElementById('admin-header-coach-sub');
+            const kpiLabelEl = document.getElementById('stat-gelanggang-label');
+            if (adminSelectedGelanggangFilter === 'ALL') {
+                if (subEl) subEl.innerHTML = `<i class="fa-solid fa-building-shield text-amber-400 mr-1"></i> Paparan: Semua Gelanggang (${gelanggangSettings.gelanggangList.length} Gelanggang Aktif)`;
+                if (kpiLabelEl) kpiLabelEl.innerHTML = `<i class="fa-solid fa-building-shield mr-1"></i>${gelanggangSettings.gelanggangList.length} Gelanggang`;
+            } else {
+                const gel = getGelanggangInfoByName(adminSelectedGelanggangFilter);
+                if (subEl) subEl.innerHTML = `<i class="fa-solid fa-location-dot text-amber-400 mr-1"></i> ${gel.name} • Gurulatih: <strong>${gel.coachName}</strong> (${gel.coachPhone})`;
+                if (kpiLabelEl) kpiLabelEl.innerHTML = `<i class="fa-solid fa-user-ninja mr-1"></i>${gel.coachName}`;
+            }
+
+            const newMemGel = document.getElementById('new-member-gelanggang');
+            if (newMemGel && adminSelectedGelanggangFilter !== 'ALL') {
+                newMemGel.value = adminSelectedGelanggangFilter;
+            }
+
+            updateAllAdminViews();
+        }
+
+        function getFilteredMembersForAdmin() {
+            if (adminSelectedGelanggangFilter === 'ALL') return members;
+            return members.filter(m => (m.gelanggang || getDefaultGelanggangName()) === adminSelectedGelanggangFilter);
         }
 
         function applySettingsToUI() {
+            const countGel = gelanggangSettings.gelanggangList.length;
             const regFee = Number(gelanggangSettings.regFee ?? 20);
             const feeSchool = Number(gelanggangSettings.monthlyFeeSchool ?? 30);
             const feeAdult = Number(gelanggangSettings.monthlyFeeAdult ?? 50);
 
+            const headerSub = document.getElementById('header-subtitle-gelanggang');
+            if (headerSub) headerSub.textContent = `Sistem Pengurusan & Semakan Yuran • ${countGel} Gelanggang`;
+
+            const bannerCount = document.getElementById('banner-gelanggang-count');
+            if (bannerCount) bannerCount.textContent = `${countGel} Gelanggang`;
+
+            populateGelanggangDropdowns(true);
+            renderPublicGelanggangInfo();
+            renderGelanggangManagerCards();
+
+            // Paparan Kadar Yuran
             document.getElementById('info-tab-reg-fee').textContent = `RM ${regFee.toFixed(2)} (Sekali Sahaja)`;
             document.getElementById('info-tab-monthly-fee').textContent = `RM ${feeSchool} (Sekolah) / RM ${feeAdult} (Dewasa)`;
             document.getElementById('form-reg-fee-display').textContent = `RM ${regFee.toFixed(2)}`;
 
             const newFeeSelect = document.getElementById('new-member-fee');
             if (newFeeSelect) {
+                const prevVal = newFeeSelect.value || 'school';
                 newFeeSelect.innerHTML = `
                     <option value="school">RM ${feeSchool.toFixed(2)} (Sekolah)</option>
                     <option value="adult">RM ${feeAdult.toFixed(2)} (Dewasa)</option>
+                    <option value="custom">Harga Khas (RM)</option>
                 `;
+                newFeeSelect.value = prevVal;
             }
 
             document.getElementById('setting-reg-fee').value = regFee;
             document.getElementById('setting-fee-school').value = feeSchool;
             document.getElementById('setting-fee-adult').value = feeAdult;
-
-            document.getElementById('info-tab-bank-name').textContent = gelanggangSettings.bankName;
-            document.getElementById('info-tab-acc-holder').textContent = gelanggangSettings.accHolder;
-            document.getElementById('info-tab-acc-number').textContent = gelanggangSettings.accNumber;
-
-            document.getElementById('payment-modal-bank-name').textContent = gelanggangSettings.bankName;
-            document.getElementById('payment-modal-acc-holder').textContent = gelanggangSettings.accHolder;
-            document.getElementById('acc-number-text').textContent = gelanggangSettings.accNumber;
 
             document.getElementById('setting-bank-name').value = gelanggangSettings.bankName;
             document.getElementById('setting-acc-holder').value = gelanggangSettings.accHolder;
@@ -1259,21 +1713,301 @@ function doPost(e) {
                 gsHeaderBtn.classList.add('hidden');
             }
 
-            const qrHtml = gelanggangSettings.qrImageData
-                ? `<img src="${gelanggangSettings.qrImageData}" alt="Kod QR DuitNow" class="w-full h-full object-contain">`
+            const mainQrHtml = gelanggangSettings.qrImageData
+                ? `<img src="${gelanggangSettings.qrImageData}" alt="Kod QR DuitNow Utama" class="w-full h-full object-contain">`
                 : DEFAULT_QR_SVG;
 
-            document.getElementById('info-tab-qr-container').innerHTML = qrHtml;
-            document.getElementById('payment-modal-qr-box').innerHTML = qrHtml;
-            document.getElementById('setting-qr-preview-box').innerHTML = qrHtml;
+            document.getElementById('setting-qr-preview-box').innerHTML = mainQrHtml;
             renderQuickMembersBar();
         }
 
-        // --- GOOGLE SHEETS INTEGRATION FUNCTIONS ---
+        // --- PENGURUSAN 4 GELANGGANG, GURULATIH & KOD QR BERBEZA ---
+        let tempGelanggangModalQR = undefined; // undefined = kekalkan sedia ada, null = padam guna utama, string = base64 baharu
+
+        function openGelanggangManagerTab() {
+            switchAdminTab('gelanggang');
+        }
+
+        function renderGelanggangManagerCards() {
+            const grid = document.getElementById('gelanggang-cards-grid');
+            if (!grid) return;
+
+            grid.innerHTML = gelanggangSettings.gelanggangList.map((g, idx) => {
+                const countMembers = members.filter(m => (m.gelanggang || getDefaultGelanggangName()) === g.name).length;
+                const payDetails = getGelanggangPaymentDetails(g);
+                const qrThumb = payDetails.qrImageData
+                    ? `<img src="${payDetails.qrImageData}" alt="QR" class="w-10 h-10 object-contain rounded border border-pink-300 bg-white p-0.5">`
+                    : `<div class="w-10 h-10 rounded border border-slate-200 bg-white p-1">${DEFAULT_QR_SVG}</div>`;
+
+                const deleteBtn = gelanggangSettings.gelanggangList.length > 1
+                    ? `<button type="button" onclick="deleteGelanggangItem('${g.id}')" class="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition" title="Padam Gelanggang"><i class="fa-solid fa-trash-can"></i></button>`
+                    : '';
+
+                return `
+                    <div class="border border-slate-200 rounded-2xl p-5 bg-slate-50/70 hover:bg-white hover:shadow-md transition flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-start justify-between gap-2">
+                                <div>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-blue-100 text-blue-800 uppercase">Gelanggang #${idx + 1}</span>
+                                    <h4 class="text-base font-extrabold text-slate-900 mt-1.5">${g.name}</h4>
+                                    <p class="text-xs text-slate-500 mt-0.5"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i>${g.location}</p>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <button type="button" onclick="openEditGelanggangModal('${g.id}')" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs shadow-sm transition">
+                                        <i class="fa-solid fa-pen mr-1"></i> Edit & QR
+                                    </button>
+                                    ${deleteBtn}
+                                </div>
+                            </div>
+
+                            <div class="mt-4 bg-white p-3.5 rounded-xl border border-slate-200 text-xs space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400 font-semibold">Gurulatih Bertugas:</span>
+                                    <span class="font-extrabold text-slate-900">${g.coachName}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400 font-semibold">No. WhatsApp:</span>
+                                    <span class="font-mono font-bold text-emerald-700">${g.coachPhone}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400 font-semibold">Jadual Latihan:</span>
+                                    <span class="font-semibold text-slate-700">${g.days} (${g.time})</span>
+                                </div>
+                                <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                                    <div>
+                                        <span class="text-[10px] font-bold uppercase ${payDetails.isCustom ? 'text-pink-600' : 'text-slate-400'}">
+                                            ${payDetails.isCustom ? 'QR & Bank Khusus Gelanggang' : 'QR & Bank Utama Akademi'}
+                                        </span>
+                                        <p class="font-bold text-slate-800">${payDetails.bankName} • <span class="font-mono">${payDetails.accNumber}</span></p>
+                                    </div>
+                                    ${qrThumb}
+                                </div>
+                                <div class="flex justify-between pt-1.5 border-t border-slate-100">
+                                    <span class="text-slate-400 font-semibold">Bilangan Pelajar:</span>
+                                    <span class="font-extrabold text-blue-700">${countMembers} orang ahli</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function previewGelanggangModalQR(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                tempGelanggangModalQR = e.target.result;
+                document.getElementById('edit-gel-qr-preview').innerHTML = `<img src="${tempGelanggangModalQR}" alt="Preview QR" class="w-full h-full object-contain">`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearGelanggangModalQR() {
+            tempGelanggangModalQR = null;
+            document.getElementById('edit-gel-qr-file').value = '';
+            document.getElementById('edit-gel-qr-preview').innerHTML = gelanggangSettings.qrImageData
+                ? `<img src="${gelanggangSettings.qrImageData}" alt="QR Utama" class="w-full h-full object-contain">`
+                : DEFAULT_QR_SVG;
+            showToast('Kod QR gelanggang ini ditetapkan menggunakan QR Utama Akademi.', 'info');
+        }
+
+        function addNewGelanggang() {
+            tempGelanggangModalQR = null;
+            document.getElementById('gel-modal-title').innerHTML = `<i class="fa-solid fa-plus text-amber-400 mr-2"></i>Daftar Gelanggang Baharu`;
+            document.getElementById('edit-gel-id').value = '';
+            document.getElementById('edit-gel-name').value = `Gelanggang Cawangan ${gelanggangSettings.gelanggangList.length + 1}`;
+            document.getElementById('edit-gel-location').value = 'Johor Bahru, Johor';
+            document.getElementById('edit-gel-coach').value = 'Cikgu Baharu';
+            document.getElementById('edit-gel-phone').value = '016-3879047';
+            document.getElementById('edit-gel-days').value = 'Jumaat & Sabtu';
+            document.getElementById('edit-gel-time').value = '8:30 PM – 10:30 PM';
+            document.getElementById('edit-gel-bank').value = '';
+            document.getElementById('edit-gel-acc-holder').value = '';
+            document.getElementById('edit-gel-acc-num').value = '';
+            document.getElementById('edit-gel-qr-file').value = '';
+            document.getElementById('edit-gel-qr-preview').innerHTML = gelanggangSettings.qrImageData
+                ? `<img src="${gelanggangSettings.qrImageData}" alt="QR Utama" class="w-full h-full object-contain">`
+                : DEFAULT_QR_SVG;
+            document.getElementById('edit-gelanggang-modal').classList.remove('hidden');
+        }
+
+        function openEditGelanggangModal(gelId) {
+            const g = gelanggangSettings.gelanggangList.find(item => item.id === gelId);
+            if (!g) return;
+
+            tempGelanggangModalQR = undefined;
+            document.getElementById('gel-modal-title').innerHTML = `<i class="fa-solid fa-building-shield text-amber-400 mr-2"></i>Edit Gelanggang, Gurulatih & QR`;
+            document.getElementById('edit-gel-id').value = g.id;
+            document.getElementById('edit-gel-name').value = g.name;
+            document.getElementById('edit-gel-location').value = g.location;
+            document.getElementById('edit-gel-coach').value = g.coachName;
+            document.getElementById('edit-gel-phone').value = g.coachPhone;
+            document.getElementById('edit-gel-days').value = g.days || 'Jumaat & Sabtu';
+            document.getElementById('edit-gel-time').value = g.time || '8:30 PM – 10:30 PM';
+            document.getElementById('edit-gel-bank').value = g.bankName || '';
+            document.getElementById('edit-gel-acc-holder').value = g.accHolder || '';
+            document.getElementById('edit-gel-acc-num').value = g.accNumber || '';
+            document.getElementById('edit-gel-qr-file').value = '';
+
+            const currentQr = g.qrImageData || gelanggangSettings.qrImageData;
+            document.getElementById('edit-gel-qr-preview').innerHTML = currentQr
+                ? `<img src="${currentQr}" alt="QR Gelanggang" class="w-full h-full object-contain">`
+                : DEFAULT_QR_SVG;
+
+            document.getElementById('edit-gelanggang-modal').classList.remove('hidden');
+        }
+
+        function closeEditGelanggangModal() {
+            document.getElementById('edit-gelanggang-modal').classList.add('hidden');
+        }
+
+        function saveGelanggangItem(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-gel-id').value;
+            const name = document.getElementById('edit-gel-name').value.trim();
+            const location = document.getElementById('edit-gel-location').value.trim();
+            const coachName = document.getElementById('edit-gel-coach').value.trim();
+            const coachPhone = document.getElementById('edit-gel-phone').value.trim();
+            const days = document.getElementById('edit-gel-days').value.trim() || 'Jumaat & Sabtu';
+            const time = document.getElementById('edit-gel-time').value.trim() || '8:30 PM – 10:30 PM';
+            const bankName = document.getElementById('edit-gel-bank').value.trim();
+            const accHolder = document.getElementById('edit-gel-acc-holder').value.trim();
+            const accNumber = document.getElementById('edit-gel-acc-num').value.trim();
+
+            if (!name || !coachName || !coachPhone) {
+                showToast('Sila lengkapkan Nama Gelanggang, Nama Gurulatih, dan No. WhatsApp.', 'error');
+                return;
+            }
+
+            if (id) {
+                const existing = gelanggangSettings.gelanggangList.find(g => g.id === id);
+                if (existing) {
+                    const oldName = existing.name;
+                    existing.name = name;
+                    existing.location = location;
+                    existing.coachName = coachName;
+                    existing.coachPhone = coachPhone;
+                    existing.days = days;
+                    existing.time = time;
+                    existing.bankName = bankName;
+                    existing.accHolder = accHolder;
+                    existing.accNumber = accNumber;
+                    if (tempGelanggangModalQR !== undefined) {
+                        existing.qrImageData = tempGelanggangModalQR;
+                    }
+
+                    // Kemas kini nama gelanggang pada ahli sedia ada jika nama gelanggang ditukar
+                    if (oldName !== name) {
+                        members.forEach(m => {
+                            if (m.gelanggang === oldName) m.gelanggang = name;
+                        });
+                        saveToStorage();
+                        postToGoogleSheets({
+                            type: 'replace_all_members',
+                            members: members.map(m => ({ id: m.id, name: m.name, ic: m.ic, phone: m.phone, belt: m.belt, category: m.category, fee: m.fee, gelanggang: m.gelanggang }))
+                        });
+                    }
+                }
+                showToast(`Maklumat & QR ${name} (${coachName}) berjaya dikemas kini!`, 'success');
+            } else {
+                const newGelId = `GEL${String(Date.now()).slice(-4)}`;
+                gelanggangSettings.gelanggangList.push({
+                    id: newGelId,
+                    name,
+                    location,
+                    coachName,
+                    coachPhone,
+                    days,
+                    time,
+                    bankName,
+                    accHolder,
+                    accNumber,
+                    qrImageData: tempGelanggangModalQR || null
+                });
+                showToast(`Gelanggang baharu (${name}) berjaya didaftarkan!`, 'success');
+            }
+
+            saveSettingsToStorage();
+            closeEditGelanggangModal();
+            applySettingsToUI();
+            onAdminGelanggangFilterChange();
+            if (currentSearchedMemberId) {
+                renderMemberResult(currentSearchedMemberId);
+            }
+        }
+
+        function deleteGelanggangItem(gelId) {
+            if (gelanggangSettings.gelanggangList.length <= 1) {
+                showToast('Sekurang-kurangnya 1 gelanggang mesti kekal aktif.', 'error');
+                return;
+            }
+            const target = gelanggangSettings.gelanggangList.find(g => g.id === gelId);
+            gelanggangSettings.gelanggangList = gelanggangSettings.gelanggangList.filter(g => g.id !== gelId);
+
+            const fallbackName = getDefaultGelanggangName();
+            if (target) {
+                members.forEach(m => {
+                    if (m.gelanggang === target.name) m.gelanggang = fallbackName;
+                });
+                saveToStorage();
+            }
+
+            saveSettingsToStorage();
+            applySettingsToUI();
+            onAdminGelanggangFilterChange();
+            showToast('Gelanggang telah dipadam dan ahli dipindahkan ke gelanggang utama.', 'info');
+        }
+
+        function saveFeeRatesOnly() {
+            const regFee = parseFloat(document.getElementById('setting-reg-fee').value);
+            const feeSchool = parseFloat(document.getElementById('setting-fee-school').value);
+            const feeAdult = parseFloat(document.getElementById('setting-fee-adult').value);
+            const applyToAll = document.getElementById('setting-apply-all-members').checked;
+
+            if (isNaN(regFee) || isNaN(feeSchool) || isNaN(feeAdult) || regFee < 0 || feeSchool < 0 || feeAdult < 0) {
+                showToast('Sila masukkan jumlah RM yang sah bagi yuran pendaftaran dan bulanan.', 'error');
+                return;
+            }
+
+            gelanggangSettings.regFee = regFee;
+            gelanggangSettings.monthlyFeeSchool = feeSchool;
+            gelanggangSettings.monthlyFeeAdult = feeAdult;
+
+            if (applyToAll) {
+                members.forEach(m => {
+                    if (m.category === 'custom') return;
+                    const isAdult = m.category === 'adult';
+                    m.category = isAdult ? 'adult' : 'school';
+                    m.fee = isAdult ? feeAdult : feeSchool;
+                });
+                saveToStorage();
+                postToGoogleSheets({
+                    type: 'replace_all_members',
+                    members: members.map(m => ({ id: m.id, name: m.name, ic: m.ic, phone: m.phone, belt: m.belt, category: m.category, fee: m.fee, gelanggang: m.gelanggang }))
+                });
+            }
+
+            saveSettingsToStorage();
+            applySettingsToUI();
+            updateAllAdminViews();
+            if (currentSearchedMemberId) {
+                renderMemberResult(currentSearchedMemberId);
+            }
+            showToast(`Harga yuran baharu (Pendaftaran RM ${regFee}, Sekolah RM ${feeSchool}, Dewasa RM ${feeAdult}) berjaya dikemas kini!`, 'success');
+        }
+
+        // --- GOOGLE SHEETS INTEGRATION FUNCTIONS (AUTO-SYNC 2 HALA KAEDAH 1) ---
+        let isLocalSyncBusy = false;
+        let lastWriteTimestamp = 0;
+
         async function postToGoogleSheets(payload) {
             const url = (gelanggangSettings.googleSheetUrl || '').trim();
             if (!url) return false;
 
+            isLocalSyncBusy = true;
+            lastWriteTimestamp = Date.now();
             try {
                 await fetch(url, {
                     method: 'POST',
@@ -1284,10 +2018,15 @@ function doPost(e) {
                 return true;
             } catch (e) {
                 return false;
+            } finally {
+                setTimeout(() => { isLocalSyncBusy = false; }, 6000);
             }
         }
 
         async function syncMembersFromGoogleSheets(silent = false) {
+            // Elak auto-sync latar belakang menimpa data baharu yang baru dihantar dalam masa 12 saat terakhir
+            if (silent && (isLocalSyncBusy || (Date.now() - lastWriteTimestamp < 12000))) return;
+
             const inputUrl = document.getElementById('setting-gsheet-url') ? document.getElementById('setting-gsheet-url').value.trim() : '';
             const url = inputUrl || (gelanggangSettings.googleSheetUrl || '').trim();
 
@@ -1299,7 +2038,7 @@ function doPost(e) {
             if (!silent) showToast('Sedang menarik senarai ahli dari Google Sheets...', 'info');
             try {
                 const separator = url.includes('?') ? '&' : '?';
-                const res = await fetch(`${url}${separator}action=getMembers`);
+                const res = await fetch(`${url}${separator}action=getMembers&_t=${Date.now()}`);
                 const rows = await res.json();
 
                 if (!Array.isArray(rows)) {
@@ -1308,15 +2047,18 @@ function doPost(e) {
                 }
 
                 if (rows.length === 0) {
-                    members = [];
-                    saveToStorage();
-                    renderQuickMembersBar();
-                    updateAllAdminViews();
+                    if (members.length > 0 && !silent) {
+                        members = [];
+                        saveToStorage();
+                        renderQuickMembersBar();
+                        updateAllAdminViews();
+                    }
                     if (!silent) showToast('Tab "Senarai_Ahli" di Google Sheets masih kosong.', 'info');
                     return;
                 }
 
                 const defaultSchoolFee = Number(gelanggangSettings.monthlyFeeSchool ?? 30);
+                const defaultGel = getDefaultGelanggangName();
 
                 rows.forEach((row, idx) => {
                     const id = String(row.ID_Ahli || `AHLI${String(members.length + idx + 1).padStart(3, '0')}`).trim();
@@ -1325,7 +2067,8 @@ function doPost(e) {
                     const phone = String(row.No_Telefon || '-').trim();
                     const belt = String(row.Bengkung || 'Bengkung Putih').trim();
                     const category = String(row.Kategori || 'school').trim();
-                    const fee = Number(row.Yuran_Bulanan) || defaultSchoolFee;
+                    const fee = row.Yuran_Bulanan !== undefined && row.Yuran_Bulanan !== '' ? Number(row.Yuran_Bulanan) : defaultSchoolFee;
+                    const rawSheetGel = String(row.Gelanggang || '').trim();
 
                     if (!name) return;
 
@@ -1336,7 +2079,13 @@ function doPost(e) {
                         existing.phone = phone;
                         existing.belt = belt;
                         existing.category = category;
-                        existing.fee = fee;
+                        existing.fee = isNaN(fee) ? defaultSchoolFee : fee;
+                        // Hanya kemas kini gelanggang jika Google Sheets mempunyai nilai lajur Gelanggang yang sah
+                        if (rawSheetGel) {
+                            existing.gelanggang = rawSheetGel;
+                        } else if (!existing.gelanggang) {
+                            existing.gelanggang = defaultGel;
+                        }
                     } else {
                         const payments = {};
                         MONTHS.forEach((m, mIdx) => {
@@ -1347,10 +2096,10 @@ function doPost(e) {
                             name,
                             ic: ic || `00000000${String(idx + 1).padStart(4, '0')}`,
                             phone,
-                            gelanggang: GELANGGANG_RASMI,
+                            gelanggang: rawSheetGel || defaultGel,
                             belt,
                             category,
-                            fee,
+                            fee: isNaN(fee) ? defaultSchoolFee : fee,
                             payments
                         });
                     }
@@ -1364,6 +2113,7 @@ function doPost(e) {
 
                 saveToStorage();
                 renderQuickMembersBar();
+                renderGelanggangManagerCards();
                 updateAllAdminViews();
                 if (currentSearchedMemberId) {
                     if (members.some(m => m.id === currentSearchedMemberId)) {
@@ -1402,7 +2152,8 @@ function doPost(e) {
                     phone: m.phone,
                     belt: m.belt,
                     category: m.category,
-                    fee: m.fee
+                    fee: m.fee,
+                    gelanggang: m.gelanggang || getDefaultGelanggangName()
                 }))
             });
 
@@ -1429,6 +2180,7 @@ function doPost(e) {
                 btnAhli.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-amber-500 text-slate-900 shadow";
                 btnAdmin.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all";
                 renderQuickMembersBar();
+                renderPublicGelanggangInfo();
                 if (currentSearchedMemberId) renderMemberResult(currentSearchedMemberId);
             } else {
                 viewAhli.classList.add('hidden');
@@ -1446,10 +2198,11 @@ function doPost(e) {
             });
             document.getElementById(`ahli-content-${tab}`).classList.remove('hidden');
             document.getElementById(`tab-ahli-${tab}`).className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-blue-950 shadow transition";
+            if (tab === 'gelanggang') renderPublicGelanggangInfo();
         }
 
         function switchAdminTab(tab) {
-            ['resit', 'rekod', 'ahli', 'kewangan', 'tetapan'].forEach(t => {
+            ['resit', 'rekod', 'ahli', 'gelanggang', 'kewangan', 'tetapan'].forEach(t => {
                 document.getElementById(`admin-content-${t}`).classList.add('hidden');
                 const btn = document.getElementById(`tab-admin-${t}`);
                 btn.className = "px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition relative";
@@ -1457,6 +2210,9 @@ function doPost(e) {
             document.getElementById(`admin-content-${tab}`).classList.remove('hidden');
             const activeBtn = document.getElementById(`tab-admin-${tab}`);
             activeBtn.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-blue-700 text-white shadow-sm transition relative";
+            if (tab === 'ahli') {
+                populateGelanggangDropdowns(true);
+            }
         }
 
         // --- PORTAL AHLI: CARIAN FLEKSIBEL ---
@@ -1488,7 +2244,7 @@ function doPost(e) {
             if (matched.length > 1 && matched.length <= 8) {
                 matchesList.innerHTML = matched.map(m => `
                     <button type="button" onclick="selectMatchedMember('${m.id}')" class="px-3 py-1.5 rounded-lg bg-white hover:bg-blue-700 hover:text-white text-slate-800 border border-blue-200 text-xs font-bold transition shadow-sm">
-                        ${m.name} <span class="opacity-75 font-normal">(${m.id})</span>
+                        ${m.name} <span class="opacity-75 font-normal">(${m.gelanggang || m.id})</span>
                     </button>
                 `).join('');
                 matchesBox.classList.remove('hidden');
@@ -1551,7 +2307,7 @@ function doPost(e) {
                 const matchesList = document.getElementById('search-matches-list');
                 matchesList.innerHTML = partialMatches.map(m => `
                     <button type="button" onclick="selectMatchedMember('${m.id}')" class="px-3 py-1.5 rounded-lg bg-white hover:bg-blue-700 hover:text-white text-slate-800 border border-blue-200 text-xs font-bold transition shadow-sm">
-                        ${m.name} <span class="opacity-75 font-normal">(${m.ic})</span>
+                        ${m.name} <span class="opacity-75 font-normal">(${m.gelanggang || m.ic})</span>
                     </button>
                 `).join('');
                 matchesBox.classList.remove('hidden');
@@ -1565,11 +2321,17 @@ function doPost(e) {
             const member = members.find(m => m.id === memberId);
             if (!member) return;
 
+            const gelInfo = getGelanggangInfoByName(member.gelanggang);
+            if (gelInfo && gelInfo.id) {
+                selectedPublicGelanggangId = gelInfo.id;
+                renderPublicGelanggangInfo();
+            }
+
             document.getElementById('member-result-card').classList.remove('hidden');
             document.getElementById('member-avatar').textContent = member.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
             document.getElementById('member-name').textContent = member.name;
             document.getElementById('member-id-badge').textContent = member.id;
-            document.getElementById('member-gelanggang').textContent = member.gelanggang;
+            document.getElementById('member-gelanggang').textContent = `${member.gelanggang || gelInfo.name} (${gelInfo.coachName})`;
             document.getElementById('member-belt').textContent = member.belt;
             document.getElementById('member-ic').textContent = member.ic;
             document.getElementById('member-fee').textContent = `RM ${member.fee.toFixed(2)}`;
@@ -1628,7 +2390,7 @@ function doPost(e) {
             document.getElementById('member-arrears').textContent = `RM ${(unpaidCount * member.fee).toFixed(2)}`;
         }
 
-        // --- MODAL BAYAR YURAN & MUAT NAIK BUKTI RESIT ---
+        // --- MODAL BAYAR YURAN & MUAT NAIK BUKTI RESIT (AUTO-PILIH QR GELANGGANG PELAJAR) ---
         let uploadedReceiptDataUrl = null;
         let uploadedReceiptType = null;
         let uploadedRawFile = null;
@@ -1637,6 +2399,18 @@ function doPost(e) {
             if (!currentSearchedMemberId) return;
             const member = members.find(m => m.id === currentSearchedMemberId);
             if (!member) return;
+
+            // Paparkan Kod QR & Akaun Bank khusus bagi gelanggang pelajar ini
+            const gelInfo = getGelanggangInfoByName(member.gelanggang);
+            const payDetails = getGelanggangPaymentDetails(gelInfo);
+
+            document.getElementById('payment-modal-gelanggang-badge').textContent = `${member.gelanggang || gelInfo.name} (${gelInfo.coachName})`;
+            document.getElementById('payment-modal-bank-name').textContent = payDetails.bankName;
+            document.getElementById('payment-modal-acc-holder').textContent = payDetails.accHolder;
+            document.getElementById('acc-number-text').textContent = payDetails.accNumber;
+            document.getElementById('payment-modal-qr-box').innerHTML = payDetails.qrImageData
+                ? `<img src="${payDetails.qrImageData}" alt="Kod QR DuitNow" class="w-full h-full object-contain">`
+                : DEFAULT_QR_SVG;
 
             uploadedReceiptDataUrl = null;
             uploadedReceiptType = null;
@@ -1681,8 +2455,9 @@ function doPost(e) {
             document.getElementById('payment-modal').classList.add('hidden');
         }
 
-        function copyAccNumber() {
-            const acc = document.getElementById('acc-number-text').textContent;
+        function copyAccNumber(elementId = 'acc-number-text') {
+            const el = document.getElementById(elementId);
+            const acc = el ? el.textContent : '';
             const temp = document.createElement('input');
             temp.value = acc;
             document.body.appendChild(temp);
@@ -1723,12 +2498,15 @@ function doPost(e) {
         async function sendReceiptToTelegram(member, selectedMonths, ref, fileObj) {
             const token = (gelanggangSettings.tgBotToken || '').trim();
             const chatId = (gelanggangSettings.tgChatId || '').trim();
+            const gelInfo = getGelanggangInfoByName(member.gelanggang);
             if (!token || !chatId) return { sent: false };
 
             const totalAmount = (selectedMonths.length * member.fee).toFixed(2);
             const caption = [
                 `🔔 *RESIT BAYARAN YURAN BAHARU*`,
                 `━━━━━━━━━━━━━━━━━━━━`,
+                `🏛️ *Gelanggang:* ${member.gelanggang || gelInfo.name}`,
+                `🥋 *Gurulatih:* ${gelInfo.coachName}`,
                 `👤 *Nama Pelajar:* ${member.name}`,
                 `🆔 *ID / No. KP:* ${member.id} (${member.ic})`,
                 `📞 *No. Tel Ibu Bapa:* ${member.phone}`,
@@ -1853,7 +2631,7 @@ function doPost(e) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: chatId,
-                        text: `✅ *Ujian Sambungan Berjaya!*\nSistem Yuran *Akademi Gayong Nur Insani (Johor Bahru)* telah berjaya disambungkan ke Telegram Cikgu Bujal.`,
+                        text: `✅ *Ujian Sambungan Berjaya!*\nSistem Yuran *Akademi Gayong Nur Insani (${gelanggangSettings.gelanggangList.length} Gelanggang)* telah berjaya disambungkan ke Telegram.`,
                         parse_mode: 'Markdown'
                     })
                 });
@@ -1890,6 +2668,8 @@ function doPost(e) {
             const selectedMonths = checkedBoxes.map(cb => cb.value);
 
             const member = members.find(m => m.id === currentSearchedMemberId);
+            const gelInfo = getGelanggangInfoByName(member.gelanggang);
+
             selectedMonths.forEach(month => {
                 member.payments[month] = {
                     status: 'pending',
@@ -1903,7 +2683,7 @@ function doPost(e) {
                 };
             });
 
-            // 1. Hantar ke Telegram Cikgu Bujal
+            // 1. Hantar ke Telegram
             const tgResult = await sendReceiptToTelegram(member, selectedMonths, ref, uploadedRawFile);
 
             // 2. Hantar rekod pembayaran ke Google Sheets (tab Rekod_Pembayaran)
@@ -1915,7 +2695,8 @@ function doPost(e) {
                 amount: selectedMonths.length * member.fee,
                 ref: ref,
                 method: 'Online Transfer / DuitNow',
-                status: 'Menunggu Semakan'
+                status: 'Menunggu Semakan',
+                gelanggang: member.gelanggang || gelInfo.name
             });
 
             saveToStorage();
@@ -1925,9 +2706,9 @@ function doPost(e) {
             renderMemberResult(member.id);
 
             if (tgResult.sent) {
-                showToast(`Bukti resit berjaya direkodkan & terus dihantar ke Telegram Cikgu Bujal!`, 'success');
+                showToast(`Bukti resit berjaya direkodkan & terus dihantar ke Telegram (${gelInfo.coachName})!`, 'success');
             } else {
-                showToast(`Bukti resit bagi ${selectedMonths.length} bulan berjaya direkodkan untuk semakan Cikgu Bujal!`, 'success');
+                showToast(`Bukti resit bagi ${selectedMonths.length} bulan berjaya direkodkan untuk semakan ${gelInfo.coachName}!`, 'success');
             }
         }
 
@@ -1938,8 +2719,9 @@ function doPost(e) {
             const p = member.payments[month];
             if (!p) return;
 
+            const gelInfo = getGelanggangInfoByName(member.gelanggang);
             const mIndex = MONTHS.indexOf(month);
-            document.getElementById('proof-modal-subtitle').textContent = `${member.name} • Bulan ${FULL_MONTHS[mIndex]} 2026 (RM ${member.fee.toFixed(2)})`;
+            document.getElementById('proof-modal-subtitle').textContent = `${member.name} (${member.gelanggang || gelInfo.name}) • ${FULL_MONTHS[mIndex]} 2026 (RM ${member.fee.toFixed(2)})`;
             document.getElementById('proof-modal-ref').textContent = p.ref || '-';
             document.getElementById('proof-modal-date').textContent = p.date || '15/11/2026';
 
@@ -1948,7 +2730,7 @@ function doPost(e) {
             const pdfTitle = document.getElementById('proof-modal-pdf-title');
             const pdfLink = document.getElementById('proof-modal-pdf-link');
 
-            const dataUrl = p.receiptDataUrl || createSampleReceiptSVG(member.name, FULL_MONTHS[mIndex], member.fee, p.ref || 'REF-YURAN');
+            const dataUrl = p.receiptDataUrl || createSampleReceiptSVG(member.name, FULL_MONTHS[mIndex], member.fee, p.ref || 'REF-YURAN', gelInfo.coachName);
 
             if (p.receiptType === 'application/pdf' || (p.receiptFile && p.receiptFile.toLowerCase().endsWith('.pdf'))) {
                 imgEl.classList.add('hidden');
@@ -1991,9 +2773,12 @@ function doPost(e) {
             const p = member.payments[month];
             if (!p || p.status !== 'paid') return;
 
+            const gelInfo = getGelanggangInfoByName(member.gelanggang);
             const mIndex = MONTHS.indexOf(month);
             const serial = p.receiptNo || `RESIT-2026-${Math.floor(1000 + Math.random() * 9000)}`;
 
+            document.getElementById('rec-coach-subtitle').textContent = `${member.gelanggang || gelInfo.name} • Gurulatih: ${gelInfo.coachName}`;
+            document.getElementById('rec-footer-coach').textContent = `Resit janaan komputer. Disahkan oleh ${gelInfo.coachName}.`;
             document.getElementById('rec-serial').textContent = serial;
             document.getElementById('rec-member-name').textContent = member.name;
             document.getElementById('rec-member-ic').textContent = `No. KP: ${member.ic} (${member.id})`;
@@ -2029,15 +2814,17 @@ function doPost(e) {
             renderAdminMatrix();
             renderPendingReceipts();
             renderAdminMembersList();
+            renderGelanggangManagerCards();
             renderFinanceReport();
         }
 
         function updateAdminKPIs() {
+            const filteredMembers = getFilteredMembersForAdmin();
             let totalCollected = 0;
             let pendingCount = 0;
             let totalArrears = 0;
 
-            members.forEach(m => {
+            filteredMembers.forEach(m => {
                 MONTHS.forEach(month => {
                     const p = m.payments[month];
                     if (p) {
@@ -2048,8 +2835,8 @@ function doPost(e) {
                 });
             });
 
-            document.getElementById('stat-total-members').textContent = members.length;
-            if (document.getElementById('tab-member-count')) document.getElementById('tab-member-count').textContent = members.length;
+            document.getElementById('stat-total-members').textContent = filteredMembers.length;
+            if (document.getElementById('tab-member-count')) document.getElementById('tab-member-count').textContent = filteredMembers.length;
             if (document.getElementById('quick-total-count')) document.getElementById('quick-total-count').textContent = members.length;
             document.getElementById('stat-total-collected').textContent = `RM ${totalCollected.toFixed(2)}`;
             document.getElementById('stat-pending-receipts').textContent = pendingCount;
@@ -2061,13 +2848,14 @@ function doPost(e) {
             const m = members.find(item => item.id === memberId);
             if (!m) return;
 
+            const gelInfo = getGelanggangInfoByName(m.gelanggang);
             const unpaidMonths = MONTHS.filter(mon => m.payments[mon]?.status === 'unpaid');
             let cleanPhone = m.phone.replace(/[^0-9]/g, '');
             if (cleanPhone.startsWith('0')) cleanPhone = '6' + cleanPhone;
 
             const text = unpaidMonths.length > 0
-                ? `Assalamualaikum. Peringatan mesra daripada *Akademi Gayong Nur Insani (Johor Bahru)*. Yuran bulanan bagi anak tuan/puan *${m.name}* (${m.id}) masih tertunggak untuk bulan *${unpaidMonths.join(', ')}* (Jumlah: RM ${(unpaidMonths.length * m.fee).toFixed(2)}). Mohon muat naik resit bayaran di sistem yuran. Terima kasih - Cikgu Bujal.`
-                : `Assalamualaikum. Terima kasih kerana sentiasa menjelaskan yuran bulanan *${m.name}* di *Akademi Gayong Nur Insani (Johor Bahru)* tepat pada masanya. - Cikgu Bujal.`;
+                ? `Assalamualaikum. Peringatan mesra daripada *Akademi Gayong Nur Insani (${m.gelanggang || gelInfo.name})*. Yuran bulanan bagi anak tuan/puan *${m.name}* (${m.id}) masih tertunggak untuk bulan *${unpaidMonths.join(', ')}* (Jumlah: RM ${(unpaidMonths.length * m.fee).toFixed(2)}). Mohon muat naik resit bayaran di sistem yuran. Terima kasih - ${gelInfo.coachName}.`
+                : `Assalamualaikum. Terima kasih kerana sentiasa menjelaskan yuran bulanan *${m.name}* di *Akademi Gayong Nur Insani (${m.gelanggang || gelInfo.name})* tepat pada masanya. - ${gelInfo.coachName}.`;
 
             window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`, '_blank');
         }
@@ -2077,13 +2865,14 @@ function doPost(e) {
             const tbody = document.getElementById('admin-matrix-body');
             tbody.innerHTML = '';
 
-            const filtered = members.filter(m => m.name.toLowerCase().includes(search) || m.ic.includes(search) || m.id.toLowerCase().includes(search));
+            const baseList = getFilteredMembersForAdmin();
+            const filtered = baseList.filter(m => m.name.toLowerCase().includes(search) || m.ic.includes(search) || m.id.toLowerCase().includes(search));
 
             if (filtered.length === 0) {
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="13" class="py-8 text-center text-slate-400 font-medium">
-                            Tiada rekod ahli dijumpai. Sila daftar ahli baharu atau tarik senarai dari Google Sheets.
+                            Tiada rekod ahli dijumpai bagi pilihan gelanggang ini.
                         </td>
                     </tr>
                 `;
@@ -2097,6 +2886,7 @@ function doPost(e) {
                             <div class="flex items-center justify-between gap-2">
                                 <div>
                                     <p class="font-bold text-slate-900">${m.name}</p>
+                                    <p class="text-[10px] font-semibold text-blue-700">${m.gelanggang || getDefaultGelanggangName()}</p>
                                     <p class="text-[11px] text-slate-500">${m.id} • ${m.ic}</p>
                                 </div>
                                 <button onclick="sendWhatsAppReminder('${m.id}')" title="Hantar Peringatan WhatsApp" class="w-7 h-7 rounded-lg bg-emerald-50 hover:bg-emerald-500 text-emerald-600 hover:text-white flex items-center justify-center transition shrink-0">
@@ -2173,7 +2963,8 @@ function doPost(e) {
                     amount: member.fee,
                     ref: `${ref} (${receiptNo})`,
                     method: method,
-                    status: 'Disahkan'
+                    status: 'Disahkan',
+                    gelanggang: member.gelanggang || getDefaultGelanggangName()
                 });
                 showToast(`Bayaran ${month} bagi ${member.name} disahkan!`, 'success');
             } else {
@@ -2188,10 +2979,11 @@ function doPost(e) {
 
         function renderPendingReceipts() {
             const container = document.getElementById('pending-receipts-list');
+            const baseList = getFilteredMembersForAdmin();
             container.innerHTML = '';
             let count = 0;
 
-            members.forEach(m => {
+            baseList.forEach(m => {
                 MONTHS.forEach(month => {
                     const p = m.payments[month];
                     if (p && p.status === 'pending') {
@@ -2204,7 +2996,7 @@ function doPost(e) {
                                         <span class="text-sm font-extrabold text-slate-900">RM ${m.fee.toFixed(2)}</span>
                                     </div>
                                     <h4 class="font-bold text-slate-900 mt-2.5 text-sm">${m.name}</h4>
-                                    <p class="text-xs text-slate-500">${m.gelanggang}</p>
+                                    <p class="text-xs font-semibold text-blue-700">${m.gelanggang || getDefaultGelanggangName()}</p>
                                     <div class="mt-3 p-3 rounded-xl bg-white border border-slate-200 text-xs space-y-1">
                                         <p><span class="text-slate-400">Kaedah:</span> <span class="font-semibold">${p.method}</span></p>
                                         <p><span class="text-slate-400">No. Rujukan:</span> <span class="font-mono font-bold text-blue-700">${p.ref}</span></p>
@@ -2233,7 +3025,7 @@ function doPost(e) {
                     <div class="col-span-full py-12 text-center text-slate-400">
                         <i class="fa-regular fa-circle-check text-4xl text-emerald-400 mb-3 block"></i>
                         <p class="font-bold text-slate-600">Tiada resit tertunggak untuk disahkan.</p>
-                        <p class="text-xs mt-1">Semua bukti bayaran ahli telah disemak oleh Cikgu Bujal.</p>
+                        <p class="text-xs mt-1">Semua bukti bayaran ahli bagi pilihan gelanggang ini telah disemak.</p>
                     </div>
                 `;
             }
@@ -2259,7 +3051,8 @@ function doPost(e) {
                     amount: member.fee,
                     ref: `${prevRef} (${receiptNo})`,
                     method: prevMethod,
-                    status: 'Disahkan'
+                    status: 'Disahkan',
+                    gelanggang: member.gelanggang || getDefaultGelanggangName()
                 });
 
                 showToast(`Resit ${month} (${member.name}) disahkan! Ibu bapa kini boleh mencetak resit rasmi.`, 'success');
@@ -2274,12 +3067,14 @@ function doPost(e) {
 
         // --- IMPORT EXCEL / CSV ---
         function downloadSampleCSV() {
-            const csvContent = "Nama,NoKP,NoTelefon,Yuran\nMuhammad Irfan bin Hakim,130405031122,019-9112233,30\nNurul Iman binti Zulkifli,120918034455,013-9445566,30";
+            const g1 = gelanggangSettings.gelanggangList[0]?.name || 'Gelanggang Utama Johor Bahru';
+            const g2 = gelanggangSettings.gelanggangList[1]?.name || 'Gelanggang Cawangan 2 (Skudai)';
+            const csvContent = `Nama,NoKP,NoTelefon,Yuran,Gelanggang\nMuhammad Irfan bin Hakim,130405031122,019-9112233,30,${g1}\nNurul Iman binti Zulkifli,120918034455,013-9445566,30,${g2}`;
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = "Templat_Import_Ahli_Akademi_Gayong_Nur_Insani.csv";
+            a.download = "Templat_Import_Ahli_Multi_Gelanggang.csv";
             a.click();
         }
 
@@ -2293,6 +3088,7 @@ function doPost(e) {
                 let addedCount = 0;
                 const defaultSchoolFee = Number(gelanggangSettings.monthlyFeeSchool ?? 30);
                 const defaultAdultFee = Number(gelanggangSettings.monthlyFeeAdult ?? 50);
+                const fallbackGel = adminSelectedGelanggangFilter !== 'ALL' ? adminSelectedGelanggangFilter : getDefaultGelanggangName();
 
                 for (let i = 1; i < lines.length; i++) {
                     const cols = lines[i].split(',');
@@ -2303,6 +3099,7 @@ function doPost(e) {
                         const parsedFee = cols[3] ? parseFloat(cols[3].trim()) : defaultSchoolFee;
                         const category = parsedFee >= defaultAdultFee && defaultAdultFee > defaultSchoolFee ? 'adult' : 'school';
                         const fee = cols[3] && !isNaN(parsedFee) ? parsedFee : defaultSchoolFee;
+                        const gelanggang = cols[4] && cols[4].trim() ? cols[4].trim() : fallbackGel;
 
                         if (name && ic && !members.some(m => m.ic === ic)) {
                             const newId = `AHLI${String(members.length + 1).padStart(3, '0')}`;
@@ -2310,7 +3107,7 @@ function doPost(e) {
                             MONTHS.forEach((m, idx) => {
                                 payments[m] = idx < 10 ? { status: 'not_started' } : (idx === 10 ? { status: 'unpaid' } : { status: 'not_started' });
                             });
-                            members.push({ id: newId, name, ic, phone, gelanggang: GELANGGANG_RASMI, belt: 'Bengkung Putih', category, fee, payments });
+                            members.push({ id: newId, name, ic, phone, gelanggang, belt: 'Bengkung Putih', category, fee, payments });
                             addedCount++;
                         }
                     }
@@ -2322,7 +3119,7 @@ function doPost(e) {
                 event.target.value = '';
                 postToGoogleSheets({
                     type: 'replace_all_members',
-                    members: members.map(m => ({ id: m.id, name: m.name, ic: m.ic, phone: m.phone, belt: m.belt, category: m.category, fee: m.fee }))
+                    members: members.map(m => ({ id: m.id, name: m.name, ic: m.ic, phone: m.phone, belt: m.belt, category: m.category, fee: m.fee, gelanggang: m.gelanggang }))
                 });
                 showToast(`${addedCount} orang pelajar berjaya diimport & diselaraskan ke Google Sheets!`, 'success');
             };
@@ -2330,16 +3127,38 @@ function doPost(e) {
         }
 
         // --- URUS AHLI ---
+        function toggleCustomNewFeeInput() {
+            const val = document.getElementById('new-member-fee').value;
+            const box = document.getElementById('new-member-custom-fee-box');
+            if (val === 'custom') {
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+
         function addNewMember(e) {
             e.preventDefault();
+            const gelSelect = document.getElementById('new-member-gelanggang');
+            const selectedGelanggang = (gelSelect && gelSelect.value) ? gelSelect.value.trim() : getDefaultGelanggangName();
             const name = document.getElementById('new-member-name').value.trim();
             const ic = document.getElementById('new-member-ic').value.trim().replace(/-/g, '');
             const phone = document.getElementById('new-member-phone').value.trim();
             const belt = document.getElementById('new-member-belt').value;
             const category = document.getElementById('new-member-fee').value;
-            const fee = category === 'adult'
-                ? Number(gelanggangSettings.monthlyFeeAdult ?? 50)
-                : Number(gelanggangSettings.monthlyFeeSchool ?? 30);
+
+            let fee = Number(gelanggangSettings.monthlyFeeSchool ?? 30);
+            if (category === 'adult') {
+                fee = Number(gelanggangSettings.monthlyFeeAdult ?? 50);
+            } else if (category === 'custom') {
+                const customVal = parseFloat(document.getElementById('new-member-custom-fee-val').value);
+                if (isNaN(customVal) || customVal < 0) {
+                    showToast('Sila masukkan jumlah RM yang sah bagi yuran khas.', 'error');
+                    return;
+                }
+                fee = customVal;
+            }
+
             const startMonthIdx = parseInt(document.getElementById('new-member-start-month').value, 10);
 
             if (members.some(m => m.ic === ic)) {
@@ -2357,7 +3176,10 @@ function doPost(e) {
                 }
             });
 
-            members.push({ id: newId, name, ic, phone, gelanggang: GELANGGANG_RASMI, belt, category, fee, payments });
+            members.push({ id: newId, name, ic, phone, gelanggang: selectedGelanggang, belt, category, fee, payments });
+            saveToStorage();
+
+            // Hantar ke Google Sheets (termasuk lajur ke-8 Gelanggang)
             postToGoogleSheets({
                 type: 'new_member',
                 id: newId,
@@ -2366,14 +3188,87 @@ function doPost(e) {
                 phone,
                 belt,
                 category,
-                fee
+                fee,
+                gelanggang: selectedGelanggang
             });
 
-            saveToStorage();
-            e.target.reset();
-            applySettingsToUI();
+            // Kosongkan ruangan teks sahaja tetapi kekalkan pilihan Gelanggang yang baru dipilih
+            document.getElementById('new-member-name').value = '';
+            document.getElementById('new-member-ic').value = '';
+            document.getElementById('new-member-phone').value = '';
+            document.getElementById('new-member-custom-fee-val').value = '';
+            if (gelSelect) gelSelect.value = selectedGelanggang;
+
+            renderQuickMembersBar();
+            renderGelanggangManagerCards();
             updateAllAdminViews();
-            showToast(`Ahli baharu (${name} • ${newId}) berjaya didaftarkan!`, 'success');
+            showToast(`Ahli baharu (${name}) berjaya didaftarkan ke ${selectedGelanggang}!`, 'success');
+        }
+
+        function openEditMemberModal(id) {
+            const m = members.find(item => item.id === id);
+            if (!m) return;
+
+            populateGelanggangDropdowns(true);
+            document.getElementById('edit-mem-id').value = m.id;
+            document.getElementById('edit-mem-gelanggang').value = m.gelanggang || getDefaultGelanggangName();
+            document.getElementById('edit-mem-name').value = m.name;
+            document.getElementById('edit-mem-ic').value = m.ic;
+            document.getElementById('edit-mem-phone').value = m.phone;
+            document.getElementById('edit-mem-belt').value = m.belt;
+            document.getElementById('edit-mem-fee').value = m.fee;
+            document.getElementById('edit-member-modal').classList.remove('hidden');
+        }
+
+        function closeEditMemberModal() {
+            document.getElementById('edit-member-modal').classList.add('hidden');
+        }
+
+        function saveEditedMember(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-mem-id').value;
+            const m = members.find(item => item.id === id);
+            if (!m) return;
+
+            const gelanggang = document.getElementById('edit-mem-gelanggang').value || getDefaultGelanggangName();
+            const name = document.getElementById('edit-mem-name').value.trim();
+            const ic = document.getElementById('edit-mem-ic').value.trim().replace(/-/g, '');
+            const phone = document.getElementById('edit-mem-phone').value.trim();
+            const belt = document.getElementById('edit-mem-belt').value;
+            const fee = parseFloat(document.getElementById('edit-mem-fee').value);
+
+            if (!name || !ic || isNaN(fee) || fee < 0) {
+                showToast('Sila lengkapkan nama, No. KP, dan harga yuran yang sah.', 'error');
+                return;
+            }
+
+            m.gelanggang = gelanggang;
+            m.name = name;
+            m.ic = ic;
+            m.phone = phone;
+            m.belt = belt;
+            m.fee = fee;
+            if (fee === Number(gelanggangSettings.monthlyFeeSchool)) {
+                m.category = 'school';
+            } else if (fee === Number(gelanggangSettings.monthlyFeeAdult)) {
+                m.category = 'adult';
+            } else {
+                m.category = 'custom';
+            }
+
+            saveToStorage();
+            closeEditMemberModal();
+            renderQuickMembersBar();
+            updateAllAdminViews();
+            if (currentSearchedMemberId === id) {
+                renderMemberResult(id);
+            }
+
+            postToGoogleSheets({
+                type: 'replace_all_members',
+                members: members.map(item => ({ id: item.id, name: item.name, ic: item.ic, phone: item.phone, belt: item.belt, category: item.category, fee: item.fee, gelanggang: item.gelanggang }))
+            });
+            showToast(`Maklumat & yuran baharu (${m.name} • ${m.gelanggang}) disimpan & diselaraskan!`, 'success');
         }
 
         function deleteMember(id) {
@@ -2390,40 +3285,47 @@ function doPost(e) {
                 type: 'delete_member',
                 id: id,
                 ic: target ? target.ic : '',
-                members: members.map(m => ({ id: m.id, name: m.name, ic: m.ic, phone: m.phone, belt: m.belt, category: m.category, fee: m.fee }))
+                members: members.map(m => ({ id: m.id, name: m.name, ic: m.ic, phone: m.phone, belt: m.belt, category: m.category, fee: m.fee, gelanggang: m.gelanggang }))
             });
             showToast('Rekod ahli telah dipadam secara kekal dari laman web & Google Sheets.', 'info');
         }
 
         function renderAdminMembersList() {
             const container = document.getElementById('admin-members-list');
-            document.getElementById('member-list-count').textContent = members.length;
+            const filtered = getFilteredMembersForAdmin();
+            document.getElementById('member-list-count').textContent = filtered.length;
             container.innerHTML = '';
 
-            if (members.length === 0) {
+            if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="py-10 text-center text-slate-400 text-xs">
-                        <p class="font-bold text-slate-600 text-sm">Belum ada senarai ahli berdaftar.</p>
-                        <p class="mt-1">Gunakan borang di sebelah kiri untuk mendaftar ahli baharu atau klik <strong>Tarik Data Google Sheets</strong>.</p>
+                        <p class="font-bold text-slate-600 text-sm">Belum ada senarai ahli berdaftar bagi pilihan gelanggang ini.</p>
+                        <p class="mt-1">Gunakan borang di sebelah kiri untuk mendaftar ahli baharu atau klik <strong>Segerak Sheets</strong>.</p>
                     </div>
                 `;
                 return;
             }
 
-            members.forEach(m => {
+            filtered.forEach(m => {
                 container.innerHTML += `
                     <div class="py-3.5 flex items-center justify-between gap-3">
                         <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">
                                 ${m.id.replace('AHLI', '#')}
                             </div>
                             <div>
                                 <p class="text-sm font-bold text-slate-900">${m.name} <span class="text-xs font-normal text-slate-500">(${m.belt})</span></p>
+                                <p class="text-[11px] font-bold text-blue-700"><i class="fa-solid fa-location-dot mr-1"></i>${m.gelanggang || getDefaultGelanggangName()}</p>
                                 <p class="text-xs text-slate-500">No. KP: ${m.ic} • Tel: ${m.phone}</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-bold">RM ${m.fee}/bln</span>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button onclick="openEditMemberModal('${m.id}')" class="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold transition" title="Klik untuk ubah gelanggang atau harga yuran">
+                                RM ${m.fee}/bln
+                            </button>
+                            <button onclick="openEditMemberModal('${m.id}')" class="p-2 text-slate-400 hover:text-blue-600 transition" title="Edit Maklumat, Gelanggang & Harga Yuran">
+                                <i class="fa-solid fa-pen-to-square text-sm"></i>
+                            </button>
                             <button onclick="sendWhatsAppReminder('${m.id}')" class="p-2 text-slate-400 hover:text-emerald-600 transition" title="WhatsApp Ibu Bapa">
                                 <i class="fa-brands fa-whatsapp text-base"></i>
                             </button>
@@ -2444,7 +3346,9 @@ function doPost(e) {
             const tbody = document.getElementById('finance-transactions-body');
             tbody.innerHTML = '';
 
-            members.forEach(m => {
+            const filtered = getFilteredMembersForAdmin();
+
+            filtered.forEach(m => {
                 MONTHS.forEach(month => {
                     const p = m.payments[month];
                     if (p && p.status === 'paid') {
@@ -2460,6 +3364,7 @@ function doPost(e) {
                                 <td class="py-2.5 px-4 font-mono text-[11px] font-bold text-slate-600">${p.receiptNo || '-'}</td>
                                 <td class="py-2.5 px-4 text-slate-500">${p.date || '2026'}</td>
                                 <td class="py-2.5 px-4 font-bold text-slate-800">${m.name}</td>
+                                <td class="py-2.5 px-4 text-blue-700 font-semibold">${m.gelanggang || getDefaultGelanggangName()}</td>
                                 <td class="py-2.5 px-4"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold">${month} 2026</span></td>
                                 <td class="py-2.5 px-4 text-slate-600">${p.method}</td>
                                 <td class="py-2.5 px-4 text-right font-extrabold text-emerald-700">RM ${m.fee.toFixed(2)}</td>
@@ -2476,11 +3381,12 @@ function doPost(e) {
 
         function exportFinanceCSV() {
             let csv = "No Resit,ID Ahli,Nama Ahli,No KP,Gelanggang,Bulan,Kaedah Bayaran,No Rujukan,Jumlah (RM)\n";
-            members.forEach(m => {
+            const filtered = getFilteredMembersForAdmin();
+            filtered.forEach(m => {
                 MONTHS.forEach(month => {
                     const p = m.payments[month];
                     if (p && p.status === 'paid') {
-                        csv += `"${p.receiptNo || ''}","${m.id}","${m.name}","${m.ic}","${m.gelanggang}","${month} 2026","${p.method}","${p.ref}",${m.fee}\n`;
+                        csv += `"${p.receiptNo || ''}","${m.id}","${m.name}","${m.ic}","${m.gelanggang || getDefaultGelanggangName()}","${month} 2026","${p.method}","${p.ref}",${m.fee}\n`;
                     }
                 });
             });
@@ -2496,7 +3402,7 @@ function doPost(e) {
             showToast('Penyata Kewangan (CSV) berjaya dimuat turun!', 'success');
         }
 
-        // --- TETAPAN QR & BANK ---
+        // --- TETAPAN QR & BANK UTAMA ---
         let tempUploadedQR = null;
 
         function previewSettingQR(event) {
@@ -2517,7 +3423,7 @@ function doPost(e) {
             document.getElementById('setting-qr-preview-box').innerHTML = DEFAULT_QR_SVG;
             saveSettingsToStorage();
             applySettingsToUI();
-            showToast('Kod QR dikembalikan kepada paparan lalai.', 'info');
+            showToast('Kod QR Utama dikembalikan kepada paparan lalai.', 'info');
         }
 
         function saveGelanggangSettings() {
@@ -2558,11 +3464,16 @@ function doPost(e) {
 
             if (applyToAll) {
                 members.forEach(m => {
-                    const isAdult = m.category === 'adult' || m.belt === 'Bengkung Kuning' && m.ic.startsWith('04') || m.ic.startsWith('05');
+                    if (m.category === 'custom') return;
+                    const isAdult = m.category === 'adult';
                     m.category = isAdult ? 'adult' : 'school';
                     m.fee = isAdult ? feeAdult : feeSchool;
                 });
                 saveToStorage();
+                postToGoogleSheets({
+                    type: 'replace_all_members',
+                    members: members.map(m => ({ id: m.id, name: m.name, ic: m.ic, phone: m.phone, belt: m.belt, category: m.category, fee: m.fee, gelanggang: m.gelanggang }))
+                });
             }
 
             saveSettingsToStorage();
@@ -2599,13 +3510,15 @@ function doPost(e) {
 
         // Initialize default view on load
         window.onload = async function() {
+            const searchInput = document.getElementById('search-ic-input');
+            if (searchInput) searchInput.value = '';
             applySettingsToUI();
             updateAllAdminViews();
             if ((gelanggangSettings.googleSheetUrl || '').trim()) {
                 await syncMembersFromGoogleSheets(true);
-            }
-            if (members.length > 0) {
-                quickSearch(members[0].name);
+                setInterval(() => {
+                    syncMembersFromGoogleSheets(true);
+                }, 15000);
             }
         };
     </script>
