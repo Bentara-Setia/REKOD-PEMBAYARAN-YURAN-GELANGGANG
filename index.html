@@ -1438,9 +1438,16 @@ function doPost(e) {
                     }
                 });
 
+                // Buang ahli dalam memori tempatan yang sudah dipadam di Google Sheets (jika Google Sheets ada rekod)
+                const sheetIds = new Set(rows.map(r => String(r.ID_Ahli || '').trim()).filter(Boolean));
+                const sheetIcs = new Set(rows.map(r => String(r.No_KP || '').replace(/[^0-9]/g, '').trim()).filter(Boolean));
+                if (sheetIds.size > 0 || sheetIcs.size > 0) {
+                    members = members.filter(m => sheetIds.has(m.id) || (m.ic && sheetIcs.has(m.ic)));
+                }
+
                 saveToStorage();
                 updateAllAdminViews();
-                showToast(`Berjaya segerakkan ${rows.length} rekod ahli (${importedCount} ahli baharu) daripada Google Sheets!`, 'success');
+                showToast(`Berjaya segerakkan ${rows.length} rekod ahli terkini daripada Google Sheets!`, 'success');
             } catch (err) {
                 showToast('Gagal membaca Google Sheets. Pastikan akses Web App ditetapkan kepada "Anyone".', 'error');
             }
@@ -1459,9 +1466,9 @@ function doPost(e) {
             saveSettingsToStorage();
             applySettingsToUI();
 
-            showToast('Sedang menghantar senarai ahli ke tab "Senarai_Ahli"...', 'info');
+            showToast('Sedang menghantar senarai ahli terkini ke tab "Senarai_Ahli"...', 'info');
             const sent = await postToGoogleSheets({
-                type: 'sync_all_members',
+                type: 'replace_all_members',
                 members: members.map(m => ({
                     id: m.id,
                     name: m.name,
@@ -1474,7 +1481,7 @@ function doPost(e) {
             });
 
             if (sent) {
-                showToast(`Senarai ${members.length} ahli telah dihantar ke Google Sheets! Sila semak tab Senarai_Ahli.`, 'success');
+                showToast(`Senarai terkini (${members.length} ahli) telah dikemas kini di Google Sheets!`, 'success');
             } else {
                 showToast('Ralat rangkaian semasa menghantar ke Google Sheets.', 'error');
             }
@@ -2382,7 +2389,11 @@ function doPost(e) {
                 saveToStorage();
                 updateAllAdminViews();
                 event.target.value = '';
-                showToast(`${addedCount} orang pelajar berjaya diimport masuk ke dalam senarai!`, 'success');
+                postToGoogleSheets({
+                    type: 'replace_all_members',
+                    members: members.map(m => ({ id: m.id, name: m.name, ic: m.ic, phone: m.phone, belt: m.belt, category: m.category, fee: m.fee }))
+                });
+                showToast(`${addedCount} orang pelajar berjaya diimport & diselaraskan ke Google Sheets!`, 'success');
             };
             reader.readAsText(file);
         }
@@ -2435,10 +2446,21 @@ function doPost(e) {
         }
 
         function deleteMember(id) {
+            const target = members.find(m => m.id === id);
             members = members.filter(m => m.id !== id);
             saveToStorage();
             updateAllAdminViews();
-            showToast('Rekod ahli telah dipadam.', 'info');
+            if (currentSearchedMemberId === id) {
+                currentSearchedMemberId = null;
+                document.getElementById('member-result-card').classList.add('hidden');
+            }
+            postToGoogleSheets({
+                type: 'delete_member',
+                id: id,
+                ic: target ? target.ic : '',
+                members: members.map(m => ({ id: m.id, name: m.name, ic: m.ic, phone: m.phone, belt: m.belt, category: m.category, fee: m.fee }))
+            });
+            showToast('Rekod ahli telah dipadam secara kekal dari laman web & Google Sheets.', 'info');
         }
 
         function renderAdminMembersList() {
